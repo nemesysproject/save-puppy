@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - "3000:3000"
+    restart: on-failure
     environment:
       - NODE_ENV=production
       # La API se conecta a 'postgres' (nombre del servicio), NO a localhost
@@ -19,7 +20,7 @@ services:
   postgres:
     image: postgres:16-alpine
     ports:
-      - "5432:5432"
+      - "5438:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

@@ -1,14 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+const mediator_1 = require("../infrastructure/shared/mediator");
+const register_user_command_1 = require("../application/commands/register-user.command");
+const login_user_command_1 = require("../application/commands/login-user.command");
 class AuthController {
     async register(req, res) {
-        // TODO: Llamar al Command RegisterUser
-        res.status(201).json({ message: 'Usuario registrado exitosamente (Local)' });
+        try {
+            const { email, password } = req.body;
+            const command = new register_user_command_1.RegisterUserCommand(email, password);
+            await mediator_1.mediator.send('RegisterUserCommand', command);
+            res.status(201).json({ message: 'Usuario registrado exitosamente (Local)' });
+        }
+        catch (error) {
+            res.status(400).json({ error: error.message });
+        }
     }
     async login(req, res) {
-        // TODO: Verificar credenciales y generar JWT
-        res.json({ accessToken: 'fake-jwt-token', refreshToken: 'fake-refresh-token' });
+        try {
+            const { email, password } = req.body;
+            const command = new login_user_command_1.LoginUserCommand(email, password);
+            const result = await mediator_1.mediator.send('LoginUserCommand', command);
+            res.json(result);
+        }
+        catch (error) {
+            res.status(401).json({ error: error.message });
+        }
     }
     async googleAuth(req, res) {
         // TODO: Verificar token de Google y buscar/crear usuario

@@ -1,6 +1,7 @@
 // Generador del cliente de Prisma (ORM)
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 // Conexión a PostgreSQL
