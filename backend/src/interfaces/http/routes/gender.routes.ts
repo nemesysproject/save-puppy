@@ -13,7 +13,7 @@ const genderController = new GenderController();
 
 /**
  * @swagger
- * /genders:
+ * /api/genders:
  *   get:
  *     summary: Obtener todos los géneros de mascotas
  *     tags: [Genders]

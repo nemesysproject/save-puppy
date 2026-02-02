@@ -47,8 +47,8 @@ app.get('/health', (req, res) => {
 
 // Rutas de la API
 app.use('/api/auth', authRoutes);
-app.use('/kinds', kindRoutes);
-app.use('/genders', genderRoutes);
+app.use('/api/kinds', kindRoutes);
+app.use('/api/genders', genderRoutes);
 
 // Documentación OpenAPI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

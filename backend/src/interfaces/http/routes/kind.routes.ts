@@ -13,7 +13,7 @@ const kindController = new KindController();
 
 /**
  * @swagger
- * /kinds:
+ * /api/kinds:
  *   get:
  *     summary: Obtener todos los tipos de mascotas
  *     tags: [Kinds]
