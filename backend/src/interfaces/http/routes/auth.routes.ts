@@ -13,7 +13,7 @@ const authController = new AuthController();
 
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Registro de nuevo usuario (Email/Password)
  *     tags: [Auth]
@@ -47,7 +47,7 @@ router.post('/register', authController.register);
 
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Iniciar sesión con credenciales locales
  *     tags: [Auth]
@@ -73,7 +73,7 @@ router.post('/login', authController.login);
 
 /**
  * @swagger
- * /auth/google:
+ * /api/auth/google:
  *   post:
  *     summary: Autenticación con Google (Login o Registro automático)
  *     tags: [Auth]
@@ -85,7 +85,7 @@ router.post('/google', authController.googleAuth);
 
 /**
  * @swagger
- * /auth/facebook:
+ * /api/auth/facebook:
  *   post:
  *     summary: Autenticación con Facebook (Login o Registro automático)
  *     tags: [Auth]
@@ -97,7 +97,7 @@ router.post('/facebook', authController.facebookAuth);
 
 /**
  * @swagger
- * /auth/refresh-token:
+ * /api/auth/refresh-token:
  *   post:
  *     summary: Obtener nuevo token de acceso usando Refresh Token
  *     tags: [Auth]
