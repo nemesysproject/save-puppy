@@ -20,6 +20,8 @@ const kindController = new KindController();
  *     responses:
  *       200:
  *         description: Lista de tipos
+ *     security:
+ *       - bearerAuth: []
  */
 router.get('/', kindController.getKinds);
 

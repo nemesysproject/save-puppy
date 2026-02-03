@@ -2,9 +2,11 @@ import { Request, Response } from 'express';
 import { mediator } from '@/infrastructure/shared/mediator';
 import { RegisterUserCommand } from '@/application/commands/register-user.command';
 import { LoginUserCommand } from '@/application/commands/login-user.command';
+import { RefreshTokenCommand } from '@/application/commands/refresh-token.command';
+import { LogoutCommand } from '@/application/commands/logout.command';
 
 export class AuthController {
-    
+
     async register(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
@@ -38,12 +40,42 @@ export class AuthController {
     }
 
     async logout(req: Request, res: Response) {
-        // TODO: Invalidar refresh token si se almacena en BD/Redis
-        res.json({ message: 'Sesión cerrada correctamente' });
+        try {
+            // El token puede venir en el header Authorization o en el body
+            let token = req.body.token;
+
+            if (!token) {
+                const authHeader = req.headers.authorization;
+                if (authHeader && authHeader.startsWith('Bearer ')) {
+                    token = authHeader.substring(7);
+                }
+            }
+
+            if (!token) {
+                return res.status(400).json({ error: 'Token requerido' });
+            }
+
+            const command = new LogoutCommand(token);
+            const result = await mediator.send('LogoutCommand', command);
+            res.json(result);
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
     }
 
     async refreshToken(req: Request, res: Response) {
-        // TODO: Verificar refresh token y emitir nuevo access token
-        res.json({ accessToken: 'new-fake-jwt-token' });
+        try {
+            const { token } = req.body;
+
+            if (!token) {
+                return res.status(400).json({ error: 'Token requerido' });
+            }
+
+            const command = new RefreshTokenCommand(token);
+            const result = await mediator.send('RefreshTokenCommand', command);
+            res.json(result);
+        } catch (error: any) {
+            res.status(401).json({ error: error.message });
+        }
     }
 }

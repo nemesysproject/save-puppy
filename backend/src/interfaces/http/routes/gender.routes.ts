@@ -20,6 +20,8 @@ const genderController = new GenderController();
  *     responses:
  *       200:
  *         description: Lista de géneros
+ *     security:
+ *       - bearerAuth: []
  */
 router.get('/', genderController.getGenders);
 
