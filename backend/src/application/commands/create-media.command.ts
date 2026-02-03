@@ -14,8 +14,14 @@ export class CreateMediaCommand {
     ) { }
 }
 
+import { RabbitMQService } from '@/infrastructure/services/rabbitmq.service';
+import { MediaCreatedEvent } from '@/domain/events/domain-events';
+
 export class CreateMediaHandler implements IHandler<CreateMediaCommand, MediaEntity> {
-    constructor(private mediaRepository: IMediaRepository) { }
+    constructor(
+        private mediaRepository: IMediaRepository,
+        private rabbitMQService: RabbitMQService
+    ) { }
 
     async handle(command: CreateMediaCommand): Promise<MediaEntity> {
         const media = new MediaEntity(
@@ -28,6 +34,20 @@ export class CreateMediaHandler implements IHandler<CreateMediaCommand, MediaEnt
             command.longitude,
             command.petId
         );
-        return await this.mediaRepository.create(media);
+        const createdMedia = await this.mediaRepository.create(media);
+
+        const event: MediaCreatedEvent = {
+            petId: createdMedia.petId,
+            url: createdMedia.url,
+            type: createdMedia.type
+        };
+
+        // Publish to pet_events stream so Pet Read Model can be updated with new photo
+        await this.rabbitMQService.publish('pet_events', {
+            event: 'MediaUploaded',
+            data: event
+        });
+
+        return createdMedia;
     }
 }

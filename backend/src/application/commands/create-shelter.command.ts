@@ -13,8 +13,14 @@ export class CreateShelterCommand {
     ) { }
 }
 
+import { RabbitMQService } from '@/infrastructure/services/rabbitmq.service';
+import { ShelterCreatedEvent } from '@/domain/events/domain-events';
+
 export class CreateShelterHandler implements IHandler<CreateShelterCommand, ShelterEntity> {
-    constructor(private shelterRepository: IShelterRepository) { }
+    constructor(
+        private shelterRepository: IShelterRepository,
+        private rabbitMQService: RabbitMQService
+    ) { }
 
     async handle(command: CreateShelterCommand): Promise<ShelterEntity> {
         const shelter = new ShelterEntity(
@@ -26,6 +32,23 @@ export class CreateShelterHandler implements IHandler<CreateShelterCommand, Shel
             command.longitude,
             command.capacity
         );
-        return await this.shelterRepository.create(shelter);
+        const created.shelter = await this.shelterRepository.create(shelter);
+
+        const event: ShelterCreatedEvent = {
+            id: created.shelter.id,
+            name: created.shelter.name,
+            email: created.shelter.email,
+            address: created.shelter.address || undefined,
+            latitude: created.shelter.latitude || undefined,
+            longitude: created.shelter.longitude || undefined,
+            capacity: created.shelter.capacity || undefined
+        };
+
+        await this.rabbitMQService.publish('shelter_events', {
+            event: 'ShelterCreated',
+            data: event
+        });
+
+        return created.shelter;
     }
 }

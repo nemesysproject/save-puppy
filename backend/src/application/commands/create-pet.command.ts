@@ -13,8 +13,14 @@ export class CreatePetCommand {
     ) { }
 }
 
+import { RabbitMQService } from '@/infrastructure/services/rabbitmq.service';
+import { PetCreatedEvent } from '@/domain/events/domain-events';
+
 export class CreatePetHandler implements IHandler<CreatePetCommand, PetEntity> {
-    constructor(private petRepository: IPetRepository) { }
+    constructor(
+        private petRepository: IPetRepository,
+        private rabbitMQService: RabbitMQService
+    ) { }
 
     async handle(command: CreatePetCommand): Promise<PetEntity> {
         const pet = new PetEntity(
@@ -26,6 +32,23 @@ export class CreatePetHandler implements IHandler<CreatePetCommand, PetEntity> {
             command.shelterId,
             command.ownerEmail
         );
-        return await this.petRepository.create(pet);
+        const createdPet = await this.petRepository.create(pet);
+
+        const event: PetCreatedEvent = {
+            id: createdPet.id,
+            name: createdPet.name,
+            status: createdPet.status,
+            kindId: createdPet.kindId,
+            genderId: createdPet.genderId,
+            shelterId: createdPet.shelterId,
+            ownerEmail: createdPet.ownerEmail || undefined
+        };
+
+        await this.rabbitMQService.publish('pet_events', {
+            event: 'PetCreated',
+            data: event
+        });
+
+        return createdPet;
     }
 }
