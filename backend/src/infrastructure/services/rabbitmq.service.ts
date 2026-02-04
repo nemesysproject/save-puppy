@@ -23,7 +23,9 @@ export class RabbitMQService {
         }
         this.url = `amqp://${encodedUser}:${encodedPass}@${host}:${port}`;
 
-        console.log(`***** RabbitMQService initialized with URL: ${this.url}`); // Avoid logging sensitive info like password in
+        // Fix: Mask password in constructor logs too
+        const maskedUrl = this.url.replace(/:([^:@]+)@/, ':*****@');
+        console.log(`***** RabbitMQService initialized with URL: ${maskedUrl}`);
 
         console
     }
