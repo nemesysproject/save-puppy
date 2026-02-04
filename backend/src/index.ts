@@ -18,6 +18,7 @@ import { EncryptionService } from './infrastructure/services/encryption.service'
 import { TokenService } from './infrastructure/services/token.service';
 import { TokenBlacklistService } from './infrastructure/services/token-blacklist.service';
 import { CloudinaryService } from './infrastructure/services/cloudinary.service';
+import { RabbitMQService } from './infrastructure/services/rabbitmq.service';
 import { AuthMiddleware } from './infrastructure/middleware/auth.middleware';
 import { KindController } from './controllers/kind.controller';
 import { GetGendersHandler } from './application/queries/get-genders.query';
@@ -64,9 +65,13 @@ const encryptionService = new EncryptionService();
 const tokenService = new TokenService();
 const tokenBlacklistService = new TokenBlacklistService();
 const cloudinaryService = new CloudinaryService();
+const rabbitMQService = new RabbitMQService();
 
 // Inyectar el servicio de blacklist en el token service
 tokenService.setBlacklistService(tokenBlacklistService);
+
+// Conectar a RabbitMQ
+rabbitMQService.connect();
 
 // Crear middleware de autenticación
 const authMiddleware = new AuthMiddleware(tokenService);
@@ -78,17 +83,17 @@ mediator.register('RefreshTokenCommand', new RefreshTokenHandler(tokenService));
 mediator.register('LogoutCommand', new LogoutHandler(tokenService, tokenBlacklistService));
 mediator.register('GetKindsQuery', new GetKindsHandler(kindRepository));
 mediator.register('GetGendersQuery', new GetGendersHandler(genderRepository));
-mediator.register('CreateShelterCommand', new CreateShelterHandler(shelterRepository));
+mediator.register('CreateShelterCommand', new CreateShelterHandler(shelterRepository, rabbitMQService));
 mediator.register('UpdateShelterCommand', new UpdateShelterHandler(shelterRepository));
 mediator.register('DeleteShelterCommand', new DeleteShelterHandler(shelterRepository));
 mediator.register('GetSheltersQuery', new GetSheltersHandler(shelterRepository));
 mediator.register('GetShelterByIdQuery', new GetShelterByIdHandler(shelterRepository));
-mediator.register('CreatePetCommand', new CreatePetHandler(petRepository));
+mediator.register('CreatePetCommand', new CreatePetHandler(petRepository, rabbitMQService));
 mediator.register('UpdatePetCommand', new UpdatePetHandler(petRepository));
 mediator.register('DeletePetCommand', new DeletePetHandler(petRepository));
 mediator.register('GetPetsQuery', new GetPetsHandler(petRepository));
 mediator.register('GetPetByIdQuery', new GetPetByIdHandler(petRepository));
-mediator.register('CreateMediaCommand', new CreateMediaHandler(mediaRepository));
+mediator.register('CreateMediaCommand', new CreateMediaHandler(mediaRepository, rabbitMQService));
 mediator.register('DeleteMediaCommand', new DeleteMediaHandler(mediaRepository, cloudinaryService));
 mediator.register('GetMediaByPetQuery', new GetMediaByPetHandler(mediaRepository));
 

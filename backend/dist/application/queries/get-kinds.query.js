@@ -7,6 +7,7 @@ exports.GetKindsQuery = GetKindsQuery;
 class GetKindsHandler {
     constructor(kindRepository) {
         this.kindRepository = kindRepository;
+        console.log('GetKindsHandler initialized with KindRepository');
     }
     async handle(query) {
         return await this.kindRepository.findAll();

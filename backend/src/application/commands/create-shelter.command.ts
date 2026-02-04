@@ -32,16 +32,16 @@ export class CreateShelterHandler implements IHandler<CreateShelterCommand, Shel
             command.longitude,
             command.capacity
         );
-        const created.shelter = await this.shelterRepository.create(shelter);
+        const createdShelter = await this.shelterRepository.create(shelter);
 
         const event: ShelterCreatedEvent = {
-            id: created.shelter.id,
-            name: created.shelter.name,
-            email: created.shelter.email,
-            address: created.shelter.address || undefined,
-            latitude: created.shelter.latitude || undefined,
-            longitude: created.shelter.longitude || undefined,
-            capacity: created.shelter.capacity || undefined
+            id: createdShelter.id,
+            name: createdShelter.name,
+            email: createdShelter.email,
+            address: createdShelter.address || undefined,
+            latitude: createdShelter.latitude || undefined,
+            longitude: createdShelter.longitude || undefined,
+            capacity: createdShelter.capacity || undefined
         };
 
         await this.rabbitMQService.publish('shelter_events', {
@@ -49,6 +49,6 @@ export class CreateShelterHandler implements IHandler<CreateShelterCommand, Shel
             data: event
         });
 
-        return created.shelter;
+        return createdShelter;
     }
 }

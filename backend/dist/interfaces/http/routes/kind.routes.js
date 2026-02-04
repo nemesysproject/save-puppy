@@ -12,13 +12,15 @@ const kindController = new kind_controller_1.KindController();
  */
 /**
  * @swagger
- * /kinds:
+ * /api/kinds:
  *   get:
  *     summary: Obtener todos los tipos de mascotas
  *     tags: [Kinds]
  *     responses:
  *       200:
  *         description: Lista de tipos
+ *     security:
+ *       - bearerAuth: []
  */
 router.get('/', kindController.getKinds);
 exports.default = router;
