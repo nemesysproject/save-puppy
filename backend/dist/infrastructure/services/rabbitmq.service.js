@@ -11,20 +11,29 @@ class RabbitMQService {
         this.connection = null;
         this.channel = null;
         // Default to localhost if not set in env
+        // Extrae las variables del entorno (asegúrate que coincidan con tu .env o docker-compose)
+        const user = process.env.RABBITMQ_USER || 'admin';
+        const pass = process.env.RABBITMQ_PASS || 'QazWsx@12';
         const host = process.env.RABBITMQ_HOST || 'rabbitmq';
-        const port = process.env.RABBITMQ_PORT || '5672';
+        const port = process.env.RABBITMQ_PORT || 5672;
+        // CRÍTICO: Codificar usuario y contraseña para manejar caracteres como '@'
+        const encodedUser = encodeURIComponent(user);
+        const encodedPass = encodeURIComponent(pass);
         if (!process.env.RABBITMQ_HOST) {
             console.warn('⚠️  RABBITMQ_HOST not set. Defaulting to "rabbitmq". If running locally, ensure this environment variable is set to "localhost".');
         }
-        this.url = `amqp://${process.env.RABBITMQ_USER}:${process.env.RABBITMQ_PASS}@${host}:${port}`;
+        this.url = `amqp://${encodedUser}:${encodedPass}@${host}:${port}`;
+        console.log(`***** RabbitMQService initialized with URL: ${this.url}`); // Avoid logging sensitive info like password in
+        console;
     }
     async connect() {
         let retries = 5;
         while (retries) {
             try {
                 // Mask password in logs for security
+                console.log(`***** Connecting to url at ${this.url}`);
                 const maskedUrl = this.url.replace(/:([^:@]+)@/, ':*****@');
-                console.log(`Connecting to RabbitMQ at ${maskedUrl}`);
+                console.log(`***** Connecting to RabbitMQ at ${maskedUrl}`);
                 this.connection = await amqplib_1.default.connect(this.url);
                 this.channel = await this.connection.createChannel();
                 console.log('✅ RabbitMQ Connected');
