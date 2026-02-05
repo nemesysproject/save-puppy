@@ -15,6 +15,7 @@ import {
 })
 export class AuthService extends BaseApiService {
     protected readonly endpoint = '/auth';
+    private readonly TOKEN_KEY = 'auth_token';
 
     login(credentials: LoginDto): Observable<AuthResponseDto> {
         return this.http.post<AuthResponseDto>(this.getFullUrl('/login'), credentials)
@@ -32,7 +33,24 @@ export class AuthService extends BaseApiService {
     }
 
     logout(data?: LogoutDto): Observable<any> {
+        this.removeToken();
         return this.http.post<any>(this.getFullUrl('/logout'), data || {})
             .pipe(catchError(this.handleError));
+    }
+
+    setToken(token: string): void {
+        localStorage.setItem(this.TOKEN_KEY, token);
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem(this.TOKEN_KEY);
+    }
+
+    removeToken(): void {
+        localStorage.removeItem(this.TOKEN_KEY);
+    }
+
+    isLoggedIn(): boolean {
+        return !!this.getToken();
     }
 }
