@@ -1,0 +1,38 @@
+:root {
+  /* Warm Hug Palette */
+  --sp-primary: #F9A826;        /* Puppy Gold */
+  --sp-primary-rgba: 249, 168, 38;
+  --sp-secondary: #6D4C41;      /* Paw Print Brown */
+  --sp-secondary-rgba: 109, 76, 65;
+  --sp-accent: #F06292;         /* Heart Coral */
+  --sp-background: #FFF9F0;      /* Cream Bone */
+  --sp-text: #2C2C2C;           /* Obsidian Bark */
+  --sp-text-muted: #5F5F5F;
+
+  /* Typography */
+  --sp-font-family-header: 'Outfit', 'Quicksand', sans-serif;
+  --sp-font-family-body: 'Inter', 'Roboto', sans-serif;
+
+  /* UI Elements */
+  --sp-border-radius-sm: 8px;
+  --sp-border-radius-md: 16px;
+  --sp-border-radius-lg: 24px;
+  
+  --sp-shadow-soft: 0 4px 12px rgba(var(--sp-secondary-rgba), 0.1);
+  --sp-shadow-hover: 0 8px 24px rgba(var(--sp-secondary-rgba), 0.15);
+
+  /* Transitions */
+  --sp-transition-fast: 0.2s ease;
+  --sp-transition-mid: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rounded-lg { border-radius: var(--sp-border-radius-lg); }
+.rounded-md { border-radius: var(--sp-border-radius-md); }
+.soft-shadow { box-shadow: var(--sp-shadow-soft); }
+.hover-lift {
+  transition: transform var(--sp-transition-fast), box-shadow var(--sp-transition-fast);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sp-shadow-hover);
+}
