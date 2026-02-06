@@ -1,0 +1,40 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>🐕 Gestión de Mascotas</h1>
+    <button class="btn btn-primary">+ Nueva Mascota</button>
+  </div>
+
+  <div class="content">
+    <div class="filters">
+      <input type="text" placeholder="Buscar mascota..." class="search-input" />
+      <select class="select-input">
+        <option value="">Todos los estados</option>
+        <option value="LOST">Perdida</option>
+        <option value="FOUND">Encontrada</option>
+        <option value="ADOPTION">En adopción</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>Listado de Mascotas</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Género</th>
+            <th>Estado</th>
+            <th>Dueño</th>
+            <th>Refugio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7" class="empty">Cargando datos...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
