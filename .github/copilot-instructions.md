@@ -106,25 +106,63 @@ npx cap sync              # Sync web assets to native
 - **Build**: Angular CLI + Vite (experimental in v21)
 - **Testing**: Vitest + jsdom (not Jasmine/Karma)
 - **Package Manager**: npm 11.6.2 required
-- **Styling**: CSS (styles.css)
+- **Styling**: CSS (styles.css) + inline component styles
 
 ### Structure
 ```
 frontend/web-admin/src/
   app/
-    app.config.ts       # Standalone bootstrap config
-    app.routes.ts       # Routing (standalone)
-    app.ts              # Root component
+    app.config.ts           # Standalone bootstrap config
+    app.routes.ts           # Routing (standalone)
+    app.ts                  # Root component
+    components/
+      header/               # Top navbar with profile & logout
+      sidebar/              # Left navigation menu
+      footer/               # Bottom footer with socials
+      layout/               # Main layout container
+    pages/
+      shelters/             # Shelters management page
+      pets/                 # Pets management page
+      owners/               # Owners management page
+    services/               # API services
   index.html
-  main.ts              # Bootstrap entry
-  styles.css
+  main.ts                  # Bootstrap entry
+  styles.css               # Global styles
 ```
+
+### Layout Architecture
+The app uses a **responsive 3-section layout**:
+```
+┌─────────────────────────────────┐
+│          HEADER                 │ (profile, logout button)
+├──────────────┬──────────────────┤
+│   SIDEBAR    │                  │
+│  (nav menu)  │  MAIN CONTENT    │ (router-outlet)
+│              │  (routes pages)  │
+├──────────────┴──────────────────┤
+│            FOOTER               │ (social links, copyright)
+└─────────────────────────────────┘
+```
+
+**Key Components:**
+- **HeaderComponent** (`components/header/`): Title, user avatar, logout button
+- **SidebarComponent** (`components/sidebar/`): Navigation (🏠 Refugios, 🐕 Mascotas, 👤 Dueños, ⚙️ Configuración, ❓ Ayuda)
+- **FooterComponent** (`components/footer/`): Company info, social media links (Facebook, Instagram, Twitter, LinkedIn, GitHub)
+- **LayoutComponent** (`components/layout/`): Main container that integrates all sections
 
 ### Standalone Components Pattern
 - No NgModules: all components have `standalone: true`
-- Imports declared inline: `imports: [CommonModule, FormsModule, ...]`
+- Imports declared inline: `imports: [CommonModule, RouterLink, ...]`
 - Dependencies injected via `InjectionToken` or `provideX()` functions
 - Routing: `Routes` array with `path`, `component`, `children`
+- **Signal API**: Use `signal()` for reactive state management (`signal('value')`)
+
+### Styling & Theme
+- **Primary Color**: Gradient #667eea → #764ba2 (purple-blue)
+- **Background**: #f5f7fa (light gray)
+- **Sidebar**: #2c3e50 (dark blue)
+- **Borders**: 6-8px border-radius, subtle shadows
+- **Responsive**: Collapse sidebar to icons on mobile (<768px)
 
 ### Web-Admin Dev Workflow
 ```bash
@@ -134,6 +172,19 @@ npm run build            # Production build
 npm test                 # Vitest runner
 npm run watch            # Dev mode with auto-rebuild
 ```
+
+### Adding New Pages to Layout
+1. Create page component in `pages/my-section/my-section.component.ts`
+2. Add route in `app.routes.ts`:
+   ```typescript
+   { path: 'my-section', component: MySectionComponent }
+   ```
+3. Add menu item in `sidebar.component.ts`:
+   ```typescript
+   navItems = signal<NavItem[]>([
+     { label: 'My Section', path: '/my-section', icon: '📝' }
+   ]);
+   ```
 
 ### Prettier Config
 Configured in [package.json](../../frontend/web-admin/package.json): 100 char print width, single quotes, Angular HTML parser
@@ -205,11 +256,21 @@ Backend requires (`.env`):
 5. ✅ Test on device with `npx cap run ios/android`
 
 ### Adding Web-Admin Feature
-1. ✅ Create standalone component
-2. ✅ Add route in `app.routes.ts`
-3. ✅ Import required dependencies inline
-4. ✅ Style with CSS (styles.css or component CSS)
-5. ✅ Run `npm run build` for production
+1. ✅ Create standalone page component in `pages/my-feature/my-feature.component.ts`
+2. ✅ Add route in `app.routes.ts` under layout children:
+   ```typescript
+   { path: 'my-feature', component: MyFeatureComponent }
+   ```
+3. ✅ Add navigation item to `sidebar.component.ts`:
+   ```typescript
+   navItems = signal<NavItem[]>([
+     { label: 'My Feature', path: '/my-feature', icon: '🔧' }
+   ]);
+   ```
+4. ✅ Import required dependencies inline (CommonModule, FormsModule, RouterLink, etc.)
+5. ✅ Style with inline CSS or reference global theme colors (#667eea, #2c3e50, #f5f7fa)
+6. ✅ Use signal API for reactive state (`signal()`, `effect()`)
+7. ✅ Run `npm run build` for production
 
 ---
 
@@ -224,3 +285,6 @@ Backend requires (`.env`):
 | Mobile | [frontend/app/src/global.scss](../../frontend/app/src/global.scss) | Mobile global styles |
 | Web-Admin | [frontend/web-admin/src/app/app.config.ts](../../frontend/web-admin/src/app/app.config.ts) | Standalone config |
 | Web-Admin | [frontend/web-admin/src/app/app.routes.ts](../../frontend/web-admin/src/app/app.routes.ts) | Web routing config |
+| Web-Admin | [frontend/web-admin/src/app/components/layout/layout.component.ts](../../frontend/web-admin/src/app/components/layout/layout.component.ts) | Main layout container |
+| Web-Admin | [frontend/web-admin/src/app/components/sidebar/sidebar.component.ts](../../frontend/web-admin/src/app/components/sidebar/sidebar.component.ts) | Navigation menu config |
+| Web-Admin | [frontend/web-admin/src/app/components/README.md](../../frontend/web-admin/src/app/components/README.md) | Components architecture guide |
