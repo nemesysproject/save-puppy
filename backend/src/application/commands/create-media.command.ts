@@ -10,6 +10,7 @@ export class CreateMediaCommand {
         public readonly type: string,
         public readonly latitude: number,
         public readonly longitude: number,
+        public readonly geohash: string | null,
         public readonly petId: string
     ) { }
 }
@@ -32,6 +33,7 @@ export class CreateMediaHandler implements IHandler<CreateMediaCommand, MediaEnt
             command.type,
             command.latitude,
             command.longitude,
+            command.geohash,
             command.petId
         );
         const createdMedia = await this.mediaRepository.create(media);

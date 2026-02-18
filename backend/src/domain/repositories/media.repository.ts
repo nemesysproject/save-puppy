@@ -5,4 +5,5 @@ export interface IMediaRepository {
     delete(id: string): Promise<void>;
     findById(id: string): Promise<MediaEntity | null>;
     findByPetId(petId: string): Promise<MediaEntity[]>;
+    findByGeohashPrefix(prefix: string, limit?: number): Promise<MediaEntity[]>;
 }

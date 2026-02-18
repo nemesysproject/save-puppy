@@ -14,6 +14,7 @@ export class PrismaMediaRepository implements IMediaRepository {
                 type: media.type,
                 latitude: media.latitude,
                 longitude: media.longitude,
+                geohash: media.geohash ?? null,
                 petId: media.petId
             }
         });
@@ -25,6 +26,7 @@ export class PrismaMediaRepository implements IMediaRepository {
             created.type,
             created.latitude,
             created.longitude,
+            created.geohash,
             created.petId,
             created.createdAt,
             created.updatedAt
@@ -50,8 +52,9 @@ export class PrismaMediaRepository implements IMediaRepository {
             found.storageKey,
             found.provider,
             found.type,
-            found.latitude,
+            found.latitude,            
             found.longitude,
+            found.geohash,
             found.petId,
             found.createdAt,
             found.updatedAt
@@ -71,9 +74,35 @@ export class PrismaMediaRepository implements IMediaRepository {
             m.type,
             m.latitude,
             m.longitude,
+            m.geohash,
             m.petId,
-            m.createdAt,
-            m.updatedAt
+            m.createdAt.toISOString(),
+            m.updatedAt.toISOString()
+        ));
+    }
+    
+    async findByGeohashPrefix(prefix: string, limit = 50): Promise<MediaEntity[]> {
+        const found = await prisma.media.findMany({
+            where: {
+                geohash: {
+                    startsWith: prefix
+                }
+            },
+            take: limit
+        });
+
+        return found.map((m: any) => new MediaEntity(
+            m.id,
+            m.url,
+            m.storageKey,
+            m.provider,
+            m.type,
+            m.latitude,
+            m.longitude,
+            m.geohash,
+            m.petId,
+            m.createdAt.toISOString(),
+            m.updatedAt.toISOString()
         ));
     }
 }

@@ -57,14 +57,18 @@ model Media {
   // Ubicación geoespacial de la evidencia (donde se tomó la foto/video)
   latitude  Float?
   longitude Float?
+  // Geohash para búsquedas por proximidad (prefijo indexable)
+  geohash   String?  @db.VarChar(12)
   
   createdAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   petId     String
   pet       Pet      @relation(fields: [petId], references: [id])
+  @@index([geohash])
 }
 
+// Índice para búsquedas por prefijo de geohash definido en el modelo Media
 model Shelter {
   id          String   @id @default(uuid())
   name        String

@@ -2,8 +2,10 @@ import { Request, Response } from 'express';
 import { mediator } from '@/infrastructure/shared/mediator';
 import { CloudinaryService } from '@/infrastructure/services/cloudinary.service';
 import { CreateMediaCommand } from '@/application/commands/create-media.command';
+import { computeGeohash } from '@/infrastructure/services/geohash.service';
 import { DeleteMediaCommand } from '@/application/commands/delete-media.command';
 import { GetMediaByPetQuery } from '@/application/queries/get-media-by-pet.query';
+import { GetMediaByLocationQuery } from '@/application/queries/get-media-by-location.query';
 
 export class MediaController {
     constructor(private cloudinaryService: CloudinaryService) { }
@@ -24,13 +26,24 @@ export class MediaController {
             const { url, publicId } = await this.cloudinaryService.uploadImage(req.file.buffer);
 
             // 2. Persistir metadatos en BD usando CQRS
+            const lat = req.body.latitude !== undefined ? parseFloat(req.body.latitude) : null;
+            const lon = req.body.longitude !== undefined ? parseFloat(req.body.longitude) : null;
+            const precisionRequested = req.body.precisionMeters !== undefined ? parseInt(req.body.precisionMeters, 10) : 100;
+
+            let geohash: string | null = null;
+            if (lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon)) {
+                const precision = Math.max(10, Math.min(100, precisionRequested));
+                geohash = computeGeohash(lat, lon, precision);
+            }
+
             const command = new CreateMediaCommand(
                 url,
                 publicId,
                 'CLOUDINARY', // provider
                 'IMAGE',      // type
-                0,            // latitude (placeholder, could come from req.body)
-                0,            // longitude
+                lat ?? 0,     // latitude (if missing, stored as 0)
+                lon ?? 0,     // longitude
+                geohash,
                 petId
             );
 
@@ -62,6 +75,35 @@ export class MediaController {
             res.json(result);
         } catch (error: any) {
             res.status(500).json({ error: error.message });
+        }
+    }
+
+    searchByImage = async (req: Request, res: Response) => {
+        try {
+            if (!req.file) {
+                return res.status(400).json({ error: 'No se ha proporcionado ninguna imagen' });
+            }
+
+            const lat = req.body.latitude !== undefined ? parseFloat(req.body.latitude) : null;
+            const lon = req.body.longitude !== undefined ? parseFloat(req.body.longitude) : null;
+            const precisionRequested = req.body.precisionMeters !== undefined ? parseInt(req.body.precisionMeters, 10) : 100;
+
+            if (lat === null || lon === null || isNaN(lat) || isNaN(lon)) {
+                return res.status(400).json({ error: 'latitude y longitude son requeridos' });
+            }
+
+            const precision = Math.max(10, Math.min(100, precisionRequested));
+            const geohash = computeGeohash(lat, lon, precision);
+
+            const limit = req.body.limit !== undefined ? parseInt(req.body.limit, 10) : 50;
+            const query = new GetMediaByLocationQuery(geohash, limit);
+            const results = await mediator.send('GetMediaByLocationQuery', query) as any[];
+
+            res.json({ geohash, count: results.length, results });
+
+        } catch (error: any) {
+            console.error('Error searching media by image:', error);
+            res.status(500).json({ error: 'Error interno al buscar media' });
         }
     }
 }

@@ -45,6 +45,7 @@ import { PrismaMediaRepository } from './infrastructure/repositories/prisma-medi
 import { CreateMediaHandler, CreateMediaCommand } from './application/commands/create-media.command';
 import { DeleteMediaHandler, DeleteMediaCommand } from './application/commands/delete-media.command';
 import { GetMediaByPetHandler, GetMediaByPetQuery } from './application/queries/get-media-by-pet.query';
+import { GetMediaByLocationHandler } from './application/queries/get-media-by-location.query';
 import { MediaController } from './controllers/media.controller';
 
 dotenv.config();
@@ -96,6 +97,7 @@ mediator.register('GetPetByIdQuery', new GetPetByIdHandler(petRepository));
 mediator.register('CreateMediaCommand', new CreateMediaHandler(mediaRepository, rabbitMQService));
 mediator.register('DeleteMediaCommand', new DeleteMediaHandler(mediaRepository, cloudinaryService));
 mediator.register('GetMediaByPetQuery', new GetMediaByPetHandler(mediaRepository));
+mediator.register('GetMediaByLocationQuery', new GetMediaByLocationHandler(mediaRepository));
 
 const kindController = new KindController();
 const genderController = new GenderController();
