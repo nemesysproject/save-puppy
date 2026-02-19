@@ -50,6 +50,48 @@ async function main() {
     }
   }
 
+  // Catálogo Race (Razas) - Obtener Kind IDs
+  const perroKind = await prisma.kind.findFirst({
+    where: { name: 'Perro' },
+  });
+  const gatoKind = await prisma.kind.findFirst({
+    where: { name: 'Gato' },
+  });
+
+  const races = [
+    // Razas de perros
+    { name: 'Labrador', kindId: perroKind?.id },
+    { name: 'Pastor Alemán', kindId: perroKind?.id },
+    { name: 'Chihuahua', kindId: perroKind?.id },
+    // Razas de gatos
+    { name: 'Persa', kindId: gatoKind?.id },
+    { name: 'Siamés', kindId: gatoKind?.id },
+    { name: 'Maine Coon', kindId: gatoKind?.id },
+  ];
+
+  console.log('Sembrando Races...');
+  for (const race of races) {
+    if (!race.kindId) continue;
+    
+    const exists = await prisma.race.findFirst({
+      where: { 
+        AND: [
+          { name: race.name },
+          { kindId: race.kindId }
+        ]
+      },
+    });
+
+    if (!exists) {
+      await prisma.race.create({
+        data: race as { name: string; kindId: string },
+      });
+      console.log(`  + Creada Raza: ${race.name}`);
+    } else {
+      console.log(`  = Ya existe Raza: ${race.name}`);
+    }
+  }
+
   console.log('✅ Sembrado finalizado.');
 }
 

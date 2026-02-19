@@ -47,6 +47,14 @@ import { DeleteMediaHandler, DeleteMediaCommand } from './application/commands/d
 import { GetMediaByPetHandler, GetMediaByPetQuery } from './application/queries/get-media-by-pet.query';
 import { GetMediaByLocationHandler } from './application/queries/get-media-by-location.query';
 import { MediaController } from './controllers/media.controller';
+import { PrismaRaceRepository } from './infrastructure/repositories/prisma-race.repository';
+import { GetRacesByKindHandler } from './application/queries/get-races-by-kind.query';
+import { GetAllRacesHandler, GetRaceByIdHandler } from './application/queries/get-all-races.query';
+import { CreateRaceHandler, CreateRaceCommand } from './application/commands/create-race.command';
+import { UpdateRaceHandler, UpdateRaceCommand } from './application/commands/update-race.command';
+import { DeleteRaceHandler, DeleteRaceCommand } from './application/commands/delete-race.command';
+import { RaceController } from './controllers/race.controller';
+import raceRoutes from './interfaces/http/routes/race.routes';
 
 dotenv.config();
 
@@ -62,6 +70,7 @@ const genderRepository = new PrismaGenderRepository();
 const shelterRepository = new PrismaShelterRepository();
 const petRepository = new PrismaPetRepository();
 const mediaRepository = new PrismaMediaRepository();
+const raceRepository = new PrismaRaceRepository();
 const encryptionService = new EncryptionService();
 const tokenService = new TokenService();
 const tokenBlacklistService = new TokenBlacklistService();
@@ -98,6 +107,12 @@ mediator.register('CreateMediaCommand', new CreateMediaHandler(mediaRepository, 
 mediator.register('DeleteMediaCommand', new DeleteMediaHandler(mediaRepository, cloudinaryService));
 mediator.register('GetMediaByPetQuery', new GetMediaByPetHandler(mediaRepository));
 mediator.register('GetMediaByLocationQuery', new GetMediaByLocationHandler(mediaRepository));
+mediator.register('GetRacesByKindQuery', new GetRacesByKindHandler(raceRepository));
+mediator.register('GetAllRacesQuery', new GetAllRacesHandler(raceRepository));
+mediator.register('GetRaceByIdQuery', new GetRaceByIdHandler(raceRepository));
+mediator.register('CreateRaceCommand', new CreateRaceHandler(raceRepository));
+mediator.register('UpdateRaceCommand', new UpdateRaceHandler(raceRepository));
+mediator.register('DeleteRaceCommand', new DeleteRaceHandler(raceRepository));
 
 const kindController = new KindController();
 const genderController = new GenderController();
@@ -110,6 +125,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/kinds', authMiddleware.authenticate, kindRoutes);
 app.use('/api/genders', authMiddleware.authenticate, genderRoutes);
+app.use('/api/races', authMiddleware.authenticate, raceRoutes);
 app.use('/api/shelters', authMiddleware.authenticate, shelterRoutes);
 app.use('/api/pets', authMiddleware.authenticate, petRoutes);
 app.use('/api/upload', authMiddleware.authenticate, uploadRoutes);

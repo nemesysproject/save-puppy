@@ -36,7 +36,10 @@ model Pet {
   updatedAt   DateTime @updatedAt
 
   kindId      String
-  kind        Kind     @relation(fields: [kindId], references: [id])
+  kind        Kind     @relation("PetKind", fields: [kindId], references: [id])
+
+  raceId      String?
+  race        Race?    @relation("PetRace", fields: [raceId], references: [id])
 
   genderId    String
   gender      Gender   @relation(fields: [genderId], references: [id])
@@ -128,7 +131,23 @@ model Kind {
   name      String   @unique // DOG, CAT, BIRD
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  pets      Pet[]
+
+  pets      Pet[]     @relation("PetKind")
+  races     Race[]
+}
+
+model Race {
+  id        String   @id @default(uuid())
+  name      String   // LABRADOR, GERMAN_SHEPHERD, PERSIAN, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  kindId    String
+  kind      Kind     @relation(fields: [kindId], references: [id])
+
+  pets      Pet[]     @relation("PetRace")
+
+  @@unique([name, kindId]) // Garantiza que no haya razas duplicadas por tipo
 }
 
 model Gender {
