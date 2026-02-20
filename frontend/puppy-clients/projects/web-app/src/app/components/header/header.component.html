@@ -1,0 +1,44 @@
+<header class="navbar-header">
+  <div class="header-container">
+    <div class="logo-section">
+      <a routerLink="/dashboard" class="logo">
+        <span class="logo-icon">🐕</span>
+        <span class="logo-text">Save Puppy</span>
+      </a>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-box">
+        <input type="text" class="form-control" placeholder="Buscar...">
+      </div>
+
+      <div class="user-actions">
+        <div class="user-menu">
+          <button class="btn-user" (click)="toggleDropdown()">
+            <span class="user-avatar">{{ user()?.email?.[0]?.toUpperCase() ?? 'U' }}</span>
+            <span class="user-name">{{ user()?.email }}</span>
+            <i class="dropdown-icon">▼</i>
+          </button>
+
+          <div *ngIf="isDropdownOpen()" class="dropdown-menu">
+            <button class="dropdown-item" routerLink="/profile">
+              👤 Mi Perfil
+            </button>
+            <button class="dropdown-item" routerLink="/settings">
+              ⚙️ Configuración
+            </button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item logout-item" (click)="logout()">
+              🚪 Cerrar Sesión
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón de logout visible directamente en el header -->
+        <button class="btn btn-logout" (click)="logout()" title="Cerrar sesión">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

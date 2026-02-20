@@ -1,0 +1,22 @@
+<div class="container mt-3">
+    <h3>Refugios</h3>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="input-group w-50">
+            <input type="search" class="form-control" placeholder="Buscar refugio..."
+                (input)="search.set($any($event.target).value)" />
+            <button class="btn btn-outline-secondary" type="button" (click)="search.set('')">Limpiar</button>
+        </div>
+        <a class="btn btn-primary" [routerLink]="['/shelters/create']"><i class="fas fa-plus me-2"></i>Crear refugio</a>
+    </div>
+
+    <div *ngIf="isLoading()" class="my-3">Cargando...</div>
+    <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+
+
+    <ng-container *ngIf="filtered()">
+        <app-shelters-table *ngIf="filtered()!.length > 0" [shelters]="filtered()"></app-shelters-table>
+        <div *ngIf="filtered()!.length === 0" class="text-muted">No se encontraron refugios.</div>
+    </ng-container>
+</div>
+`

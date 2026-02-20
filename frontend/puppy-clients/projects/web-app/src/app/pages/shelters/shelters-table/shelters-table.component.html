@@ -1,0 +1,28 @@
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Dirección</th>
+        <th class="text-end">Capacidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of shelters; trackBy: trackById">
+        <td>{{ s.name }}</td>
+        <td>{{ s.email }}</td>
+        <td>{{ s.address || '-' }}</td>
+        <td class="text-end">{{ s.capacity ?? '-' }}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <a [routerLink]="['/shelters', s.id]" class="btn btn-sm btn-outline-primary">Ver</a>
+            <a [routerLink]="['/shelters', s.id, 'edit']" class="btn btn-sm btn-outline-secondary">Editar</a>
+            <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

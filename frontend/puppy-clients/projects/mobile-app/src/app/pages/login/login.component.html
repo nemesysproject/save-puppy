@@ -1,0 +1,109 @@
+<ion-page>
+  <ion-content [fullscreen]="true" class="login-page">
+    <div class="login-container">
+      <div class="logo-section">
+        <h1>🐕 Save Puppy</h1>
+        <p>Rescatando vidas peludas</p>
+      </div>
+
+      <ion-card class="login-card">
+        <ion-card-header>
+          <ion-card-title>Inicia Sesión</ion-card-title>
+          <ion-card-subtitle>Accede a tu cuenta</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <!-- Email Input -->
+            <ion-item class="login-item">
+              <ion-label position="floating">Email</ion-label>
+              <ion-input
+                formControlName="email"
+                type="email"
+                placeholder="tu@email.com"
+                [class.input-error]="email?.invalid && (email?.dirty || email?.touched)"
+              ></ion-input>
+            </ion-item>
+
+            <ion-text
+              *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+              class="error-text"
+            >
+              <p *ngIf="email?.errors?.['required']">El email es requerido</p>
+              <p *ngIf="email?.errors?.['email']">Email inválido</p>
+            </ion-text>
+
+            <!-- Password Input -->
+            <ion-item class="login-item">
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input
+                formControlName="password"
+                [type]="showPassword() ? 'text' : 'password'"
+                placeholder="Mínimo 6 caracteres"
+                [class.input-error]="
+                  password?.invalid && (password?.dirty || password?.touched)
+                "
+              ></ion-input>
+              <ion-button
+                fill="clear"
+                slot="end"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="
+                  showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'
+                "
+              >
+                <ion-icon
+                  slot="icon-only"
+                  [icon]="showPassword() ? 'eye' : 'eye-off'"
+                ></ion-icon>
+              </ion-button>
+            </ion-item>
+
+            <ion-text
+              *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+              class="error-text"
+            >
+              <p *ngIf="password?.errors?.['required']">La contraseña es requerida</p>
+              <p *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</p>
+            </ion-text>
+
+            <!-- Error Alert -->
+            <div *ngIf="errorMessage()" class="error-alert">
+              <ion-text color="danger">
+                <p>{{ errorMessage() }}</p>
+              </ion-text>
+            </div>
+
+            <!-- Submit Button -->
+            <ion-button
+              expand="block"
+              type="submit"
+              class="login-btn"
+              [disabled]="loginForm.invalid || isLoading()"
+            >
+              <span *ngIf="!isLoading()">Iniciar Sesión</span>
+              <span *ngIf="isLoading()" class="button-spinner">
+                <ion-spinner name="dots"></ion-spinner>
+              </span>
+            </ion-button>
+          </form>
+
+          <!-- Footer Links -->
+          <div class="login-footer">
+            <p class="footer-text">
+              ¿No tienes cuenta?
+              <ion-text color="primary">
+                <a routerLink="/register">Regístrate aquí</a>
+              </ion-text>
+            </p>
+            <p class="footer-text">
+              <ion-text color="primary">
+                <a href="#forgot-password">¿Olvidaste tu contraseña?</a>
+              </ion-text>
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-content>
+</ion-page>

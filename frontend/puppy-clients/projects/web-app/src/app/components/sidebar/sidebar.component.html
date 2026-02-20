@@ -1,0 +1,54 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed()">
+  <button class="toggle-btn" (click)="toggleSidebar()" title="Toggle sidebar">
+    {{ isCollapsed() ? '▶' : '◀' }}
+  </button>
+
+  <nav class="nav-menu">
+    <div *ngFor="let item of navItems" class="nav-item-wrapper">
+      <div *ngIf="!item.children" class="nav-item">
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-link"
+          [title]="isCollapsed() ? item.label : ''"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      </div>
+
+      <div *ngIf="item.children" class="nav-item-submenu">
+        <button
+          class="nav-link submenu-btn"
+          [class.open]="isMenuOpen(item.label)"
+          (click)="toggleSubmenu(item.label)"
+          [title]="isCollapsed() ? item.label : ''"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+          <span class="arrow" *ngIf="!isCollapsed()">{{ isMenuOpen(item.label) ? '▼' : '▶' }}</span>
+        </button>
+
+        <div *ngIf="isMenuOpen(item.label) && !isCollapsed()" class="submenu">
+          <a
+            *ngFor="let child of item.children"
+            [routerLink]="child.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }"
+            class="submenu-link"
+          >
+            <span class="submenu-icon">{{ child.icon }}</span>
+            <span class="submenu-label">{{ child.label }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-item">
+      <span>📱 Versión 1.0.0</span>
+    </div>
+  </div>
+</aside>
