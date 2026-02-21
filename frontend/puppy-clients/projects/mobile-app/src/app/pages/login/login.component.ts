@@ -1,7 +1,7 @@
 import { Component, inject, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonSpinner, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, LoginRequest } from 'shared-logic';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -17,7 +17,7 @@ import { environment } from '../../../environments/environment';
     ReactiveFormsModule,
     RouterLink,
     HttpClientModule,
-    IonPage,
+    // IonPage removed: not standalone
     IonContent,
     IonCard,
     IonCardHeader,
