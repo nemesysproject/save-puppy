@@ -5,6 +5,8 @@ services:
     ports:
       - "3000:3000"
     restart: on-failure
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       # La API se conecta a 'postgres' (nombre del servicio), NO a localhost
@@ -12,10 +14,14 @@ services:
       # La API se conecta a 'mongo'
       - MONGO_URL=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:27017/${MONGO_DB}?authSource=admin
       - RABBITMQ_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672
+      - REDIS_URL=redis://redis:6379
+      # Ruta al archivo de credenciales de Firebase dentro del contenedor
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/firebase-credentials.json
     depends_on:
       - postgres
       - mongo
       - rabbitmq
+      - redis
 
   postgres:
     image: postgres:16-alpine
@@ -47,6 +53,14 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
 volumes:
   postgres_data:
   mongo_data:
+  redis_data:
