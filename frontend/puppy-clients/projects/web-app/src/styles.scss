@@ -33,7 +33,7 @@ $danger: #e74c3c;
   color: white;
   
   &:hover {
-    background: linear-gradient(135deg, darken($primary, 5%) 0%, darken($secondary, 5%) 100%);
+    background: linear-gradient(135deg, adjust-color($primary, $lightness: -5%) 0%, adjust-color($secondary, $lightness: -5%) 100%);
     color: white;
     text-decoration: none;
   }
