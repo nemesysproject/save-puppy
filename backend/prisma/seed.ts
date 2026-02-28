@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -90,6 +91,31 @@ async function main() {
     } else {
       console.log(`  = Ya existe Raza: ${race.name}`);
     }
+  }
+
+  // Usuario de prueba para Mobile App
+  console.log('Sembrando Usuario de prueba (Mobile App)...');
+  const email = 'test@mobile.app';
+  const password = 'password123';
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const userExists = await prisma.user.findFirst({
+    where: { email },
+  });
+
+  if (!userExists) {
+    await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        name: 'Mobile User Test',
+        role: 'user',
+        provider: 'local',
+      },
+    });
+    console.log(`  + Creado Usuario: ${email} / ${password}`);
+  } else {
+    console.log(`  = Ya existe Usuario: ${email}`);
   }
 
   console.log('✅ Sembrado finalizado.');
