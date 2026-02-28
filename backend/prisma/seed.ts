@@ -108,7 +108,6 @@ async function main() {
       data: {
         email,
         password: hashedPassword,
-        name: 'Mobile User Test',
         role: 'user',
         provider: 'local',
       },
