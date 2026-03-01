@@ -33,3 +33,12 @@ export interface Kind {
   name: string;
   description?: string;
 }
+
+/**
+ * Race Entity
+ */
+export interface Race {
+  id: string;
+  name: string;
+  kindId: string;
+}

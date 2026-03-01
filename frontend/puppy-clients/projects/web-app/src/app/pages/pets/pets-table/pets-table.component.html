@@ -18,9 +18,14 @@
         <td>
           <div class="btn-group" role="group">
             <a [routerLink]="['/pets', p.id]" class="btn btn-sm btn-outline-primary">Ver</a>
-            <a [routerLink]="['/pets', p.id, 'edit']" class="btn btn-sm btn-outline-secondary">Editar</a>
-            <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+            <a [routerLink]="['/pets/edit', p.id]" class="btn btn-sm btn-outline-secondary">Editar</a>
+            <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(p.id)">Eliminar</button>
           </div>
+
+          <app-confirm-modal #confirmModal title="Eliminar Mascota"
+            message="¿Estás seguro de que deseas eliminar esta mascota?" subMessage="Esta acción no se puede deshacer."
+            confirmText="Eliminar" type="danger" (onConfirm)="onDeleteConfirmed()">
+          </app-confirm-modal>
         </td>
       </tr>
     </tbody>

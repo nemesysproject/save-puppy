@@ -1,3 +1,5 @@
+import { Kind, Gender, Race } from './common.model';
+
 /**
  * Pet Models
  */
@@ -5,9 +7,13 @@
 export interface Pet {
   id: string;
   name: string;
-  status: string; // e.g., 'available', 'adopted', 'pending'
+  status: string; // LOST, ADOPTION, FOUND
   kindId: string;
+  kind?: Kind;
+  raceId?: string;
+  race?: Race;
   genderId: string;
+  gender?: Gender;
   shelterId?: string;
   ownerEmail?: string;
   createdAt?: Date;

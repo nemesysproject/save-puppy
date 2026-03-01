@@ -2,7 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 import { PetsTableComponent } from './pets-table/pets-table.component';
-import { Pet } from 'shared-logic';
+import { Pet, PetService } from 'shared-logic';
 import { environment } from '../../../environments/environment';
 import { AuthService } from 'shared-logic';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './pets.component.scss'
 })
 export class PetsComponent {
-  private http = inject(HttpClient);
+  private petService = inject(PetService);
   private auth = inject(AuthService);
 
   pets = signal<Pet[] | null>(null);
@@ -43,20 +43,17 @@ export class PetsComponent {
     this.isLoading.set(true);
     this.error.set(null);
 
-    const token = this.auth.getBearerToken();
-    const headers = token
-      ? new HttpHeaders({ Authorization: token })
-      : new HttpHeaders();
-
-    this.http
-      .get<Pet[]>(`${environment.apiUrl}/api/pets`, { headers })
-      .subscribe({
-        next: (res) => this.pets.set(res ?? []),
-        error: (err) => this.error.set(err?.error?.message || 'Error cargando mascotas'),
-        complete: () => this.isLoading.set(false)
-      });
+    this.petService.getPets().subscribe({
+      next: (res) => this.pets.set(res ?? []),
+      error: (err) => this.error.set(err?.error?.message || 'Error cargando mascotas'),
+      complete: () => this.isLoading.set(false)
+    });
   }
   createPet(): void {
     this.router.navigate(['/pets/create']);
+  }
+
+  handlePetDeleted(): void {
+    this.loadPets();
   }
 }

@@ -11,6 +11,13 @@
   overflow: hidden;
 }
 
+app-footer {
+  flex: 0 0 20vh;
+  /* 20% of viewport height roughly */
+  display: flex;
+  flex-direction: column;
+}
+
 .app-content {
   flex: 1;
   overflow-y: auto;

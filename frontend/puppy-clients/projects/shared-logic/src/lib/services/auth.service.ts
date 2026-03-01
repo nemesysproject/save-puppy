@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../models/auth.model';
+import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, User } from '../models/auth.model';
 
 /**
  * Authentication Service
@@ -15,7 +16,24 @@ export class AuthService {
   private authSubject = new BehaviorSubject<User | null>(this.loadUser());
   public auth$: Observable<User | null> = this.authSubject.asObservable();
 
-  constructor() {}
+  private http = inject(HttpClient);
+  private readonly API_URL = 'http://localhost/api/auth'; // In a real app, this should come from environment
+
+  constructor() { }
+
+  /**
+   * Log in a user
+   */
+  login(request: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.API_URL}/login`, request);
+  }
+
+  /**
+   * Register a new user
+   */
+  register(request: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.API_URL}/register`, request);
+  }
 
   /**
    * Get the stored JWT token

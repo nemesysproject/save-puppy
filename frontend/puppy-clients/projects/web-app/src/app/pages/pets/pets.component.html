@@ -3,7 +3,8 @@
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="input-group w-50">
-      <input type="search" class="form-control" placeholder="Buscar mascota..." (input)="search.set($any($event.target).value)" />
+      <input type="search" class="form-control" placeholder="Buscar mascota..."
+        (input)="search.set($any($event.target).value)" />
       <button class="btn btn-outline-secondary" type="button" (click)="search.set('')">Limpiar</button>
     </div>
     <button class="btn btn-primary" (click)="createPet()"><i class="fas fa-plus me-2"></i>Crear mascota</button>
@@ -13,7 +14,8 @@
   <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
 
   <ng-container *ngIf="filtered()">
-    <app-pets-table *ngIf="filtered()!.length > 0" [pets]="filtered()"></app-pets-table>
+    <app-pets-table *ngIf="filtered()!.length > 0" [pets]="filtered()"
+      (onDeleted)="handlePetDeleted()"></app-pets-table>
     <div *ngIf="filtered()!.length === 0" class="text-muted">No hay mascotas.</div>
   </ng-container>
 </div>

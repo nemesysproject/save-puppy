@@ -61,8 +61,8 @@ export class LoginComponent {
     console.log('API URL:', environment.apiUrl);
 
 
-    // Call backend API
-    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, loginRequest).subscribe({
+    // Call backend API using centralized service
+    this.authService.login(loginRequest).subscribe({
       next: (response) => {
         if (response.token) {
           this.authService.setToken(response.token, response.user);
@@ -72,7 +72,7 @@ export class LoginComponent {
       error: (error) => {
         this.isLoading.set(false);
         this.errorMessage.set(
-          error.error?.message || 'Error al iniciar sesión. Intenta de nuevo.'
+          error.error?.error || error.error?.message || 'Error al iniciar sesión. Intenta de nuevo.'
         );
       },
       complete: () => {

@@ -1,0 +1,66 @@
+<form [formGroup]="petForm" (ngSubmit)="submit()" class="pet-form">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input id="name" type="text" formControlName="name" class="form-control"
+                [class.is-invalid]="petForm.get('name')?.invalid && petForm.get('name')?.touched" />
+            <div class="invalid-feedback">El nombre es requerido</div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="status" class="form-label">Estado</label>
+            <select id="status" formControlName="status" class="form-select">
+                <option value="LOST">Extraviado</option>
+                <option value="ADOPTION">En Adopción</option>
+                <option value="FOUND">Encontrado</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="kindId" class="form-label">Tipo</label>
+            <select id="kindId" formControlName="kindId" class="form-select"
+                [class.is-invalid]="petForm.get('kindId')?.invalid && petForm.get('kindId')?.touched">
+                <option value="">Selecciona tipo</option>
+                <option *ngFor="let kind of kinds()" [value]="kind.id">{{ kind.name }}</option>
+            </select>
+            <div class="invalid-feedback">El tipo es requerido</div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="genderId" class="form-label">Género</label>
+            <select id="genderId" formControlName="genderId" class="form-select"
+                [class.is-invalid]="petForm.get('genderId')?.invalid && petForm.get('genderId')?.touched">
+                <option value="">Selecciona género</option>
+                <option *ngFor="let gender of genders()" [value]="gender.id">{{ gender.name }}</option>
+            </select>
+            <div class="invalid-feedback">El género es requerido</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="shelterId" class="form-label">Refugio (Opcional)</label>
+            <select id="shelterId" formControlName="shelterId" class="form-select">
+                <option value="">Ninguno</option>
+                <option *ngFor="let shelter of shelters()" [value]="shelter.id">{{ shelter.name }}</option>
+            </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="ownerEmail" class="form-label">Email del Dueño/Contacto</label>
+            <input id="ownerEmail" type="email" formControlName="ownerEmail" class="form-control"
+                [class.is-invalid]="petForm.get('ownerEmail')?.invalid && petForm.get('ownerEmail')?.touched" />
+            <div class="invalid-feedback">Email válido requerido</div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="petForm.invalid || isLoading">
+            <span *ngIf="!isLoading">{{ pet ? 'Actualizar' : 'Crear' }} Mascota</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-2"></span>
+        </button>
+    </div>
+</form>

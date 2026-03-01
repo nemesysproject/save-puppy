@@ -1,0 +1,12 @@
+@import '../login/login.component.scss';
+
+.success-alert {
+  background-color: rgba(46, 204, 113, 0.1);
+  border-left: 4px solid #2ecc71;
+  color: #27ae60;
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-top: 10px;
+  animation: slideDown 0.3s ease-out;
+}
