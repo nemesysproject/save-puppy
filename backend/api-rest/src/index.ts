@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger';
 import authRoutes from './interfaces/http/routes/auth.routes';
 import kindRoutes from './interfaces/http/routes/kind.routes';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import { mediator } from './infrastructure/shared/mediator';
 import genderRoutes from './interfaces/http/routes/gender.routes';
 import { RegisterUserCommand, RegisterUserHandler } from './application/commands/register-user.command';
@@ -39,6 +40,7 @@ import { UpdatePetHandler, UpdatePetCommand } from './application/commands/updat
 import { DeletePetHandler, DeletePetCommand } from './application/commands/delete-pet.command';
 import { GetPetsHandler, GetPetsQuery } from './application/queries/get-pets.query';
 import { GetPetByIdHandler, GetPetByIdQuery } from './application/queries/get-pet-by-id.query';
+import { SearchPetsByLocationHandler, SearchPetsByLocationQuery } from './application/queries/search-pets-by-location.query';
 import { PetController } from './controllers/pet.controller';
 import uploadRoutes from './interfaces/http/routes/upload.routes';
 import mediaRoutes from './interfaces/http/routes/media.routes';
@@ -98,6 +100,15 @@ rabbitMQService.connect();
 // Crear middleware de autenticación
 const authMiddleware = new AuthMiddleware(tokenService);
 
+// Configuración de Proxy para el reconocimiento de mascotas (Python FastAPI)
+const recognitionProxy = createProxyMiddleware({
+  target: process.env.RECOGNITION_SERVICE_URL || 'http://localhost:8000',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api/recognition': '/api/v1/recognition', // Mapea /api/recognition a la ruta del microservicio
+  },
+});
+
 // Registro de Handlers en el Mediador
 mediator.register('RegisterUserCommand', new RegisterUserHandler(userRepository, encryptionService));
 mediator.register('LoginUserCommand', new LoginUserHandler(userRepository, encryptionService, tokenService));
@@ -115,6 +126,7 @@ mediator.register('UpdatePetCommand', new UpdatePetHandler(petRepository));
 mediator.register('DeletePetCommand', new DeletePetHandler(petRepository));
 mediator.register('GetPetsQuery', new GetPetsHandler(petRepository));
 mediator.register('GetPetByIdQuery', new GetPetByIdHandler(petRepository));
+mediator.register('SearchPetsByLocationQuery', new SearchPetsByLocationHandler(petRepository));
 mediator.register('CreateMediaCommand', new CreateMediaHandler(mediaRepository, rabbitMQService));
 mediator.register('DeleteMediaCommand', new DeleteMediaHandler(mediaRepository, cloudinaryService));
 mediator.register('GetMediaByPetQuery', new GetMediaByPetHandler(mediaRepository));
@@ -130,7 +142,7 @@ const kindController = new KindController();
 const genderController = new GenderController();
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK', timestamp: new Date() });
+  res.json({ status: 'OK', timestamp: new Date() });
 });
 
 // Rutas de la API
@@ -140,6 +152,7 @@ app.use('/api/genders', authMiddleware.authenticate, genderRoutes);
 app.use('/api/races', authMiddleware.authenticate, raceRoutes);
 app.use('/api/shelters', authMiddleware.authenticate, shelterRoutes);
 app.use('/api/pets', authMiddleware.authenticate, petRoutes);
+app.use('/api/recognition', authMiddleware.authenticate, recognitionProxy);
 app.use('/api/upload', authMiddleware.authenticate, uploadRoutes);
 app.use('/api/media', authMiddleware.authenticate, mediaRoutes);
 
@@ -148,5 +161,5 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 console.log(`📄 Documentación disponible en http://localhost:${PORT}/api-docs`);
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });

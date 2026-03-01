@@ -5,6 +5,7 @@ import { UpdatePetCommand } from '@/application/commands/update-pet.command';
 import { DeletePetCommand } from '@/application/commands/delete-pet.command';
 import { GetPetsQuery } from '@/application/queries/get-pets.query';
 import { GetPetByIdQuery } from '@/application/queries/get-pet-by-id.query';
+import { SearchPetsByLocationQuery } from '@/application/queries/search-pets-by-location.query';
 
 export class PetController {
 
@@ -65,6 +66,23 @@ export class PetController {
             res.json(result);
         } catch (error: any) {
             res.status(500).json({ error: error.message });
+        }
+    }
+
+    async searchByLocation(req: Request, res: Response) {
+        try {
+            const { kindId, lat, lon, radius, raceId } = req.query;
+            const query = new SearchPetsByLocationQuery(
+                kindId as string,
+                parseFloat(lat as string),
+                parseFloat(lon as string),
+                parseFloat(radius as string),
+                raceId as string
+            );
+            const result = await mediator.send('SearchPetsByLocationQuery', query);
+            res.json(result);
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
         }
     }
 }

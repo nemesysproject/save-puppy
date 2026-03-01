@@ -59,6 +59,51 @@ const petController = new PetController();
  *               items:
  *                 $ref: '#/components/schemas/Pet'
  */
+/**
+ * @swagger
+ * /api/pets/search/location:
+ *   get:
+ *     summary: Buscar mascotas por ubicación y filtros (especie, raza, distancia)
+ *     tags: [Pets]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: kindId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: lat
+ *         required: true
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: lon
+ *         required: true
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: radius
+ *         required: true
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: raceId
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de candidatos potenciales
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Pet'
+ */
+router.get('/search/location', petController.searchByLocation);
+
 router.get('/', petController.getAll);
 
 /**

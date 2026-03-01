@@ -81,4 +81,54 @@ export class PrismaPetRepository implements IPetRepository {
             p.ownerEmail
         ));
     }
+
+    async findByLocation(kindId: string, lat: number, lon: number, radius: number, raceId?: string): Promise<any[]> {
+        // En una implementación real con PostGIS usaríamos raw query.
+        // Aquí simplificamos filtrando por kindId y raceId, e incluyendo los datos de Media (que tienen lat/lon)
+        const where: any = {
+            kindId: kindId,
+            status: { in: ['LOST', 'ADOPTION'] } // Solo buscamos mascotas que podrían ser candidatos
+        };
+
+        if (raceId) {
+            where.raceId = raceId;
+        }
+
+        const candidates = await prisma.pet.findMany({
+            where,
+            include: {
+                media: {
+                    select: {
+                        url: true,
+                        latitude: true,
+                        longitude: true
+                    }
+                }
+            }
+        });
+
+        // Filtrado por distancia manual (simplificado)
+        return candidates.filter(pet => {
+            if (pet.media.length === 0) return false;
+
+            // Verificamos si alguna de las fotos/videos de la mascota está dentro del radio
+            return pet.media.some(m => {
+                if (m.latitude === null || m.longitude === null) return false;
+                const dist = this.calculateDistance(lat, lon, m.latitude, m.longitude);
+                return dist <= radius;
+            });
+        });
+    }
+
+    private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+        const R = 6371; // Radio de la tierra en km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
 }
