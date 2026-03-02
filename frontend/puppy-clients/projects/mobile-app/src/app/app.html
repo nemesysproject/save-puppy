@@ -1,44 +1,26 @@
-
 <ion-app>
-  <ng-container *ngIf="!isLoginRoute(); else loginOnly">
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home" href="/home">
-          <ion-icon name="home-outline"></ion-icon>
-          <ion-label>Inicio</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="search" href="/search">
-          <ion-icon name="search-outline"></ion-icon>
-          <ion-label>Buscar</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="profile" href="/profile">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-label>Perfil</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-  </ng-container>
-  <ng-template #loginOnly>
-<ion-app>
-  <ng-container *ngIf="!isLoginRoute(); else loginOnly">
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home" href="/home">
-          <ion-icon name="home-outline"></ion-icon>
-          <ion-label>Inicio</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="search" href="/search">
-          <ion-icon name="search-outline"></ion-icon>
-          <ion-label>Buscar</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="profile" href="/profile">
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-label>Perfil</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-  </ng-container>
-  <ng-template #loginOnly>
-    <router-outlet></router-outlet>
-  </ng-template>
+  @if (showTabs()) {
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="dashboard" href="/dashboard">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="pets" href="/pets">
+        <ion-icon name="paw-outline"></ion-icon>
+        <ion-label>Mascotas</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="shelters" href="/shelters">
+        <ion-icon name="business-outline"></ion-icon>
+        <ion-label>Refugios</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="profile" href="/profile">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+  } @else {
+  <ion-router-outlet></ion-router-outlet>
+  }
 </ion-app>

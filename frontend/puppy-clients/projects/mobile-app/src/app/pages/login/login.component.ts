@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, LoginRequest } from 'shared-logic';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { eye, eyeOff } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { environment } from '../../../environments/environment';
@@ -16,8 +16,6 @@ import { environment } from '../../../environments/environment';
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    HttpClientModule,
-    // IonPage removed: not standalone
     IonContent,
     IonCard,
     IonCardHeader,
@@ -42,12 +40,14 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private http = inject(HttpClient);
 
+
   loginForm: FormGroup;
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   showPassword = signal(false);
 
   constructor() {
+    console.log('LoginComponent constructor');
     addIcons({ eye, eyeOff });
 
     this.loginForm = this.fb.group({

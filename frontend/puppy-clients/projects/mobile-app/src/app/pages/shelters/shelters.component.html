@@ -1,0 +1,66 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Refugios</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="shelters-page">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="shelters-container">
+        <div class="page-header">
+            <ion-icon name="business-outline"></ion-icon>
+            <h2>Refugios registrados</h2>
+            <p>{{ shelters().length }} refugio{{ shelters().length !== 1 ? 's' : '' }} disponible{{ shelters().length
+                !== 1 ? 's' : '' }}</p>
+        </div>
+
+        <!-- Loading -->
+        @if (isLoading()) {
+        <div class="loading-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Cargando refugios...</p>
+        </div>
+        }
+
+        @if (!isLoading()) {
+        @if (shelters().length === 0) {
+        <div class="empty-state">
+            <ion-icon name="business-outline"></ion-icon>
+            <h3>Sin refugios</h3>
+            <p>No hay refugios registrados aún</p>
+        </div>
+        }
+
+        @for (shelter of shelters(); track shelter.id) {
+        <ion-card class="shelter-card">
+            <ion-card-header>
+                <ion-card-title>{{ shelter.name }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="shelter-details">
+                    @if (shelter.address) {
+                    <div class="detail-row">
+                        <ion-icon name="location-outline"></ion-icon>
+                        <span>{{ shelter.address }}</span>
+                    </div>
+                    }
+                    <div class="detail-row">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <span class="email-link" (click)="openEmail(shelter.email)">{{ shelter.email }}</span>
+                    </div>
+                    @if (shelter.capacity) {
+                    <div class="detail-row">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span>Capacidad: {{ shelter.capacity }}</span>
+                    </div>
+                    }
+                </div>
+            </ion-card-content>
+        </ion-card>
+        }
+        }
+    </div>
+</ion-content>

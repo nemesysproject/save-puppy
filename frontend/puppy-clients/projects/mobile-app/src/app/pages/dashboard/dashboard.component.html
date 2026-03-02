@@ -1,0 +1,98 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>🐕 Save Puppy</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="dashboard-page">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2>¡Hola{{ user()?.email ? ', ' + user()!.email : '' }}! 👋</h2>
+            <p>Bienvenido de vuelta a Save Puppy</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <ion-card class="stat-card lost" (click)="navigateTo('/pets')">
+                <ion-card-content>
+                    <div class="stat-icon">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number">{{ lostCount() }}</span>
+                        <span class="stat-label">Perdidos</span>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="stat-card adoption" (click)="navigateTo('/pets')">
+                <ion-card-content>
+                    <div class="stat-icon">
+                        <ion-icon name="heart-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number">{{ adoptionCount() }}</span>
+                        <span class="stat-label">En adopción</span>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="stat-card found" (click)="navigateTo('/pets')">
+                <ion-card-content>
+                    <div class="stat-icon">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number">{{ foundCount() }}</span>
+                        <span class="stat-label">Encontrados</span>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="stat-card shelters" (click)="navigateTo('/shelters')">
+                <ion-card-content>
+                    <div class="stat-icon">
+                        <ion-icon name="business-outline"></ion-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number">{{ shelterCount() }}</span>
+                        <span class="stat-label">Refugios</span>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+        <!-- Quick Actions -->
+        <h3 class="section-title">Accesos rápidos</h3>
+        <div class="quick-actions">
+            <ion-card class="action-card" (click)="navigateTo('/pets')">
+                <ion-card-content>
+                    <ion-icon name="paw-outline"></ion-icon>
+                    <span>Ver Mascotas</span>
+                    <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="action-card" (click)="navigateTo('/shelters')">
+                <ion-card-content>
+                    <ion-icon name="business-outline"></ion-icon>
+                    <span>Refugios</span>
+                    <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card class="action-card" (click)="navigateTo('/profile')">
+                <ion-card-content>
+                    <ion-icon name="person-outline"></ion-icon>
+                    <span>Mi Perfil</span>
+                    <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
+</ion-content>

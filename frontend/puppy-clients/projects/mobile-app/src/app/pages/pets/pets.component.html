@@ -1,0 +1,92 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Mascotas</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="pets-page">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+        <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="pets-container">
+        <!-- Search -->
+        <ion-searchbar placeholder="Buscar mascota..." [debounce]="300" (ionInput)="onSearch($event)"
+            class="pets-search"></ion-searchbar>
+
+        <!-- Filter Chips -->
+        <div class="filter-chips">
+            <ion-chip [class.active]="activeFilter() === 'ALL'" (click)="setFilter('ALL')">
+                <ion-label>Todos</ion-label>
+            </ion-chip>
+            <ion-chip [class.active]="activeFilter() === 'LOST'" (click)="setFilter('LOST')" class="chip-lost">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                <ion-label>Perdidos</ion-label>
+            </ion-chip>
+            <ion-chip [class.active]="activeFilter() === 'ADOPTION'" (click)="setFilter('ADOPTION')"
+                class="chip-adoption">
+                <ion-icon name="heart-outline"></ion-icon>
+                <ion-label>Adopción</ion-label>
+            </ion-chip>
+            <ion-chip [class.active]="activeFilter() === 'FOUND'" (click)="setFilter('FOUND')" class="chip-found">
+                <ion-icon name="search-outline"></ion-icon>
+                <ion-label>Encontrados</ion-label>
+            </ion-chip>
+        </div>
+
+        <!-- Loading -->
+        @if (isLoading()) {
+        <div class="loading-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Cargando mascotas...</p>
+        </div>
+        }
+
+        <!-- Pet List -->
+        @if (!isLoading()) {
+        @if (filteredPets().length === 0) {
+        <div class="empty-state">
+            <ion-icon name="paw-outline"></ion-icon>
+            <h3>Sin resultados</h3>
+            <p>No se encontraron mascotas con los filtros aplicados</p>
+        </div>
+        }
+
+        @for (pet of filteredPets(); track pet.id) {
+        <ion-card class="pet-card">
+            <ion-card-header>
+                <div class="pet-header">
+                    <div class="pet-title-section">
+                        <ion-card-title>{{ pet.name }}</ion-card-title>
+                        <ion-card-subtitle>
+                            @if (pet.kind) {
+                            {{ pet.kind.name }}
+                            }
+                            @if (pet.race) {
+                            · {{ pet.race.name }}
+                            }
+                        </ion-card-subtitle>
+                    </div>
+                    <ion-badge [color]="getStatusColor(pet.status)">
+                        {{ getStatusLabel(pet.status) }}
+                    </ion-badge>
+                </div>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="pet-details">
+                    @if (pet.gender) {
+                    <span class="pet-detail">
+                        <ion-icon [name]="pet.gender.name === 'Macho' ? 'male-outline' : 'female-outline'"></ion-icon>
+                        {{ pet.gender.name }}
+                    </span>
+                    }
+                    @if (pet.ownerEmail) {
+                    <span class="pet-detail">📧 {{ pet.ownerEmail }}</span>
+                    }
+                </div>
+            </ion-card-content>
+        </ion-card>
+        }
+        }
+    </div>
+</ion-content>

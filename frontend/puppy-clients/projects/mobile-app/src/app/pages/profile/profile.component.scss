@@ -1,0 +1,114 @@
+.profile-page {
+    --background: #f4f5f8;
+}
+
+.profile-container {
+    padding: 16px;
+}
+
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px 24px;
+
+    .avatar-circle {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+
+        ion-icon {
+            font-size: 60px;
+            color: white;
+        }
+    }
+
+    h2 {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        color: #2c3e50;
+        text-align: center;
+        word-break: break-all;
+    }
+
+    ion-badge {
+        font-size: 12px;
+        padding: 4px 14px;
+        border-radius: 20px;
+    }
+}
+
+.info-card {
+    margin: 0 0 16px 0;
+    border-radius: 14px;
+
+    ion-card-header {
+        padding-bottom: 0;
+    }
+
+    ion-card-title {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    ion-list {
+        padding: 0;
+    }
+
+    ion-item {
+        --padding-start: 0;
+        --inner-padding-end: 0;
+
+        ion-icon {
+            color: #667eea;
+            font-size: 22px;
+            margin-right: 12px;
+        }
+
+        ion-label {
+            p {
+                font-size: 12px;
+                color: #7f8c8d;
+                margin: 0 0 2px 0;
+            }
+
+            h3 {
+                font-size: 15px;
+                font-weight: 600;
+                margin: 0;
+                color: #2c3e50;
+            }
+        }
+    }
+}
+
+.logout-btn {
+    margin-top: 24px;
+    font-weight: 600;
+    --border-radius: 12px;
+    height: 48px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .profile-page {
+        --background: #1a1a2e;
+    }
+
+    .avatar-section h2 {
+        color: #ecf0f1;
+    }
+
+    .info-card {
+        --background: #16213e;
+
+        ion-label h3 {
+            color: #ecf0f1 !important;
+        }
+    }
+}
