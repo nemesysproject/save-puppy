@@ -1,7 +1,20 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, InjectionToken } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, User } from '../models/auth.model';
+import { API_BASE_URL } from './api.tokens';
+
+/**
+ * Token para inyectar la URL de autenticación.
+ * Permite configurar la URL desde el módulo principal de la aplicación (app.config.ts o app.module.ts).
+ */
+export const AUTH_API_URL = new InjectionToken<string>('AUTH_API_URL', {
+  providedIn: 'root',
+  factory: () => {
+    const base = inject(API_BASE_URL);
+    return `${base}/auth`;
+  }
+});
 
 /**
  * Authentication Service
@@ -17,7 +30,8 @@ export class AuthService {
   public auth$: Observable<User | null> = this.authSubject.asObservable();
 
   private http = inject(HttpClient);
-  private readonly API_URL = 'http://localhost/api/auth'; // In a real app, this should come from environment
+  // Se inyecta la URL usando el token, permitiendo sobreescritura por configuración
+  private readonly apiUrl = inject(AUTH_API_URL);
 
   constructor() { }
 
@@ -25,14 +39,14 @@ export class AuthService {
    * Log in a user
    */
   login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.API_URL}/login`, request);
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request);
   }
 
   /**
    * Register a new user
    */
   register(request: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.API_URL}/register`, request);
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, request);
   }
 
   /**

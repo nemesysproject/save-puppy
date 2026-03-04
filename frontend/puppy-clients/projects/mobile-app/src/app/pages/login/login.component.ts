@@ -87,7 +87,7 @@ export class LoginComponent {
       next: (response) => {
         if (response.token) {
           this.authService.setToken(response.token, response.user);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/dashboard']);
         }
       },
       error: (error) => {

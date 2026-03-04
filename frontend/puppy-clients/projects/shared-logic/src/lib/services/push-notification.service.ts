@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Capacitor } from '@capacitor/core';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@capacitor/push-notifications';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../../../../shared-logic/src/lib/services/auth.service';
+import { API_BASE_URL } from './api.tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class PushNotificationService {
   public fcmToken$ = this._fcmToken.asObservable();
 
   // URL del Backend (Debería venir de environment.ts en producción)
-  private readonly API_URL = 'http://localhost:3000/api';
+  private readonly apiUrl = inject(API_BASE_URL);
 
   constructor(
     private http: HttpClient,
@@ -83,7 +84,7 @@ export class PushNotificationService {
     const user = this.authService.getCurrentUser();
     if (user) {
       // Endpoint para guardar el token FCM asociado al usuario
-      this.http.post(`${this.API_URL}/users/device-token`, { token })
+      this.http.post(`${this.apiUrl}/users/device-token`, { token })
         .subscribe({
           next: () => console.log('Token FCM registrado en backend'),
           error: (err) => console.error('Error registrando token en backend', err)

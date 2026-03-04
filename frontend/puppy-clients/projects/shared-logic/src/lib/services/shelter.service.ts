@@ -9,31 +9,33 @@ import {
     UpdateShelterResponse,
     DeleteShelterResponse
 } from '../models/shelter.model';
+import { API_BASE_URL } from './api.tokens';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ShelterService {
     private http = inject(HttpClient);
-    private readonly API_URL = 'http://localhost/api/shelters';
+    private readonly baseUrl = inject(API_BASE_URL);
+    private readonly apiUrl = `${this.baseUrl}/shelters`;
 
     getShelters(): Observable<Shelter[]> {
-        return this.http.get<Shelter[]>(this.API_URL);
+        return this.http.get<Shelter[]>(this.apiUrl);
     }
 
     getShelterById(id: string): Observable<Shelter> {
-        return this.http.get<Shelter>(`${this.API_URL}/${id}`);
+        return this.http.get<Shelter>(`${this.apiUrl}/${id}`);
     }
 
     createShelter(request: CreateShelterRequest): Observable<CreateShelterResponse> {
-        return this.http.post<CreateShelterResponse>(this.API_URL, request);
+        return this.http.post<CreateShelterResponse>(this.apiUrl, request);
     }
 
     updateShelter(id: string, request: UpdateShelterRequest): Observable<UpdateShelterResponse> {
-        return this.http.put<UpdateShelterResponse>(`${this.API_URL}/${id}`, request);
+        return this.http.put<UpdateShelterResponse>(`${this.apiUrl}/${id}`, request);
     }
 
     deleteShelter(id: string): Observable<DeleteShelterResponse> {
-        return this.http.delete<DeleteShelterResponse>(`${this.API_URL}/${id}`);
+        return this.http.delete<DeleteShelterResponse>(`${this.apiUrl}/${id}`);
     }
 }
