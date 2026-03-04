@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost'
+  apiUrl: 'https://api.savepuppy.org/api' // Reemplazar con tu URL de producción real
 };

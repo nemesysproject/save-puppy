@@ -83,7 +83,7 @@ export class LoginComponent {
     };
 
     // Call backend API
-    this.http.post<any>(`${environment.apiUrl}/api/auth/login`, loginRequest).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/auth/login`, loginRequest).subscribe({
       next: (response) => {
         if (response.token) {
           this.authService.setToken(response.token, response.user);

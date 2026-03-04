@@ -1,20 +1,21 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { RouteReuseStrategy, provideRouter } from '@angular/router';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { provideIonicAngular } from '@ionic/angular/standalone';
-import { provideServiceWorker } from '@angular/service-worker';
+import { API_BASE_URL, jwtInterceptor } from 'shared-logic';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideHttpClient(),
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideRouter(routes),
-    provideIonicAngular({}),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000'
-    })
-  ]
+    provideHttpClient(withInterceptors([jwtInterceptor])),
+    importProvidersFrom(
+      IonicModule.forRoot({})
+    ),
+    // Proveemos el token con la URL del entorno correspondiente
+    { provide: API_BASE_URL, useValue: environment.apiUrl }
+  ],
 };
