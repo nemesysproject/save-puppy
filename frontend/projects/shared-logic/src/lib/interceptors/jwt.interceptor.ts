@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
  * - Añade automáticamente el token JWT a todas las peticiones HTTP.
  * - Maneja errores de autenticación (401) y de acceso prohibido (403).
  */
-export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+export const JwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const token = authService.getBearerToken();

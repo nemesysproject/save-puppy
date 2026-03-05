@@ -4,14 +4,14 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { API_BASE_URL, jwtInterceptor } from 'shared-logic';
+import { API_BASE_URL, JwtInterceptor } from 'shared-logic';
 import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideRouter(routes),
-    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideHttpClient(withInterceptors([JwtInterceptor])),
     importProvidersFrom(
       IonicModule.forRoot({})
     ),

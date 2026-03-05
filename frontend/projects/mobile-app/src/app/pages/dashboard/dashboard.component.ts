@@ -2,9 +2,9 @@ import { Component, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angu
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {
-    IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-    IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonBadge,
-    IonRippleEffect, IonRefresher, IonRefresherContent
+    IonContent, IonHeader, IonToolbar, IonTitle, IonCard,
+    IonCardContent, IonIcon,
+    IonRefresher, IonRefresherContent
 } from '@ionic/angular/standalone';
 import { AuthService, PetService, LookupService } from 'shared-logic';
 import { User, Pet, Shelter } from 'shared-logic';
@@ -19,9 +19,9 @@ import {
     standalone: true,
     imports: [
         CommonModule,
-        IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-        IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonBadge,
-        IonRippleEffect, IonRefresher, IonRefresherContent
+        IonContent, IonHeader, IonToolbar, IonTitle, IonCard,
+        IonCardContent, IonIcon,
+        IonRefresher, IonRefresherContent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './dashboard.component.html',

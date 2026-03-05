@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angu
 import { CommonModule } from '@angular/common';
 import {
     IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-    IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonBadge,
+    IonCardTitle, IonCardContent, IonIcon,
     IonRefresher, IonRefresherContent, IonSpinner
 } from '@ionic/angular/standalone';
 import { LookupService } from 'shared-logic';
@@ -19,7 +19,7 @@ import {
     imports: [
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-        IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonBadge,
+        IonCardTitle, IonCardContent, IonIcon,
         IonRefresher, IonRefresherContent, IonSpinner
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
