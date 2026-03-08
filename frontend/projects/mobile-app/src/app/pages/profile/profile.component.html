@@ -1,10 +1,13 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar class="glass-toolbar">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Mi Perfil</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="profile-page">
+<ion-content [fullscreen]="true" class="glass-page-gradient profile-page">
     <div class="profile-container">
         <!-- Avatar Section -->
         <div class="avatar-section">
@@ -20,7 +23,7 @@
         </div>
 
         <!-- User Info Card -->
-        <ion-card class="info-card">
+        <ion-card class="glass-card info-card">
             <ion-card-header>
                 <ion-card-title>Información de la cuenta</ion-card-title>
             </ion-card-header>
@@ -60,7 +63,7 @@
         </ion-card>
 
         <!-- App Info -->
-        <ion-card class="info-card">
+        <ion-card class="glass-card info-card">
             <ion-card-header>
                 <ion-card-title>Acerca de la app</ion-card-title>
             </ion-card-header>
@@ -83,9 +86,9 @@
         </ion-card>
 
         <!-- Logout Button -->
-        <ion-button expand="block" color="danger" fill="outline" class="logout-btn" (click)="logout()">
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
-            Cerrar sesión
-        </ion-button>
+        <button type="button" class="glass-btn outline-btn logout-btn" (click)="logout()">
+            <ion-icon name="log-out-outline" class="btn-icon"></ion-icon>
+            <span>Cerrar sesión</span>
+        </button>
     </div>
 </ion-content>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
     IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
     IonCardTitle, IonCardContent, IonIcon,
-    IonRefresher, IonRefresherContent, IonSpinner
+    IonRefresher, IonRefresherContent, IonSpinner, IonMenuButton, IonButtons
 } from '@ionic/angular/standalone';
 import { LookupService } from 'shared-logic';
 import { Shelter } from 'shared-logic';

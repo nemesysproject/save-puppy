@@ -1,7 +1,4 @@
-.profile-page {
-    --background: #f4f5f8;
-}
-
+/* Profile uses .glass-page class for background */
 .profile-container {
     padding: 16px;
 }
@@ -13,76 +10,85 @@
     padding: 32px 20px 24px;
 
     .avatar-circle {
-        width: 96px;
-        height: 96px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ffab91 0%, #ffcc80 100%);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 20px rgba(255, 138, 101, 0.35);
 
         ion-icon {
-            font-size: 60px;
+            font-size: 56px;
             color: white;
         }
     }
 
     h2 {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 700;
-        margin: 0 0 8px 0;
-        color: #2c3e50;
+        margin: 0 0 10px 0;
+        color: #4a4a4a;
         text-align: center;
         word-break: break-all;
     }
 
     ion-badge {
         font-size: 12px;
-        padding: 4px 14px;
+        padding: 6px 16px;
         border-radius: 20px;
+        font-weight: 600;
     }
 }
 
 .info-card {
     margin: 0 0 16px 0;
-    border-radius: 14px;
 
     ion-card-header {
         padding-bottom: 0;
+        padding: 18px 18px 0;
     }
 
     ion-card-title {
         font-size: 16px;
         font-weight: 700;
+        color: #fff;
     }
 
     ion-list {
-        padding: 0;
+        padding: 8px 0;
     }
 
     ion-item {
-        --padding-start: 0;
+        --padding-start: 18px;
+        --padding-end: 18px;
         --inner-padding-end: 0;
+        --background: transparent;
 
         ion-icon {
-            color: #667eea;
+            color: #ff8a65;
             font-size: 22px;
-            margin-right: 12px;
+            margin-right: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px;
+            border-radius: 10px;
         }
 
         ion-label {
             p {
                 font-size: 12px;
-                color: #7f8c8d;
-                margin: 0 0 2px 0;
+                color: rgba(255, 255, 255, 0.8);
+                margin: 0 0 4px 0;
+                font-weight: 500;
             }
 
             h3 {
                 font-size: 15px;
                 font-weight: 600;
                 margin: 0;
-                color: #2c3e50;
+                color: #fff;
             }
         }
     }
@@ -90,25 +96,22 @@
 
 .logout-btn {
     margin-top: 24px;
-    font-weight: 600;
-    --border-radius: 12px;
-    height: 48px;
+    color: #ff4d4d !important;
+    border-color: rgba(255, 77, 77, 0.4) !important;
+
+    &:active:not(:disabled) {
+        background: rgba(255, 77, 77, 0.15) !important;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
-    .profile-page {
-        --background: #1a1a2e;
-    }
+    .avatar-section {
+        .avatar-circle {
+            background: linear-gradient(135deg, #d84315 0%, #ff6f00 100%);
+        }
 
-    .avatar-section h2 {
-        color: #ecf0f1;
-    }
-
-    .info-card {
-        --background: #16213e;
-
-        ion-label h3 {
-            color: #ecf0f1 !important;
+        h2 {
+            color: #fff;
         }
     }
 }

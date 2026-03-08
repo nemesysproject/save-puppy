@@ -1,2 +1,17 @@
+<router-outlet></router-outlet>
 
-<router-outlet />
+<!-- Toast de notificación -->
+@if (showToast && currentNotification) {
+  <div class="toast-notification">
+    <div class="toast-icon">
+      <i class="fas fa-paw"></i>
+    </div>
+    <div class="toast-content">
+      <strong>Nueva mascota reportada</strong>
+      <p>{{ currentNotification.message }}</p>
+    </div>
+    <button class="toast-close" (click)="dismissToast()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+}

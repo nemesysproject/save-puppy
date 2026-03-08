@@ -15,6 +15,7 @@ export class CreatePetCommand {
 
 import { RabbitMQService } from '@/infrastructure/services/rabbitmq.service';
 import { PetCreatedEvent } from '@/domain/events/domain-events';
+import { emitNewPetReported } from '@/infrastructure/services/socket.service';
 
 export class CreatePetHandler implements IHandler<CreatePetCommand, PetEntity> {
     constructor(
@@ -47,6 +48,13 @@ export class CreatePetHandler implements IHandler<CreatePetCommand, PetEntity> {
         await this.rabbitMQService.publish('pet_events', {
             event: 'PetCreated',
             data: event
+        });
+
+        // Emitir evento de socket para notificaciones en tiempo real
+        emitNewPetReported({
+            id: createdPet.id,
+            name: createdPet.name,
+            status: createdPet.status
         });
 
         return createdPet;

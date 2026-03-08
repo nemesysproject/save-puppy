@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import {
     IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
     IonCardTitle, IonCardContent, IonIcon, IonButton, IonLabel, IonItem,
-    IonList
+    IonList, IonMenuButton, IonButtons
 } from '@ionic/angular/standalone';
 import { AuthService } from 'shared-logic';
 import { User } from 'shared-logic';

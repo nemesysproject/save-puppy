@@ -57,6 +57,10 @@ import { UpdateRaceHandler, UpdateRaceCommand } from './application/commands/upd
 import { DeleteRaceHandler, DeleteRaceCommand } from './application/commands/delete-race.command';
 import { RaceController } from './controllers/race.controller';
 import raceRoutes from './interfaces/http/routes/race.routes';
+import dashboardRoutes from './interfaces/http/routes/dashboard.routes';
+import { GetDashboardStatsHandler, GetDashboardStatsQuery } from './application/queries/get-dashboard-stats.query';
+import { initSocketServer } from './infrastructure/services/socket.service';
+import http from 'http';
 
 dotenv.config();
 
@@ -126,6 +130,7 @@ mediator.register('GetRaceByIdQuery', new GetRaceByIdHandler(raceRepository));
 mediator.register('CreateRaceCommand', new CreateRaceHandler(raceRepository));
 mediator.register('UpdateRaceCommand', new UpdateRaceHandler(raceRepository));
 mediator.register('DeleteRaceCommand', new DeleteRaceHandler(raceRepository));
+mediator.register('GetDashboardStatsQuery', new GetDashboardStatsHandler());
 
 const kindController = new KindController();
 const genderController = new GenderController();
@@ -144,11 +149,18 @@ app.use('/api/pets', authMiddleware.authenticate, petRoutes);
 app.use('/api/recognition', authMiddleware.authenticate, recognitionProxy);
 app.use('/api/upload', authMiddleware.authenticate, uploadRoutes);
 app.use('/api/media', authMiddleware.authenticate, mediaRoutes);
+app.use('/api/dashboard', authMiddleware.authenticate, dashboardRoutes);
 
 // Documentación OpenAPI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 console.log(`📄 Documentación disponible en http://localhost:${PORT}/api-docs`);
 
-app.listen(PORT, () => {
+// Crear servidor HTTP
+const server = http.createServer(app);
+
+// Inicializar Socket.io
+initSocketServer(server);
+
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });

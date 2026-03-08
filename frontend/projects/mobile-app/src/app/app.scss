@@ -1,0 +1,120 @@
+/* Global Styles - Save Puppy Warm Theme */
+
+/* Toolbar styling */
+ion-toolbar {
+    --background: #ffffff;
+    --color: #4a4a4a;
+    --border-width: 0;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+
+    ion-title {
+        font-weight: 700;
+        font-size: 18px;
+    }
+}
+
+/* Tab bar navigation styling */
+ion-tab-bar {
+    --background: #ffffff;
+    --border: 0;
+    border-top: 1px solid #f0ebe8;
+    height: 64px;
+    padding-bottom: 8px;
+    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.05);
+
+    ion-tab-button {
+        --color: #9e9e9e;
+        --color-selected: #ff8a65;
+        --padding-start: 0;
+        --padding-end: 0;
+
+        ion-icon {
+            font-size: 24px;
+            transition: transform 0.2s ease;
+        }
+
+        ion-label {
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        &.tab-selected {
+            ion-icon {
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+/* Header styling */
+ion-header {
+    ion-toolbar {
+        --background: #ffffff;
+    }
+}
+
+ion-header::after {
+    display: none;
+}
+
+/* Content padding */
+ion-content {
+    --padding-top: 0;
+    --padding-bottom: 0;
+}
+
+/* Refresher styling */
+ion-refresher {
+    ion-refresher-content {
+        --color: #ff8a65;
+    }
+}
+
+/* Spinner styling */
+ion-spinner {
+    &.spinner-crescent {
+        color: #ff8a65;
+    }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e0e0e0;
+    border-radius: 4px;
+
+    &:hover {
+        background: #c0c0c0;
+    }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    ion-toolbar {
+        --background: #2d2d2d;
+        --color: #e8e8e8;
+        box-shadow: none;
+        border-bottom: 1px solid #3d3d3d;
+    }
+
+    ion-tab-bar {
+        --background: #2d2d2d;
+        border-top-color: #3d3d3d;
+        box-shadow: none;
+    }
+
+    ion-refresher-content {
+        --color: #ffab91;
+    }
+}

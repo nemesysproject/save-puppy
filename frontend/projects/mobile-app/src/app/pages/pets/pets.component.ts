@@ -1,61 +1,67 @@
-import { Component, inject, OnInit, signal, computed, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-    IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-    IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonBadge,
-    IonChip, IonLabel, IonRefresher, IonRefresherContent, IonSpinner,
-    IonSearchbar
-} from '@ionic/angular/standalone';
-import { PetService } from 'shared-logic';
-import { Pet } from 'shared-logic';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonChip, IonLabel, IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonRefresher, IonRefresherContent, IonMenuButton, IonButtons, IonModal } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
     pawOutline, alertCircleOutline, heartOutline, searchOutline,
-    refreshOutline, maleOutline, femaleOutline
+    refreshOutline, locationOutline, imageOutline, closeOutline
 } from 'ionicons/icons';
+import { HttpClient } from '@angular/common/http';
+import { API_BASE_URL } from 'shared-logic';
 
-type PetStatus = 'ALL' | 'LOST' | 'ADOPTION' | 'FOUND';
+interface PetWithMedia {
+    id: string;
+    name: string;
+    status: string;
+    kindId: string;
+    genderId: string;
+    shelterId: string | null;
+    ownerEmail: string | null;
+    createdAt: Date;
+    kind?: { name: string };
+    gender?: { name: string };
+    race?: { name: string } | null;
+    media?: { url: string; latitude: number | null; longitude: number | null }[];
+    distance?: number;
+}
+
+type DistanceOption = 1 | 5 | 10;
 
 @Component({
     selector: 'app-pets',
     standalone: true,
     imports: [
         CommonModule,
-        IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-        IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonBadge,
-        IonChip, IonLabel, IonRefresher, IonRefresherContent, IonSpinner,
-        IonSearchbar
+        IonContent, IonHeader, IonToolbar, IonTitle, IonIcon, IonBadge,
+        IonRefresher, IonRefresherContent, IonSpinner,
+        IonLabel, IonModal
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './pets.component.html',
     styleUrl: './pets.component.scss'
 })
 export class PetsComponent implements OnInit {
-    private petService = inject(PetService);
+    private http = inject(HttpClient);
+    private baseUrl = inject(API_BASE_URL);
 
-    allPets = signal<Pet[]>([]);
-    activeFilter = signal<PetStatus>('ALL');
-    searchQuery = signal('');
+    pets = signal<PetWithMedia[]>([]);
+    filteredPets = signal<PetWithMedia[]>([]);
     isLoading = signal(true);
+    distance = signal<DistanceOption>(5);
+    showOptionsModal = signal(false);
+    includeImages = signal(true);
 
-    filteredPets = computed(() => {
-        let pets = this.allPets();
-        const filter = this.activeFilter();
-        const query = this.searchQuery().toLowerCase();
+    activeFilter = signal<string>('ALL');
+    searchQuery = signal<string>('');
 
-        if (filter !== 'ALL') {
-            pets = pets.filter(p => p.status === filter);
-        }
-        if (query) {
-            pets = pets.filter(p => p.name.toLowerCase().includes(query));
-        }
-        return pets;
-    });
+    // Demo location (should be replaced with real geolocation)
+    userLat = 19.4326;
+    userLon = -99.1332;
 
     constructor() {
         addIcons({
             pawOutline, alertCircleOutline, heartOutline, searchOutline,
-            refreshOutline, maleOutline, femaleOutline
+            refreshOutline, locationOutline, imageOutline, closeOutline
         });
     }
 
@@ -65,26 +71,90 @@ export class PetsComponent implements OnInit {
 
     loadPets(): void {
         this.isLoading.set(true);
-        this.petService.getPets().subscribe({
+
+        const url = `${this.baseUrl}/pets/search?lat=${this.userLat}&lon=${this.userLon}&radius=${this.distance()}&status=LOST,ADOPTION&withImages=${this.includeImages()}`;
+
+        this.http.get<PetWithMedia[]>(url).subscribe({
             next: (pets) => {
-                this.allPets.set(pets);
+                this.pets.set(pets);
+                this.applyFilters();
                 this.isLoading.set(false);
             },
-            error: () => this.isLoading.set(false)
+            error: () => {
+                this.isLoading.set(false);
+            }
         });
     }
 
-    setFilter(status: PetStatus): void {
-        this.activeFilter.set(status);
+    loadMore(event: any): void {
+        let result = this.pets();
+
+        const filter = this.activeFilter();
+        if (filter !== 'ALL') {
+            result = result.filter(pet => pet.status === filter);
+        }
+
+        const query = this.searchQuery();
+        if (query) {
+            result = result.filter(pet =>
+                pet.name.toLowerCase().includes(query) ||
+                (pet.kind?.name?.toLowerCase() || '').includes(query) ||
+                (pet.race?.name?.toLowerCase() || '').includes(query)
+            );
+        }
+
+        const current = this.filteredPets().length;
+        const next = result.slice(current, current + 10);
+
+        if (next.length > 0) {
+            this.filteredPets.set([...this.filteredPets(), ...next]);
+        }
+
+        setTimeout(() => event.target.complete(), 500);
+    }
+
+    setFilter(filter: string): void {
+        this.activeFilter.set(filter);
+        this.applyFilters();
     }
 
     onSearch(event: any): void {
-        this.searchQuery.set(event.detail.value || '');
+        const query = (event.target as any).value?.toLowerCase() || '';
+        this.searchQuery.set(query);
+        this.applyFilters();
     }
 
-    handleRefresh(event: any): void {
+    applyFilters(): void {
+        let result = this.pets();
+
+        const filter = this.activeFilter();
+        if (filter !== 'ALL') {
+            result = result.filter(pet => pet.status === filter);
+        }
+
+        const query = this.searchQuery();
+        if (query) {
+            result = result.filter(pet =>
+                pet.name.toLowerCase().includes(query) ||
+                (pet.kind?.name?.toLowerCase() || '').includes(query) ||
+                (pet.race?.name?.toLowerCase() || '').includes(query)
+            );
+        }
+
+        this.filteredPets.set(result.slice(0, 10));
+    }
+
+
+    setDistance(dist: DistanceOption): void {
+        this.distance.set(dist);
+        this.showOptionsModal.set(false);
         this.loadPets();
-        setTimeout(() => event.target.complete(), 1000);
+    }
+
+    toggleImageFilter(): void {
+        this.includeImages.set(!this.includeImages());
+        this.showOptionsModal.set(false);
+        this.loadPets();
     }
 
     getStatusLabel(status: string): string {
@@ -97,11 +167,21 @@ export class PetsComponent implements OnInit {
     }
 
     getStatusColor(status: string): string {
-        switch (status) {
-            case 'LOST': return 'danger';
-            case 'ADOPTION': return 'tertiary';
-            case 'FOUND': return 'success';
-            default: return 'medium';
-        }
+        return status === 'LOST' ? 'danger' : 'warning';
+    }
+
+    formatDate(date: Date | string): string {
+        const d = new Date(date);
+        return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+    }
+
+    formatDistance(dist?: number): string {
+        if (!dist) return '';
+        return `${dist.toFixed(1)} km`;
+    }
+
+    handleRefresh(event: any): void {
+        this.loadPets();
+        setTimeout(() => event.target.complete(), 1000);
     }
 }

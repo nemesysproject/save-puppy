@@ -1,77 +1,68 @@
-<ion-content [fullscreen]="true" class="login-page">
+<ion-content [fullscreen]="true" class="glass-page login-page">
   <div class="login-container">
     <div class="logo-section">
-      <h1>🐕 Save Puppy</h1>
-      <p>Rescatando vidas peludas</p>
+      <ion-icon name="paw" class="logo-icon"></ion-icon>
+      <h1>save puppy</h1>
+      <p>Conecta, adopta y rescata</p>
     </div>
 
-    <ion-card class="login-card">
-      <ion-card-header>
-        <ion-card-title>Inicia Sesión</ion-card-title>
-        <ion-card-subtitle>Accede a tu cuenta</ion-card-subtitle>
-      </ion-card-header>
-
+    <ion-card class="glass-card login-card">
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Email Input -->
-          <ion-item class="login-item">
-            <ion-label position="floating">Email</ion-label>
-            <ion-input formControlName="email" type="email" placeholder="tu@email.com"
-              [class.input-error]="email?.invalid && (email?.dirty || email?.touched)"></ion-input>
-          </ion-item>
+          <div class="glass-input-wrapper" [class.has-error]="email?.invalid && (email?.dirty || email?.touched)">
+            <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+            <input formControlName="email" type="email" placeholder="Correo electrónico" class="glass-input" />
+          </div>
 
-          <ion-text *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-text">
-            <p *ngIf="email?.errors?.['required']">El email es requerido</p>
-            <p *ngIf="email?.errors?.['email']">Email inválido</p>
-          </ion-text>
+          <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-msg">
+            <span *ngIf="email?.errors?.['required']">El email es requerido</span>
+            <span *ngIf="email?.errors?.['email']">Email inválido</span>
+          </div>
 
           <!-- Password Input -->
-          <ion-item class="login-item">
-            <ion-label position="floating">Contraseña</ion-label>
-            <ion-input formControlName="password" [type]="showPassword() ? 'text' : 'password'"
-              placeholder="Mínimo 6 caracteres" [class.input-error]="
-                  password?.invalid && (password?.dirty || password?.touched)
-                "></ion-input>
-            <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()" [attr.aria-label]="
-                  showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'
-                ">
-              <ion-icon slot="icon-only" [icon]="showPassword() ? 'eye' : 'eye-off'"></ion-icon>
-            </ion-button>
-          </ion-item>
+          <div class="glass-input-wrapper"
+            [class.has-error]="password?.invalid && (password?.dirty || password?.touched)">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+            <input formControlName="password" [type]="showPassword() ? 'text' : 'password'" placeholder="Contraseña"
+              class="glass-input" />
+            <button type="button" class="icon-btn" (click)="togglePasswordVisibility()">
+              <ion-icon [name]="showPassword() ? 'eye' : 'eye-off'"></ion-icon>
+            </button>
+          </div>
 
-          <ion-text *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-text">
-            <p *ngIf="password?.errors?.['required']">La contraseña es requerida</p>
-            <p *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</p>
-          </ion-text>
+          <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-msg">
+            <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+            <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
+          </div>
 
           <!-- Error Alert -->
           <div *ngIf="errorMessage()" class="error-alert">
-            <ion-text color="danger">
-              <p>{{ errorMessage() }}</p>
-            </ion-text>
+            <p>{{ errorMessage() }}</p>
           </div>
 
           <!-- Submit Button -->
-          <ion-button expand="block" type="submit" class="login-btn" [disabled]="loginForm.invalid || isLoading()">
-            <span *ngIf="!isLoading()">Iniciar Sesión</span>
-            <span *ngIf="isLoading()" class="button-spinner">
-              <ion-spinner name="dots"></ion-spinner>
-            </span>
-          </ion-button>
+          <button type="submit" class="glass-btn primary-btn" [disabled]="loginForm.invalid || isLoading()">
+            <span *ngIf="!isLoading()">Entrar</span>
+            <ion-spinner *ngIf="isLoading()" name="dots" class="btn-spinner"></ion-spinner>
+          </button>
         </form>
+
+        <div class="divider">o continúa con</div>
+
+        <!-- Biometric Button -->
+        <button type="button" class="glass-btn outline-btn" (click)="loginWithBiometrics()" [disabled]="isLoading()">
+          <ion-icon name="finger-print-outline" class="btn-icon"></ion-icon>
+          <span>Usar biometría</span>
+        </button>
 
         <!-- Footer Links -->
         <div class="login-footer">
           <p class="footer-text">
-            ¿No tienes cuenta?
-            <ion-text color="primary">
-              <a routerLink="/register">Regístrate aquí</a>
-            </ion-text>
+            ¿No tienes cuenta? <a routerLink="/register">Regístrate</a>
           </p>
           <p class="footer-text">
-            <ion-text color="primary">
-              <a href="#forgot-password">¿Olvidaste tu contraseña?</a>
-            </ion-text>
+            <a href="#">Recuperar contraseña</a>
           </p>
         </div>
       </ion-card-content>

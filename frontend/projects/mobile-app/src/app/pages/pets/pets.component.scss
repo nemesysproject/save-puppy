@@ -1,64 +1,71 @@
-.pets-page {
-    --background: #f4f5f8;
-}
+/* Pets uses .glass-page class */
 
 .pets-container {
     padding: 0 16px 16px;
 }
 
 .pets-search {
-    --border-radius: 12px;
-    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    padding: 8px 0;
+    --border-radius: 14px;
+    --box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    --background: rgba(255, 255, 255, 0.15);
+    --placeholder-color: rgba(255, 255, 255, 0.7);
+    --color: #fff;
+    --icon-color: #fff;
+    --clear-button-color: #fff;
+    padding: 12px 4px;
+    margin-bottom: 8px;
 }
 
 .filter-chips {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     overflow-x: auto;
-    padding: 4px 0 12px;
+    padding: 8px 0 16px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 
     &::-webkit-scrollbar {
         display: none;
     }
 
     ion-chip {
-        --background: white;
-        --color: #7f8c8d;
-        font-weight: 500;
-        border: 2px solid transparent;
-        transition: all 0.2s ease;
-
-        &.active {
-            --background: #667eea;
-            --color: white;
-            border-color: #667eea;
-
-            ion-icon {
-                color: white;
-            }
-        }
+        --background: rgba(255, 255, 255, 0.15);
+        --color: #fff;
+        --padding-start: 14px;
+        --padding-end: 14px;
+        font-weight: 600;
+        font-size: 13px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        transition: all 0.25s ease;
+        white-space: nowrap;
 
         ion-icon {
-            font-size: 16px;
+            font-size: 15px;
             margin-right: 4px;
+        }
+
+        &.active {
+            border-color: transparent;
+            --color: white;
+            box-shadow: 0 4px 12px rgba(255, 138, 101, 0.35);
+        }
+
+        &:active {
+            transform: scale(0.95);
         }
     }
 
     .chip-lost.active {
-        --background: #e74c3c;
-        border-color: #e74c3c;
+        --background: linear-gradient(135deg, #ef5350, #e53935);
     }
 
     .chip-adoption.active {
-        --background: #e91e63;
-        border-color: #e91e63;
+        --background: linear-gradient(135deg, #ff8a65, #ff7043);
     }
 
     .chip-found.active {
-        --background: #2ecc71;
-        border-color: #2ecc71;
+        --background: linear-gradient(135deg, #66bb6a, #43a047);
     }
 }
 
@@ -70,15 +77,16 @@
     padding: 60px 20px;
 
     ion-spinner {
-        width: 40px;
-        height: 40px;
-        color: #667eea;
+        width: 48px;
+        height: 48px;
+        color: #ff8a65;
     }
 
     p {
-        margin-top: 12px;
-        color: #7f8c8d;
-        font-size: 14px;
+        margin-top: 16px;
+        color: #9e9e9e;
+        font-size: 15px;
+        font-weight: 500;
     }
 }
 
@@ -87,29 +95,34 @@
     padding: 60px 20px;
 
     ion-icon {
-        font-size: 64px;
-        color: #bdc3c7;
+        font-size: 72px;
+        color: rgba(255, 255, 255, 0.6);
     }
 
     h3 {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 700;
-        color: #2c3e50;
-        margin: 12px 0 6px;
+        color: #fff;
+        margin: 16px 0 8px;
     }
 
     p {
         font-size: 14px;
-        color: #7f8c8d;
+        color: rgba(255, 255, 255, 0.8);
         margin: 0;
     }
 }
 
 .pet-card {
-    margin: 0 0 12px 0;
-    border-radius: 14px;
+    margin: 0 0 14px 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:active {
+        transform: scale(0.98);
+    }
 
     ion-card-header {
+        padding: 16px;
         padding-bottom: 8px;
     }
 
@@ -117,65 +130,61 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        gap: 8px;
+        gap: 12px;
     }
 
     .pet-title-section {
         flex: 1;
 
         ion-card-title {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
+            color: #fff;
         }
 
         ion-card-subtitle {
             font-size: 13px;
-            margin-top: 2px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 4px;
+            font-weight: 500;
         }
     }
 
     ion-badge {
         font-size: 11px;
-        font-weight: 600;
-        padding: 4px 10px;
+        font-weight: 700;
+        padding: 6px 12px;
         border-radius: 20px;
         white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    ion-card-content {
+        padding: 12px 16px 16px;
     }
 
     .pet-details {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 14px;
     }
 
     .pet-detail {
         display: flex;
         align-items: center;
-        gap: 4px;
-        font-size: 13px;
-        color: #7f8c8d;
+        gap: 6px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
 
         ion-icon {
-            font-size: 16px;
-            color: #667eea;
+            font-size: 18px;
+            color: #ffb74d;
         }
     }
 }
 
 @media (prefers-color-scheme: dark) {
-    .pets-page {
-        --background: #1a1a2e;
-    }
-
-    .pet-card {
-        --background: #16213e;
-    }
-
-    .filter-chips ion-chip {
-        --background: #16213e;
-    }
-
-    .empty-state h3 {
-        color: #ecf0f1;
-    }
+    /* Inherits glassmorphism natively */
 }

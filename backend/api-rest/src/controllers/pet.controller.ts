@@ -71,13 +71,15 @@ export class PetController {
 
     async searchByLocation(req: Request, res: Response) {
         try {
-            const { kindId, lat, lon, radius, raceId } = req.query;
+            const { kindId, lat, lon, radius, raceId, status, withImages } = req.query;
             const query = new SearchPetsByLocationQuery(
-                kindId as string,
                 parseFloat(lat as string),
                 parseFloat(lon as string),
                 parseFloat(radius as string),
-                raceId as string
+                kindId as string | undefined,
+                raceId as string | undefined,
+                status as string | undefined,
+                withImages === 'false' ? false : true
             );
             const result = await mediator.send('SearchPetsByLocationQuery', query);
             res.json(result);

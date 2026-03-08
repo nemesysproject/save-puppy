@@ -1,109 +1,95 @@
-<ion-content [fullscreen]="true" class="register-page">
+<ion-content [fullscreen]="true" class="glass-page register-page">
     <div class="register-container">
         <div class="logo-section">
             <h1>🐕 Save Puppy</h1>
             <p>Crea tu cuenta</p>
         </div>
 
-        <ion-card class="register-card">
-            <ion-card-header>
-                <ion-card-title>Regístrate</ion-card-title>
-                <ion-card-subtitle>Únete a la comunidad</ion-card-subtitle>
-            </ion-card-header>
-
+        <ion-card class="glass-card register-card">
             <ion-card-content>
                 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                     <!-- Email -->
-                    <ion-item class="register-item">
-                        <ion-label position="floating">Email</ion-label>
-                        <ion-input formControlName="email" type="email" placeholder="tu@email.com"></ion-input>
-                    </ion-item>
+                    <div class="glass-input-wrapper"
+                        [class.has-error]="email?.invalid && (email?.dirty || email?.touched)">
+                        <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+                        <input formControlName="email" type="email" placeholder="Correo electrónico"
+                            class="glass-input" />
+                    </div>
                     @if (email?.invalid && (email?.dirty || email?.touched)) {
-                    <ion-text class="error-text">
-                        @if (email?.errors?.['required']) { <p>El email es requerido</p> }
-                        @if (email?.errors?.['email']) { <p>Email inválido</p> }
-                    </ion-text>
+                    <div class="error-msg">
+                        @if (email?.errors?.['required']) { <span>El email es requerido</span> }
+                        @if (email?.errors?.['email']) { <span>Email inválido</span> }
+                    </div>
                     }
 
                     <!-- Password -->
-                    <ion-item class="register-item">
-                        <ion-label position="floating">Contraseña</ion-label>
-                        <ion-input formControlName="password" [type]="showPassword() ? 'text' : 'password'"
-                            placeholder="Mínimo 6 caracteres"></ion-input>
-                        <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
-                            <ion-icon slot="icon-only" [icon]="showPassword() ? 'eye' : 'eye-off'"></ion-icon>
-                        </ion-button>
-                    </ion-item>
+                    <div class="glass-input-wrapper"
+                        [class.has-error]="password?.invalid && (password?.dirty || password?.touched)">
+                        <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+                        <input formControlName="password" [type]="showPassword() ? 'text' : 'password'"
+                            placeholder="Mínimo 6 caracteres" class="glass-input" />
+                        <button type="button" class="icon-btn" (click)="togglePasswordVisibility()">
+                            <ion-icon [name]="showPassword() ? 'eye' : 'eye-off'"></ion-icon>
+                        </button>
+                    </div>
                     @if (password?.invalid && (password?.dirty || password?.touched)) {
-                    <ion-text class="error-text">
-                        @if (password?.errors?.['required']) { <p>La contraseña es requerida</p> }
-                        @if (password?.errors?.['minlength']) { <p>Mínimo 6 caracteres</p> }
-                    </ion-text>
+                    <div class="error-msg">
+                        @if (password?.errors?.['required']) { <span>La contraseña es requerida</span> }
+                        @if (password?.errors?.['minlength']) { <span>Mínimo 6 caracteres</span> }
+                    </div>
                     }
 
                     <!-- Confirm Password -->
-                    <ion-item class="register-item">
-                        <ion-label position="floating">Confirmar contraseña</ion-label>
-                        <ion-input formControlName="confirmPassword"
-                            [type]="showConfirmPassword() ? 'text' : 'password'"
-                            placeholder="Repite tu contraseña"></ion-input>
-                        <ion-button fill="clear" slot="end" (click)="toggleConfirmPasswordVisibility()">
-                            <ion-icon slot="icon-only" [icon]="showConfirmPassword() ? 'eye' : 'eye-off'"></ion-icon>
-                        </ion-button>
-                    </ion-item>
+                    <div class="glass-input-wrapper"
+                        [class.has-error]="confirmPassword?.touched && registerForm.hasError('passwordsMismatch')">
+                        <ion-icon name="shield-checkmark-outline" class="input-icon"></ion-icon>
+                        <input formControlName="confirmPassword" [type]="showConfirmPassword() ? 'text' : 'password'"
+                            placeholder="Repite tu contraseña" class="glass-input" />
+                        <button type="button" class="icon-btn" (click)="toggleConfirmPasswordVisibility()">
+                            <ion-icon [name]="showConfirmPassword() ? 'eye' : 'eye-off'"></ion-icon>
+                        </button>
+                    </div>
                     @if (confirmPassword?.touched && registerForm.hasError('passwordsMismatch')) {
-                    <ion-text class="error-text">
-                        <p>Las contraseñas no coinciden</p>
-                    </ion-text>
+                    <div class="error-msg">
+                        <span>Las contraseñas no coinciden</span>
+                    </div>
                     }
 
                     <!-- Success Message -->
                     @if (successMessage()) {
                     <div class="success-alert">
-                        <ion-text color="success">
-                            <p>{{ successMessage() }}</p>
-                        </ion-text>
+                        <p>{{ successMessage() }}</p>
                     </div>
                     }
 
                     <!-- Error Alert -->
                     @if (errorMessage()) {
                     <div class="error-alert">
-                        <ion-text color="danger">
-                            <p>{{ errorMessage() }}</p>
-                        </ion-text>
+                        <p>{{ errorMessage() }}</p>
                     </div>
                     }
 
                     <!-- Submit -->
-                    <ion-button expand="block" type="submit" class="register-btn"
+                    <button type="submit" class="glass-btn primary-btn"
                         [disabled]="registerForm.invalid || isLoading()">
                         @if (!isLoading()) { <span>Crear cuenta</span> }
-                        @if (isLoading()) {
-                        <span class="button-spinner">
-                            <ion-spinner name="dots"></ion-spinner>
-                        </span>
-                        }
-                    </ion-button>
+                        @if (isLoading()) { <ion-spinner name="dots" class="btn-spinner"></ion-spinner> }
+                    </button>
                 </form>
 
                 <!-- Social Divider -->
-                <div class="social-divider">
-                    <span class="divider-line"></span>
-                    <span class="divider-text">o regístrate con</span>
-                    <span class="divider-line"></span>
-                </div>
+                <div class="divider">o regístrate con</div>
 
                 <!-- Social Buttons -->
                 <div class="social-buttons">
-                    <ion-button expand="block" fill="outline" class="google-btn" (click)="registerWithGoogle()">
-                        <ion-icon slot="start" name="logo-google"></ion-icon>
-                        Google
-                    </ion-button>
-                    <ion-button expand="block" fill="outline" class="facebook-btn" (click)="registerWithFacebook()">
-                        <ion-icon slot="start" name="logo-facebook"></ion-icon>
-                        Facebook
-                    </ion-button>
+                    <button type="button" class="glass-btn outline-btn" (click)="registerWithGoogle()">
+                        <ion-icon name="logo-google" class="btn-icon"></ion-icon>
+                        <span>Google</span>
+                    </button>
+                    <button type="button" class="glass-btn outline-btn" (click)="registerWithFacebook()">
+                        <ion-icon name="logo-facebook" class="btn-icon"></ion-icon>
+                        <span>Facebook</span>
+                    </button>
                 </div>
 
                 <!-- Footer -->

@@ -1,65 +1,64 @@
-.dashboard-page {
-  --background: #f4f5f8;
-}
+/* Dashboard uses .glass-page class */
 
 .dashboard-container {
   padding: 16px;
 }
 
 .welcome-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
   padding: 24px;
   color: white;
   margin-bottom: 20px;
 
   h2 {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     margin: 0 0 6px 0;
   }
 
   p {
-    font-size: 14px;
+    font-size: 15px;
     margin: 0;
-    opacity: 0.9;
+    opacity: 0.95;
   }
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
   margin-bottom: 24px;
 }
 
 .stat-card {
   margin: 0;
-  border-radius: 14px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:active {
-    transform: scale(0.96);
+    transform: scale(0.97);
+  }
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
   ion-card-content {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
+    gap: 14px;
+    padding: 18px;
   }
 
   .stat-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
 
     ion-icon {
-      font-size: 22px;
+      font-size: 24px;
       color: white;
     }
   }
@@ -70,108 +69,102 @@
   }
 
   .stat-number {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 800;
     line-height: 1.1;
+    color: #ffffff;
   }
 
   .stat-label {
-    font-size: 12px;
-    color: #7f8c8d;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
   }
 
   &.lost .stat-icon {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    background: linear-gradient(135deg, #ef5350, #e53935);
   }
-  &.lost .stat-number { color: #e74c3c; }
 
   &.adoption .stat-icon {
-    background: linear-gradient(135deg, #e91e63, #c2185b);
+    background: linear-gradient(135deg, #ff8a65, #ff7043);
   }
-  &.adoption .stat-number { color: #e91e63; }
 
   &.found .stat-icon {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    background: linear-gradient(135deg, #66bb6a, #43a047);
   }
-  &.found .stat-number { color: #2ecc71; }
 
   &.shelters .stat-icon {
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
   }
-  &.shelters .stat-number { color: #3498db; }
 }
 
 .section-title {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 12px 4px;
-  color: #2c3e50;
+  margin: 0 0 14px 4px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(135deg, #ff8a65, #ffb74d);
+    border-radius: 2px;
+  }
 }
 
 .quick-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .action-card {
   margin: 0;
-  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:active {
     transform: scale(0.98);
   }
 
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
   ion-card-content {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 16px;
+    gap: 16px;
+    padding: 18px;
 
     ion-icon {
-      font-size: 22px;
-      color: #667eea;
+      font-size: 24px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 12px;
     }
 
     span {
       flex: 1;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
-      color: #2c3e50;
+      color: #fff;
     }
 
     .arrow {
       font-size: 18px;
-      color: #bdc3c7;
+      color: rgba(255, 255, 255, 0.6);
+      background: transparent;
+      padding: 0;
     }
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .dashboard-page {
-    --background: #1a1a2e;
-  }
-
-  .stat-card {
-    --background: #16213e;
-  }
-
-  .stat-label {
-    color: #95a5a6 !important;
-  }
-
-  .section-title {
-    color: #ecf0f1;
-  }
-
-  .action-card {
-    --background: #16213e;
-
-    ion-card-content span {
-      color: #ecf0f1;
-    }
-  }
+  /* Inherits glassmorphism natively */
 }

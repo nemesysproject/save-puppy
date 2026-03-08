@@ -1,10 +1,13 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar class="glass-toolbar">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Mascotas</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="pets-page">
+<ion-content [fullscreen]="true" class="glass-page-gradient pets-page">
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
         <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
     </ion-refresher>
@@ -53,7 +56,7 @@
         }
 
         @for (pet of filteredPets(); track pet.id) {
-        <ion-card class="pet-card">
+        <ion-card class="glass-card pet-card">
             <ion-card-header>
                 <div class="pet-header">
                     <div class="pet-title-section">

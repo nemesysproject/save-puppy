@@ -57,7 +57,7 @@ export class SheltersComponent {
             : new HttpHeaders();
 
         this.http
-            .get<Shelter[]>(`${environment.apiUrl}/api/shelters`, { headers })
+            .get<Shelter[]>(`${environment.apiUrl}/shelters`, { headers })
             .subscribe({
                 next: (res) => {
                     console.log('Shelters response:', res);

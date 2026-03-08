@@ -1,10 +1,13 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar class="glass-toolbar">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Refugios</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="shelters-page">
+<ion-content [fullscreen]="true" class="glass-page-gradient shelters-page">
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
         <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
     </ion-refresher>
@@ -35,7 +38,7 @@
         }
 
         @for (shelter of shelters(); track shelter.id) {
-        <ion-card class="shelter-card">
+        <ion-card class="glass-card shelter-card">
             <ion-card-header>
                 <ion-card-title>{{ shelter.name }}</ion-card-title>
             </ion-card-header>

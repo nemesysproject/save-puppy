@@ -1,24 +1,27 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar class="glass-toolbar">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>🐕 Save Puppy</ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="dashboard-page">
+<ion-content [fullscreen]="true" class="glass-page-gradient dashboard-page">
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
         <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
     </ion-refresher>
 
     <div class="dashboard-container">
         <!-- Welcome Section -->
-        <div class="welcome-section">
+        <div class="glass-card welcome-section">
             <h2>¡Hola{{ user()?.email ? ', ' + user()!.email : '' }}! 👋</h2>
             <p>Bienvenido de vuelta a Save Puppy</p>
         </div>
 
         <!-- Stats Cards -->
         <div class="stats-grid">
-            <ion-card class="stat-card lost" (click)="navigateTo('/pets')">
+            <ion-card class="glass-card stat-card lost" (click)="navigateTo('/pets')">
                 <ion-card-content>
                     <div class="stat-icon">
                         <ion-icon name="alert-circle-outline"></ion-icon>
@@ -30,7 +33,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card class="stat-card adoption" (click)="navigateTo('/pets')">
+            <ion-card class="glass-card stat-card adoption" (click)="navigateTo('/pets')">
                 <ion-card-content>
                     <div class="stat-icon">
                         <ion-icon name="heart-outline"></ion-icon>
@@ -42,7 +45,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card class="stat-card found" (click)="navigateTo('/pets')">
+            <ion-card class="glass-card stat-card found" (click)="navigateTo('/pets')">
                 <ion-card-content>
                     <div class="stat-icon">
                         <ion-icon name="search-outline"></ion-icon>
@@ -54,7 +57,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card class="stat-card shelters" (click)="navigateTo('/shelters')">
+            <ion-card class="glass-card stat-card shelters" (click)="navigateTo('/shelters')">
                 <ion-card-content>
                     <div class="stat-icon">
                         <ion-icon name="business-outline"></ion-icon>
@@ -70,7 +73,7 @@
         <!-- Quick Actions -->
         <h3 class="section-title">Accesos rápidos</h3>
         <div class="quick-actions">
-            <ion-card class="action-card" (click)="navigateTo('/pets')">
+            <ion-card class="glass-card action-card" (click)="navigateTo('/pets')">
                 <ion-card-content>
                     <ion-icon name="paw-outline"></ion-icon>
                     <span>Ver Mascotas</span>
@@ -78,7 +81,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card class="action-card" (click)="navigateTo('/shelters')">
+            <ion-card class="glass-card action-card" (click)="navigateTo('/shelters')">
                 <ion-card-content>
                     <ion-icon name="business-outline"></ion-icon>
                     <span>Refugios</span>
@@ -86,7 +89,7 @@
                 </ion-card-content>
             </ion-card>
 
-            <ion-card class="action-card" (click)="navigateTo('/profile')">
+            <ion-card class="glass-card action-card" (click)="navigateTo('/profile')">
                 <ion-card-content>
                     <ion-icon name="person-outline"></ion-icon>
                     <span>Mi Perfil</span>

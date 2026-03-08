@@ -1,1 +1,382 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles - Save Puppy */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Ionic overrides for warm theme */
+ion-card {
+    --border-radius: 16px;
+    border-radius: 16px;
+}
+
+ion-button {
+    --border-radius: 14px;
+}
+
+ion-searchbar {
+    --border-radius: 14px;
+}
+
+ion-chip {
+    --border-radius: 20px;
+}
+
+ion-badge {
+    --border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Status colors for pets */
+.status-lost {
+    --ion-color-base: #ef5350 !important;
+    --ion-color-contrast: #ffffff !important;
+}
+
+.status-adoption {
+    --ion-color-base: #ff8a65 !important;
+    --ion-color-contrast: #ffffff !important;
+}
+
+.status-found {
+    --ion-color-base: #66bb6a !important;
+    --ion-color-contrast: #ffffff !important;
+}
+
+/* Smooth transitions */
+a,
+button,
+ion-card,
+ion-chip,
+ion-tab-button {
+    transition: all 0.2s ease;
+}
+
+/* Focus states for accessibility */
+:focus-visible {
+    outline: 2px solid #ff8a65;
+    outline-offset: 2px;
+}
+
+/* Global Glassmorphism Form Controls */
+
+.glass-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 0 20px;
+    height: 60px;
+    margin-bottom: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+
+    &:focus-within {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    &.has-error {
+        border-color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.15);
+        animation: shake 0.4s ease-in-out;
+    }
+
+    .input-icon {
+        font-size: 24px;
+        color: #fff;
+        margin-right: 15px;
+        opacity: 0.9;
+    }
+
+    .glass-input {
+        flex: 1;
+        height: 100%;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        outline: none;
+        text-align: left;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    }
+
+    .icon-btn {
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.error-msg {
+    color: #ff9999;
+    font-size: 13px;
+    padding: 0 10px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+.error-alert {
+    background-color: rgba(255, 77, 77, 0.15);
+    border-left: 4px solid #ff4d4d;
+    padding: 14px;
+    border-radius: 8px;
+    margin: 10px 0 20px 0;
+
+    p {
+        margin: 0;
+        font-size: 13px;
+        color: #ff8080;
+        font-weight: 500;
+    }
+}
+
+/* Base button styles */
+.glass-btn {
+    width: 100%;
+    height: 60px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    gap: 12px;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-icon {
+        font-size: 26px;
+    }
+
+    .btn-spinner {
+        color: currentColor;
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Primary variant */
+.primary-btn {
+    background: #fff;
+    color: #ff2d55;
+    box-shadow: 0 10px 25px rgba(255, 45, 85, 0.4);
+    margin-top: 15px;
+
+    &:active:not(:disabled) {
+        transform: scale(0.98);
+        background: #f0f0f0;
+    }
+}
+
+/* Outline variant */
+.outline-btn {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+
+    &:active:not(:disabled) {
+        background: rgba(255, 255, 255, 0.25);
+    }
+}
+
+/* Global Glass Backgrounds & Cards */
+
+.glass-page {
+    --background: url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(88, 86, 214, 0.8) 0%, rgba(255, 45, 85, 0.8) 100%);
+        backdrop-filter: blur(5px);
+    }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    overflow: visible;
+}
+
+/* Post-Auth Internal Pages Gradient Background */
+.glass-page-gradient {
+    --background: radial-gradient(circle at top right, rgba(255, 107, 107, 0.1) 0%, transparent 60%),
+        radial-gradient(circle at bottom left, rgba(78, 205, 196, 0.1) 0%, transparent 60%),
+        linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: -1;
+    }
+}
+
+/* Glass Menu */
+.glass-menu {
+    --background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    ion-header {
+        --background: transparent;
+
+        ion-toolbar {
+            --background: transparent;
+            --border-color: rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+.glass-list {
+    background: transparent;
+
+    ion-item {
+        --background: transparent;
+        --color: #4a4a4a;
+        font-weight: 500;
+        margin: 4px 12px;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+
+        ion-icon {
+            color: #ff8a65;
+        }
+
+        &:hover {
+            --background: rgba(0, 0, 0, 0.03);
+        }
+
+        &.active-item {
+            --background: rgba(255, 138, 101, 0.15);
+            --color: #d84315;
+            font-weight: 700;
+
+            ion-icon {
+                color: #d84315;
+            }
+        }
+    }
+}
+
+/* Glass Toolbars for internal pages */
+.glass-toolbar {
+    --background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    --border-color: rgba(255, 255, 255, 0.5);
+    --color: #333;
+
+    ion-title {
+        font-weight: 700;
+    }
+
+    ion-menu-button {
+        color: #ff8a65;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .glass-page-gradient {
+        --background: radial-gradient(circle at top right, rgba(216, 67, 21, 0.15) 0%, transparent 60%),
+            radial-gradient(circle at bottom left, rgba(66, 165, 245, 0.15) 0%, transparent 60%),
+            linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    }
+
+    .glass-menu {
+        --background: rgba(30, 30, 30, 0.85);
+    }
+
+    .glass-list ion-item {
+        --color: #e8e8e8;
+
+        &.active-item {
+            --background: rgba(255, 138, 101, 0.15);
+            --color: #ffab91;
+
+            ion-icon {
+                color: #ffab91;
+            }
+        }
+    }
+
+    .glass-toolbar {
+        --background: rgba(30, 30, 30, 0.7);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --color: #fff;
+    }
+}

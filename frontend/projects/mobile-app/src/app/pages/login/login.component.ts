@@ -1,11 +1,11 @@
 import { Component, inject, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonSpinner, IonText, AlertController } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, LoginRequest } from 'shared-logic';
 import { HttpClient } from '@angular/common/http';
-import { eye, eyeOff } from 'ionicons/icons';
+import { eye, eyeOff, paw, fingerPrintOutline, mailOutline, lockClosedOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { environment } from '../../../environments/environment';
 
@@ -18,9 +18,6 @@ import { environment } from '../../../environments/environment';
     RouterLink,
     IonContent,
     IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
     IonCardContent,
     IonItem,
     IonLabel,
@@ -39,6 +36,7 @@ export class LoginComponent {
   private router = inject(Router);
   private authService = inject(AuthService);
   private http = inject(HttpClient);
+  private alertCtrl = inject(AlertController);
 
 
   loginForm: FormGroup;
@@ -48,7 +46,7 @@ export class LoginComponent {
 
   constructor() {
     console.log('LoginComponent constructor');
-    addIcons({ eye, eyeOff });
+    addIcons({ eye, eyeOff, paw, fingerPrintOutline, mailOutline, lockClosedOutline });
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -66,6 +64,31 @@ export class LoginComponent {
 
   togglePasswordVisibility(): void {
     this.showPassword.update(val => !val);
+  }
+
+  async loginWithBiometrics() {
+    const alert = await this.alertCtrl.create({
+      header: 'Autenticación Biométrica',
+      message: 'Usa Face ID o Huella Digital para iniciar sesión rápidamente.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Autenticar',
+          handler: () => {
+            this.isLoading.set(true);
+            setTimeout(() => {
+              this.isLoading.set(false);
+              this.authService.setToken('mock-biometric-token', { id: 'biometric-mock', email: 'bio@savepuppy.com', role: 'USER', provider: 'BIOMETRICS' });
+              this.router.navigate(['/dashboard']);
+            }, 1000);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   onSubmit(): void {

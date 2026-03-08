@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import {
     IonContent, IonHeader, IonToolbar, IonTitle, IonCard,
     IonCardContent, IonIcon,
-    IonRefresher, IonRefresherContent
+    IonRefresher, IonRefresherContent, IonMenuButton, IonButtons
 } from '@ionic/angular/standalone';
 import { AuthService, PetService, LookupService } from 'shared-logic';
 import { User, Pet, Shelter } from 'shared-logic';

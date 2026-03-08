@@ -1,13 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { IonApp, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonMenuToggle } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { homeOutline, pawOutline, businessOutline, personOutline } from 'ionicons/icons';
+import { homeOutline, pawOutline, businessOutline, personOutline, logOutOutline, menuOutline } from 'ionicons/icons';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  imports: [IonApp, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet],
+  imports: [IonApp, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonMenuToggle],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.html',
   styleUrl: './app.scss'
@@ -17,7 +17,7 @@ export class App {
   showTabs = signal(false);
 
   constructor(private router: Router) {
-    addIcons({ homeOutline, pawOutline, businessOutline, personOutline });
+    addIcons({ homeOutline, pawOutline, businessOutline, personOutline, logOutOutline, menuOutline });
 
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
