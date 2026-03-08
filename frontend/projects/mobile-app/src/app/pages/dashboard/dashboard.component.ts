@@ -21,7 +21,7 @@ import {
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonCard,
         IonCardContent, IonIcon,
-        IonRefresher, IonRefresherContent
+        IonRefresher, IonRefresherContent, IonMenuButton, IonButtons
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './dashboard.component.html',

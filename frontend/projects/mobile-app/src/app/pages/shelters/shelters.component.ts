@@ -20,7 +20,7 @@ import {
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
         IonCardTitle, IonCardContent, IonIcon,
-        IonRefresher, IonRefresherContent, IonSpinner
+        IonRefresher, IonRefresherContent, IonSpinner, IonMenuButton, IonButtons
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './shelters.component.html',

@@ -34,7 +34,7 @@ type DistanceOption = 1 | 5 | 10;
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonIcon, IonBadge,
         IonRefresher, IonRefresherContent, IonSpinner,
-        IonLabel, IonModal
+        IonLabel, IonModal, IonMenuButton, IonButtons
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './pets.component.html',

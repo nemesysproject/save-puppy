@@ -21,7 +21,7 @@ import {
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
         IonCardTitle, IonCardContent, IonIcon, IonButton, IonLabel, IonItem,
-        IonList
+        IonList, IonMenuButton, IonButtons
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './profile.component.html',
