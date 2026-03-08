@@ -1,8 +1,5 @@
 <ion-header>
     <ion-toolbar class="glass-toolbar">
-        <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-        </ion-buttons>
         <ion-title>Mi Perfil</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -11,84 +8,69 @@
     <div class="profile-container">
         <!-- Avatar Section -->
         <div class="avatar-section">
+            <div class="avatar-glow"></div>
             <div class="avatar-circle">
                 <ion-icon name="person-circle-outline"></ion-icon>
             </div>
-            @if (user()) {
-            <h2>{{ user()!.email }}</h2>
-            <ion-badge color="primary">{{ getRoleLabel(user()!.role) }}</ion-badge>
-            } @else {
-            <h2>Usuario</h2>
-            }
+            <div class="user-meta">
+                @if (user()) {
+                <h2>{{ user()!.email }}</h2>
+                <ion-badge class="role-badge">{{ getRoleLabel(user()!.role) }}</ion-badge>
+                }
+            </div>
         </div>
 
-        <!-- User Info Card -->
-        <ion-card class="glass-card info-card">
-            <ion-card-header>
-                <ion-card-title>Información de la cuenta</ion-card-title>
-            </ion-card-header>
+        <!-- Centered Information Panel -->
+        <ion-card class="glass-card centered-panel">
             <ion-card-content>
-                <ion-list lines="none">
-                    @if (user()) {
-                    <ion-item>
-                        <ion-icon name="mail-outline" slot="start"></ion-icon>
-                        <ion-label>
-                            <p>Correo electrónico</p>
-                            <h3>{{ user()!.email }}</h3>
-                        </ion-label>
-                    </ion-item>
-                    <ion-item>
-                        <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
-                        <ion-label>
-                            <p>Rol</p>
-                            <h3>{{ getRoleLabel(user()!.role) }}</h3>
-                        </ion-label>
-                    </ion-item>
-                    <ion-item>
-                        <ion-icon name="information-circle-outline" slot="start"></ion-icon>
-                        <ion-label>
-                            <p>Proveedor</p>
-                            <h3>{{ user()!.provider }}</h3>
-                        </ion-label>
-                    </ion-item>
-                    } @else {
-                    <ion-item>
-                        <ion-label>
-                            <p>No hay datos de usuario disponibles</p>
-                        </ion-label>
-                    </ion-item>
-                    }
-                </ion-list>
-            </ion-card-content>
-        </ion-card>
+                <div class="info-group">
+                    <h3 class="group-title">Información de la cuenta</h3>
+                    <ion-list lines="none" class="info-list">
+                        @if (user()) {
+                        <ion-item class="info-item">
+                            <div class="item-content">
+                                <span class="label">Correo electrónico</span>
+                                <span class="value">{{ user()!.email }}</span>
+                            </div>
+                        </ion-item>
+                        <ion-item class="info-item">
+                            <div class="item-content">
+                                <span class="label">Proveedor</span>
+                                <span class="value">{{ user()!.provider }}</span>
+                            </div>
+                        </ion-item>
+                        }
+                    </ion-list>
+                </div>
 
-        <!-- App Info -->
-        <ion-card class="glass-card info-card">
-            <ion-card-header>
-                <ion-card-title>Acerca de la app</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item>
-                        <ion-label>
-                            <p>Versión</p>
-                            <h3>0.0.1</h3>
-                        </ion-label>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>
-                            <p>Nombre</p>
-                            <h3>🐕 Save Puppy App</h3>
-                        </ion-label>
-                    </ion-item>
-                </ion-list>
+                <div class="divider"></div>
+
+                <div class="info-group">
+                    <h3 class="group-title">Acerca de la app</h3>
+                    <ion-list lines="none" class="info-list">
+                        <ion-item class="info-item">
+                            <div class="item-content">
+                                <span class="label">Nombre</span>
+                                <span class="value">🐕 Save Puppy App</span>
+                            </div>
+                        </ion-item>
+                        <ion-item class="info-item">
+                            <div class="item-content">
+                                <span class="label">Versión</span>
+                                <span class="value">1.0.0</span>
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                </div>
             </ion-card-content>
         </ion-card>
 
         <!-- Logout Button -->
-        <button type="button" class="glass-btn outline-btn logout-btn" (click)="logout()">
-            <ion-icon name="log-out-outline" class="btn-icon"></ion-icon>
-            <span>Cerrar sesión</span>
-        </button>
+        <div class="footer-actions">
+            <button type="button" class="glass-btn outline-btn logout-btn" (click)="logout()">
+                <ion-icon name="log-out-outline" class="btn-icon"></ion-icon>
+                <span>Cerrar sesión</span>
+            </button>
+        </div>
     </div>
 </ion-content>

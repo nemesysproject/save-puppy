@@ -1,117 +1,182 @@
-/* Profile uses .glass-page class for background */
 .profile-container {
-    padding: 16px;
-}
-
-.avatar-section {
+    padding: 24px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 32px 20px 24px;
+    min-height: 100%;
+}
+
+.avatar-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
+
+    .avatar-glow {
+        position: absolute;
+        top: 20px;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, rgba(255, 138, 101, 0.4) 0%, transparent 70%);
+        filter: blur(20px);
+        z-index: 0;
+    }
 
     .avatar-circle {
-        width: 100px;
-        height: 100px;
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #ffab91 0%, #ffcc80 100%);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 16px;
-        box-shadow: 0 4px 20px rgba(255, 138, 101, 0.35);
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
         ion-icon {
-            font-size: 56px;
-            color: white;
+            font-size: 70px;
+            color: #fff;
         }
     }
 
-    h2 {
-        font-size: 20px;
-        font-weight: 700;
-        margin: 0 0 10px 0;
-        color: #4a4a4a;
+    .user-meta {
         text-align: center;
-        word-break: break-all;
-    }
 
-    ion-badge {
-        font-size: 12px;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-weight: 600;
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: #333;
+            letter-spacing: -0.5px;
+        }
+
+        .role-badge {
+            --background: rgba(255, 138, 101, 0.2);
+            --color: #d84315;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
     }
 }
 
-.info-card {
-    margin: 0 0 16px 0;
+.centered-panel {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 24px;
 
-    ion-card-header {
-        padding-bottom: 0;
-        padding: 18px 18px 0;
+    ion-card-content {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    ion-card-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #fff;
-    }
+    .info-group {
+        width: 100%;
+        text-align: center;
 
-    ion-list {
-        padding: 8px 0;
-    }
-
-    ion-item {
-        --padding-start: 18px;
-        --padding-end: 18px;
-        --inner-padding-end: 0;
-        --background: transparent;
-
-        ion-icon {
-            color: #ff8a65;
-            font-size: 22px;
-            margin-right: 14px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 8px;
-            border-radius: 10px;
+        .group-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 16px 0;
         }
 
-        ion-label {
-            p {
-                font-size: 12px;
-                color: rgba(255, 255, 255, 0.8);
-                margin: 0 0 4px 0;
-                font-weight: 500;
-            }
+        .info-list {
+            background: transparent;
+            width: 100%;
 
-            h3 {
-                font-size: 15px;
-                font-weight: 600;
-                margin: 0;
-                color: #fff;
+            .info-item {
+                --background: transparent;
+                --padding-start: 0;
+                --inner-padding-end: 0;
+                margin-bottom: 12px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                .item-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
+                    gap: 4px;
+
+                    .label {
+                        font-size: 11px;
+                        font-weight: 600;
+                        color: #999;
+                        text-transform: uppercase;
+                    }
+
+                    .value {
+                        font-size: 16px;
+                        font-weight: 700;
+                        color: #333;
+                    }
+                }
             }
         }
     }
+
+    .divider {
+        width: 40px;
+        height: 2px;
+        background: rgba(0, 0, 0, 0.05);
+        margin: 24px 0;
+        border-radius: 2px;
+    }
+}
+
+.footer-actions {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
 }
 
 .logout-btn {
-    margin-top: 24px;
-    color: #ff4d4d !important;
-    border-color: rgba(255, 77, 77, 0.4) !important;
+    width: 100%;
+    color: #ef5350 !important;
+    border-color: rgba(239, 83, 80, 0.3) !important;
+    font-weight: 700;
 
-    &:active:not(:disabled) {
-        background: rgba(255, 77, 77, 0.15) !important;
+    &:active {
+        background: rgba(239, 83, 80, 0.1) !important;
     }
 }
 
 @media (prefers-color-scheme: dark) {
-    .avatar-section {
-        .avatar-circle {
-            background: linear-gradient(135deg, #d84315 0%, #ff6f00 100%);
-        }
 
-        h2 {
-            color: #fff;
-        }
+    .avatar-section .user-meta h2,
+    .centered-panel .info-group .info-list .info-item .item-content .value {
+        color: #fff;
+    }
+
+    .centered-panel .info-group .group-title {
+        color: #aaa;
+    }
+
+    .centered-panel .divider {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar-section .user-meta .role-badge {
+        --background: rgba(255, 138, 101, 0.15);
+        --color: #ffab91;
     }
 }
