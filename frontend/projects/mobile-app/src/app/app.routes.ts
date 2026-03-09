@@ -22,6 +22,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'pets/create',
+    loadComponent: () => import('./pages/pets/create-pet/create-pet.component').then(m => m.CreatePetComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'pets',
     loadComponent: () => import('./pages/pets/pets.component').then(m => m.PetsComponent),
     canActivate: [AuthGuard]

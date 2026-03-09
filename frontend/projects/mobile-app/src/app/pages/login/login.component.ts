@@ -114,9 +114,10 @@ export class LoginComponent {
         }
       },
       error: (error) => {
+
         this.isLoading.set(false);
         this.errorMessage.set(
-          error.error?.message || 'Error al iniciar sesión. Intenta de nuevo.'
+          error.message.includes('401') || error.message //'Error al iniciar sesión. Intenta de nuevo.'
         );
       },
       complete: () => {

@@ -1,13 +1,15 @@
 import { Component, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonChip, IonLabel, IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonRefresher, IonRefresherContent, IonMenuButton, IonButtons, IonModal } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonChip, IonLabel, IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonRefresher, IonRefresherContent, IonMenuButton, IonButtons, IonModal, IonFab, IonFabButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
+import { add } from 'ionicons/icons';
 import {
     pawOutline, alertCircleOutline, heartOutline, searchOutline,
-    refreshOutline, locationOutline, imageOutline, closeOutline
+    refreshOutline, locationOutline, imageOutline, closeOutline, addOutline
 } from 'ionicons/icons';
 import { HttpClient } from '@angular/common/http';
 import { API_BASE_URL } from 'shared-logic';
+import { Router } from '@angular/router';
 
 interface PetWithMedia {
     id: string;
@@ -34,7 +36,8 @@ type DistanceOption = 1 | 5 | 10;
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonIcon, IonBadge,
         IonRefresher, IonRefresherContent, IonSpinner,
-        IonLabel, IonModal, IonMenuButton, IonButtons
+        IonLabel, IonModal, IonMenuButton, IonButtons,
+        IonFab, IonFabButton
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './pets.component.html',
@@ -43,6 +46,7 @@ type DistanceOption = 1 | 5 | 10;
 export class PetsComponent implements OnInit {
     private http = inject(HttpClient);
     private baseUrl = inject(API_BASE_URL);
+    private router = inject(Router);
 
     pets = signal<PetWithMedia[]>([]);
     filteredPets = signal<PetWithMedia[]>([]);
@@ -60,9 +64,14 @@ export class PetsComponent implements OnInit {
 
     constructor() {
         addIcons({
+            add,
             pawOutline, alertCircleOutline, heartOutline, searchOutline,
-            refreshOutline, locationOutline, imageOutline, closeOutline
+            refreshOutline, locationOutline, imageOutline, closeOutline, addOutline
         });
+    }
+
+    goToCreatePet(): void {
+        this.router.navigate(['/pets/create']);
     }
 
     ngOnInit(): void {
@@ -76,12 +85,15 @@ export class PetsComponent implements OnInit {
 
         this.http.get<PetWithMedia[]>(url).subscribe({
             next: (pets) => {
+                console.log('pets', pets);
+                this.isLoading.set(false);
                 this.pets.set(pets);
                 this.applyFilters();
-                this.isLoading.set(false);
             },
-            error: () => {
+            error: (error) => {
+                console.error('error', error);
                 this.isLoading.set(false);
+                console.log('isLoading', this.isLoading());
             }
         });
     }

@@ -72,6 +72,77 @@ ion-tab-button {
 
 /* Global Glassmorphism Form Controls */
 
+.glass-select {
+    --background: rgba(255, 255, 255, 0.1);
+    --placeholder-color: rgba(255, 255, 255, 0.4);
+    --padding-start: 16px;
+    --border-radius: 16px;
+    color: white;
+    font-weight: 500;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    min-height: 56px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 8px 0;
+    transition: all 0.3s ease;
+
+    &::part(container) {
+        border: none;
+    }
+
+    &::part(icon) {
+        color: #2575fc;
+        opacity: 0.8;
+    }
+
+    &::part(text) {
+        color: white;
+    }
+
+    &:focus-within {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        transform: translateY(-1px);
+    }
+}
+
+.glass-input-premium {
+    --background: rgba(255, 255, 255, 0.1);
+    --border-radius: 16px;
+    --padding-start: 16px;
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 8px 0;
+    min-height: 56px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &.item-has-focus {
+        --background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-1px);
+    }
+
+    ion-label {
+        color: #2575fc !important;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 4px;
+        opacity: 0.9;
+    }
+
+    ion-input {
+        --padding-start: 0;
+        font-weight: 500;
+    }
+}
+
 .glass-input-wrapper {
     display: flex;
     align-items: center;

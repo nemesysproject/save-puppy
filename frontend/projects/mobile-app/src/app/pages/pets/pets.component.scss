@@ -188,3 +188,28 @@
 @media (prefers-color-scheme: dark) {
     /* Inherits glassmorphism natively */
 }
+
+.extended-fab {
+    width: auto;
+    height: 48px;
+    --border-radius: 24px;
+    --padding-start: 16px;
+    --padding-end: 20px;
+    --background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    --box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
+    color: white;
+    margin-bottom: 8px;
+    margin-right: 8px;
+
+    ion-icon {
+        font-size: 20px;
+        margin-right: 8px;
+    }
+
+    ion-label {
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+        text-transform: none;
+    }
+}

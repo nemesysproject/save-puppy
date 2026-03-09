@@ -1,0 +1,120 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/pets"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Registrar Mascota</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="split-container">
+
+        <!-- PANEL IZQUIERDO: CAPTURA Y CAROUSEL -->
+        <div class="panel left-panel">
+            <div class="glass-card capture-card">
+                <div class="capture-header">
+                    <h2>Evidencia Visual</h2>
+                    <p>Captura fotos o videos del suceso</p>
+                </div>
+
+                <div class="carousel-container">
+                    <div class="media-scroller">
+                        <!-- Botón para agregar más -->
+                        <div class="add-media-box" (click)="captureMedia()">
+                            <ion-icon name="camera-outline"></ion-icon>
+                            <span>Capturar</span>
+                        </div>
+
+                        <!-- Miniaturas del carousel -->
+                        @for (item of mediaItems(); track $index) {
+                        <div class="media-item">
+                            <img *ngIf="item.type === 'image'" [src]="item.preview" />
+                            <video *ngIf="item.type === 'video'" [src]="item.preview"></video>
+                            <ion-button (click)="removeMedia($index)" fill="clear" color="danger" class="remove-btn">
+                                <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+                            </ion-button>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="location-footer" *ngIf="location()">
+                    <ion-chip class="glass-chip">
+                        <ion-icon name="location-outline"></ion-icon>
+                        <ion-label>{{ locationText() }}</ion-label>
+                    </ion-chip>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL DERECHO: FORMULARIO -->
+        <div class="panel right-panel">
+            <div class="glass-card form-card">
+                <div class="form-header">
+                    <h2>Datos de la Mascota</h2>
+                    <p>Completa la información necesaria</p>
+                </div>
+
+                <div class="form-grid">
+                    <ion-item lines="none" class="glass-input-premium">
+                        <ion-label position="stacked">Nombre</ion-label>
+                        <ion-input [(ngModel)]="petForm.name" placeholder="Ej. Bobby"></ion-input>
+                    </ion-item>
+
+                    <ion-segment [(ngModel)]="petForm.status" class="glass-segment">
+                        <ion-segment-button value="LOST">
+                            <ion-label>Perdido</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="ADOPTION">
+                            <ion-label>Adopción</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="FOUND">
+                            <ion-label>Hallado</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+
+                    <div class="form-row">
+                        <ion-item lines="none" class="glass-input-premium">
+                            <ion-label position="stacked">Categoría</ion-label>
+                            <ion-select [(ngModel)]="petForm.kindId" (ionChange)="onKindChange($event)"
+                                placeholder="Selecciona" class="glass-select">
+                                <ion-select-option *ngFor="let kind of kinds()" [value]="kind.id">
+                                    {{ kind.name }}
+                                </ion-select-option>
+                            </ion-select>
+                        </ion-item>
+
+                        <ion-item lines="none" class="glass-input-premium">
+                            <ion-label position="stacked">Género</ion-label>
+                            <ion-select [(ngModel)]="petForm.genderId" placeholder="Selecciona" class="glass-select">
+                                <ion-select-option *ngFor="let gender of genders()" [value]="gender.id">
+                                    {{ gender.name }}
+                                </ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </div>
+
+                    <ion-item lines="none" class="glass-input-premium" *ngIf="races().length > 0">
+                        <ion-label position="stacked">Raza</ion-label>
+                        <ion-select [(ngModel)]="petForm.raceId" placeholder="Selecciona raza (opcional)"
+                            class="glass-select">
+                            <ion-select-option *ngFor="let race of races()" [value]="race.id">
+                                {{ race.name }}
+                            </ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </div>
+
+                <div class="action-footer">
+                    <ion-button expand="block" (click)="savePet()" [disabled]="isSaving() || mediaItems().length === 0"
+                        class="glass-btn primary-btn">
+                        <ion-spinner *ngIf="isSaving()"></ion-spinner>
+                        <span *ngIf="!isSaving()">Publicar Registro</span>
+                    </ion-button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ion-content>
