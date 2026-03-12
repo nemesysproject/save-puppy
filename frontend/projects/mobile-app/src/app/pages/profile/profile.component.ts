@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import {
     IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
     IonCardTitle, IonCardContent, IonIcon, IonButton, IonLabel, IonItem,
-    IonList, IonMenuButton, IonButtons
+    IonList, IonMenuButton, IonButtons, IonBackButton
 } from '@ionic/angular/standalone';
 import { AuthService } from 'shared-logic';
 import { User } from 'shared-logic';
@@ -21,7 +21,7 @@ import {
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
         IonCardTitle, IonCardContent, IonIcon, IonButton, IonLabel, IonItem,
-        IonList, IonMenuButton, IonButtons
+        IonList, IonMenuButton, IonButtons, IonBackButton
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './profile.component.html',

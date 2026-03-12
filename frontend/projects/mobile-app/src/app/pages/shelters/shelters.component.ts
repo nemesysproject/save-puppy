@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
     IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
     IonCardTitle, IonCardContent, IonIcon,
-    IonRefresher, IonRefresherContent, IonSpinner, IonMenuButton, IonButtons
+    IonRefresher, IonRefresherContent, IonSpinner, IonMenuButton, IonButtons, IonBackButton
 } from '@ionic/angular/standalone';
 import { LookupService } from 'shared-logic';
 import { Shelter } from 'shared-logic';
@@ -20,7 +20,7 @@ import {
         CommonModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
         IonCardTitle, IonCardContent, IonIcon,
-        IonRefresher, IonRefresherContent, IonSpinner, IonMenuButton, IonButtons
+        IonRefresher, IonRefresherContent, IonSpinner, IonMenuButton, IonButtons, IonBackButton
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './shelters.component.html',

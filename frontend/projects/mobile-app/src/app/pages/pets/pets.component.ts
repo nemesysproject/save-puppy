@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonChip, IonLabel, IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonRefresher, IonRefresherContent, IonMenuButton, IonButtons, IonModal, IonFab, IonFabButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSearchbar, IonChip, IonLabel, IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonRefresher, IonRefresherContent, IonMenuButton, IonButtons, IonModal, IonFab, IonFabButton, IonBackButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
 import {
@@ -37,7 +37,7 @@ type DistanceOption = 1 | 5 | 10;
         IonContent, IonHeader, IonToolbar, IonTitle, IonIcon, IonBadge,
         IonRefresher, IonRefresherContent, IonSpinner,
         IonLabel, IonModal, IonMenuButton, IonButtons,
-        IonFab, IonFabButton
+        IonFab, IonFabButton, IonBackButton
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: './pets.component.html',

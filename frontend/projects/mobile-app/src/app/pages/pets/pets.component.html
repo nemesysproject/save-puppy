@@ -1,6 +1,7 @@
-<ion-header>
+﻿<ion-header>
     <ion-toolbar class="glass-toolbar">
         <ion-buttons slot="start">
+            <ion-back-button defaultHref="/dashboard"></ion-back-button>
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Mascotas</ion-title>
@@ -40,8 +41,10 @@
         <!-- Loading -->
         @if (isLoading()) {
         <div class="loading-container">
-            <ion-spinner name="crescent"></ion-spinner>
-            <p>Cargando mascotas...</p>
+            <div class="pulse-loader">
+                <span></span><span></span><span></span>
+            </div>
+            <p>Buscando mascotas...</p>
         </div>
         }
 

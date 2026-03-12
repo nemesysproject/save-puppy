@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
-    IonButton, IonIcon, IonItem, IonLabel, IonInput, IonSelect, IonSelectOption,
-    IonSegment, IonSegmentButton, IonChip, IonSpinner, IonToast
+    IonButton, IonIcon, IonItem, IonLabel, IonInput, IonChip, IonSpinner, IonToast
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cameraOutline, locationOutline, refreshOutline, closeOutline } from 'ionicons/icons';
+import { cameraOutline, locationOutline, refreshOutline, closeOutline, pawOutline } from 'ionicons/icons';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
 import { PetService, LookupService, Kind, Gender, Race } from 'shared-logic';
@@ -19,8 +18,8 @@ import { Router } from '@angular/router';
     imports: [
         CommonModule, FormsModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
-        IonButton, IonIcon, IonItem, IonLabel, IonInput, IonSelect, IonSelectOption,
-        IonSegment, IonSegmentButton, IonChip, IonSpinner
+        IonButton, IonIcon, IonItem, IonLabel, IonInput,
+        IonChip, IonSpinner
     ],
     templateUrl: './create-pet.component.html',
     styleUrl: './create-pet.component.scss'
@@ -55,7 +54,7 @@ export class CreatePetComponent implements OnInit {
     isSaving = signal(false);
 
     constructor() {
-        addIcons({ cameraOutline, locationOutline, refreshOutline, closeOutline });
+        addIcons({ cameraOutline, locationOutline, refreshOutline, closeOutline, pawOutline });
     }
 
     ngOnInit(): void {
@@ -63,16 +62,30 @@ export class CreatePetComponent implements OnInit {
     }
 
     async loadLookups() {
-        this.lookupService.getKinds().subscribe(kinds => this.kinds.set(kinds));
-        this.lookupService.getGenders().subscribe(genders => this.genders.set(genders));
+        console.log('Loading lookups from:', (this.lookupService as any).baseUrl);
+        this.lookupService.getKinds().subscribe({
+            next: kinds => {
+                console.log('Kinds loaded:', kinds);
+                this.kinds.set(kinds);
+            },
+            error: err => console.error('Failed to load kinds', err)
+        });
+        this.lookupService.getGenders().subscribe({
+            next: genders => {
+                console.log('Genders loaded:', genders);
+                this.genders.set(genders);
+            },
+            error: err => console.error('Failed to load genders', err)
+        });
     }
 
     onKindChange(event: any) {
-        const kindId = event.detail.value;
+        const kindId = event.target.value;
         this.lookupService.getRaces(kindId).subscribe(races => this.races.set(races));
     }
 
     async captureMedia() {
+        console.log('Requesting camera photo...');
         try {
             const image = await Camera.getPhoto({
                 quality: 90,
@@ -151,5 +164,9 @@ export class CreatePetComponent implements OnInit {
                 this.isSaving.set(false);
             }
         });
+    }
+
+    cancel() {
+        this.router.navigate(['/pets']);
     }
 }

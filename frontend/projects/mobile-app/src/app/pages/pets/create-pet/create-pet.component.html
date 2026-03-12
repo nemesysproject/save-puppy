@@ -8,25 +8,22 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <div class="split-container">
-
-        <!-- PANEL IZQUIERDO: CAPTURA Y CAROUSEL -->
-        <div class="panel left-panel">
+    <div class="create-pet-container">
+        <!-- Visual Section (Top/Left) -->
+        <div class="visual-panel">
             <div class="glass-card capture-card">
-                <div class="capture-header">
+                <div class="card-header">
                     <h2>Evidencia Visual</h2>
                     <p>Captura fotos o videos del suceso</p>
                 </div>
 
                 <div class="carousel-container">
                     <div class="media-scroller">
-                        <!-- Botón para agregar más -->
                         <div class="add-media-box" (click)="captureMedia()">
                             <ion-icon name="camera-outline"></ion-icon>
                             <span>Capturar</span>
                         </div>
 
-                        <!-- Miniaturas del carousel -->
                         @for (item of mediaItems(); track $index) {
                         <div class="media-item">
                             <img *ngIf="item.type === 'image'" [src]="item.preview" />
@@ -39,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="location-footer" *ngIf="location()">
+                <div class="location-chip-wrapper" *ngIf="location()">
                     <ion-chip class="glass-chip">
                         <ion-icon name="location-outline"></ion-icon>
                         <ion-label>{{ locationText() }}</ion-label>
@@ -48,73 +45,80 @@
             </div>
         </div>
 
-        <!-- PANEL DERECHO: FORMULARIO -->
-        <div class="panel right-panel">
+        <!-- Form Section (Bottom/Right) -->
+        <div class="form-panel">
             <div class="glass-card form-card">
-                <div class="form-header">
+                <div class="card-header">
                     <h2>Datos de la Mascota</h2>
                     <p>Completa la información necesaria</p>
                 </div>
 
-                <div class="form-grid">
-                    <ion-item lines="none" class="glass-input-premium">
-                        <ion-label position="stacked">Nombre</ion-label>
-                        <ion-input [(ngModel)]="petForm.name" placeholder="Ej. Bobby"></ion-input>
-                    </ion-item>
-
-                    <ion-segment [(ngModel)]="petForm.status" class="glass-segment">
-                        <ion-segment-button value="LOST">
-                            <ion-label>Perdido</ion-label>
-                        </ion-segment-button>
-                        <ion-segment-button value="ADOPTION">
-                            <ion-label>Adopción</ion-label>
-                        </ion-segment-button>
-                        <ion-segment-button value="FOUND">
-                            <ion-label>Hallado</ion-label>
-                        </ion-segment-button>
-                    </ion-segment>
-
-                    <div class="form-row">
-                        <ion-item lines="none" class="glass-input-premium">
-                            <ion-label position="stacked">Categoría</ion-label>
-                            <ion-select [(ngModel)]="petForm.kindId" (ionChange)="onKindChange($event)"
-                                placeholder="Selecciona" class="glass-select">
-                                <ion-select-option *ngFor="let kind of kinds()" [value]="kind.id">
-                                    {{ kind.name }}
-                                </ion-select-option>
-                            </ion-select>
-                        </ion-item>
-
-                        <ion-item lines="none" class="glass-input-premium">
-                            <ion-label position="stacked">Género</ion-label>
-                            <ion-select [(ngModel)]="petForm.genderId" placeholder="Selecciona" class="glass-select">
-                                <ion-select-option *ngFor="let gender of genders()" [value]="gender.id">
-                                    {{ gender.name }}
-                                </ion-select-option>
-                            </ion-select>
-                        </ion-item>
+                <div class="form-content">
+                    <div class="input-section">
+                        <ion-label class="section-label">Nombre de la Mascota</ion-label>
+                        <div class="glass-input-wrapper">
+                            <ion-icon name="paw-outline" class="input-icon"></ion-icon>
+                            <input [(ngModel)]="petForm.name" type="text" placeholder="Ej. Bobby" class="glass-input" />
+                        </div>
                     </div>
 
-                    <ion-item lines="none" class="glass-input-premium" *ngIf="races().length > 0">
-                        <ion-label position="stacked">Raza</ion-label>
-                        <ion-select [(ngModel)]="petForm.raceId" placeholder="Selecciona raza (opcional)"
-                            class="glass-select">
-                            <ion-select-option *ngFor="let race of races()" [value]="race.id">
-                                {{ race.name }}
-                            </ion-select-option>
-                        </ion-select>
-                    </ion-item>
+                    <!-- ESTADO -->
+                    <div class="field-box full">
+                        <label>¿Cuál es su estado actual?</label>
+                        <div class="status-selector">
+                            <button type="button" [class.active]="petForm.status === 'LOST'"
+                                (click)="petForm.status = 'LOST'">Perdido</button>
+                            <button type="button" [class.active]="petForm.status === 'ADOPTION'"
+                                (click)="petForm.status = 'ADOPTION'">Adopción</button>
+                            <button type="button" [class.active]="petForm.status === 'FOUND'"
+                                (click)="petForm.status = 'FOUND'">Hallado</button>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORÍA Y GÉNERO -->
+                    <div class="form-row">
+                        <div class="field-box">
+                            <label>Categoría</label>
+                            <div class="custom-select-group">
+                                <select [(ngModel)]="petForm.kindId" (change)="onKindChange($event)">
+                                    <option value="" disabled selected>Tipo...</option>
+                                    <option *ngFor="let kind of kinds()" [value]="kind.id">{{ kind.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="field-box">
+                            <label>Género</label>
+                            <div class="custom-select-group">
+                                <select [(ngModel)]="petForm.genderId">
+                                    <option value="" disabled selected>Sexo...</option>
+                                    <option *ngFor="let gender of genders()" [value]="gender.id">{{ gender.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RAZA -->
+                    <div class="field-box full" *ngIf="races().length > 0">
+                        <label>Raza específica</label>
+                        <div class="custom-select-group">
+                            <select [(ngModel)]="petForm.raceId">
+                                <option value="" selected>Opcional (Desconocida)</option>
+                                <option *ngFor="let race of races()" [value]="race.id">{{ race.name }}</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="action-footer">
-                    <ion-button expand="block" (click)="savePet()" [disabled]="isSaving() || mediaItems().length === 0"
-                        class="glass-btn primary-btn">
-                        <ion-spinner *ngIf="isSaving()"></ion-spinner>
-                        <span *ngIf="!isSaving()">Publicar Registro</span>
-                    </ion-button>
-                </div>
+                <footer class="form-actions">
+                    <button class="btn-submit" (click)="savePet()" [disabled]="isSaving() || mediaItems().length === 0">
+                        <ion-spinner *ngIf="isSaving()" name="dots"></ion-spinner>
+                        <span *ngIf="!isSaving()">Publicar</span>
+                    </button>
+                    <button class="btn-cancel" (click)="cancel()">Cancelar</button>
+                </footer>
             </div>
         </div>
-
     </div>
 </ion-content>
