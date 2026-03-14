@@ -2,9 +2,9 @@ import { Component, inject, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import {
-    IonContent, IonButton, IonCard, IonCardContent, IonCardHeader,
-    IonCardSubtitle, IonCardTitle, IonIcon, IonInput, IonItem,
-    IonLabel, IonSpinner, IonText
+    IonContent, IonCard, IonCardContent,
+    IonIcon,
+    IonSpinner, IonText
 } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService, RegisterRequest } from 'shared-logic';
@@ -20,8 +20,8 @@ import { environment } from '../../../environments/environment';
         CommonModule,
         ReactiveFormsModule,
         RouterLink,
-        IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle,
-        IonCardContent, IonItem, IonLabel, IonInput, IonButton, IonText,
+        IonContent, IonCard,
+        IonCardContent, IonText,
         IonIcon, IonSpinner
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

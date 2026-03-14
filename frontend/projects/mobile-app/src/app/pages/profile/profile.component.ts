@@ -2,8 +2,8 @@ import { Component, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angu
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {
-    IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-    IonCardTitle, IonCardContent, IonIcon, IonButton, IonLabel, IonItem,
+    IonContent, IonHeader, IonToolbar, IonTitle, IonCard, 
+     IonCardContent, IonIcon, IonButton,  IonItem,
     IonList, IonMenuButton, IonButtons, IonBackButton
 } from '@ionic/angular/standalone';
 import { AuthService } from 'shared-logic';
@@ -19,8 +19,8 @@ import {
     standalone: true,
     imports: [
         CommonModule,
-        IonContent, IonHeader, IonToolbar, IonTitle, IonCard, IonCardHeader,
-        IonCardTitle, IonCardContent, IonIcon, IonButton, IonLabel, IonItem,
+        IonContent, IonHeader, IonToolbar, IonTitle, IonCard, 
+         IonCardContent, IonIcon,   IonItem,
         IonList, IonMenuButton, IonButtons, IonBackButton
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

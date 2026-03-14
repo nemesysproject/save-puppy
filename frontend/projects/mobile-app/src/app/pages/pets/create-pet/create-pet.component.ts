@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
     IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
-    IonButton, IonIcon, IonItem, IonLabel, IonInput, IonChip, IonSpinner, IonToast
+    IonButton, IonIcon,  IonLabel,  IonChip, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { cameraOutline, locationOutline, refreshOutline, closeOutline, pawOutline } from 'ionicons/icons';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
     imports: [
         CommonModule, FormsModule,
         IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
-        IonButton, IonIcon, IonItem, IonLabel, IonInput,
+        IonButton, IonIcon, IonLabel,
         IonChip, IonSpinner
     ],
     templateUrl: './create-pet.component.html',
