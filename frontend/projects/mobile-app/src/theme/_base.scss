@@ -1,0 +1,35 @@
+@use 'variables' as *;
+/* =================================
+   Base & Global Styles
+   ================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth transitions */
+a,
+button,
+ion-card,
+ion-chip,
+ion-tab-button {
+  transition: all 0.2s ease;
+}
+
+/* Focus states for accessibility */
+:focus-visible {
+  outline: 2px solid $color-status-adoption;
+  outline-offset: 2px;
+}

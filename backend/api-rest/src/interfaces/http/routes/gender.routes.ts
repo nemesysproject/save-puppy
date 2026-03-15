@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { GenderController } from '@/controllers/gender.controller';
+import { Router } from "express";
+import { GenderController } from "@/controllers/gender.controller";
 
 const router = Router();
 const genderController = new GenderController();
@@ -23,6 +23,6 @@ const genderController = new GenderController();
  *     security:
  *       - bearerAuth: []
  */
-router.get('/', genderController.getGenders);
+router.get("/", genderController.getGenders);
 
 export default router;

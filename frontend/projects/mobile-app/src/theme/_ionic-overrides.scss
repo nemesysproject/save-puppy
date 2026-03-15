@@ -1,0 +1,24 @@
+@use 'variables' as *;
+
+/* =================================
+   Ionic Component Overrides
+   ================================= */
+
+ion-card {
+  --border-radius: $border-radius-large;
+  border-radius: $border-radius-large;
+}
+
+ion-button,
+ion-searchbar {
+  --border-radius: $border-radius-base;
+}
+
+ion-chip,
+ion-badge {
+  --border-radius: $border-radius-xl;
+}
+
+ion-badge {
+  font-weight: 600;
+}

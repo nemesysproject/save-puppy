@@ -1,0 +1,97 @@
+@use 'variables' as *;
+
+/* =================================
+   Glassmorphism Form Controls
+   ================================= */
+
+.glass-select {
+  --background: rgba($color-white, 0.1);
+  --placeholder-color: rgba($color-white, 0.4);
+  --padding-start: 16px;
+  --border-radius: $border-radius-large;
+  color: $color-text-light;
+  font-weight: 500;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba($color-white, 0.2) !important;
+  min-height: $control-min-height;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 8px 0;
+  transition: all 0.3s ease;
+
+  &::part(container) {
+    border: none;
+  }
+
+  &::part(icon) {
+    color: #2575fc;
+    opacity: 0.8;
+  }
+
+  &::part(text) {
+    color: $color-text-light;
+  }
+
+  &:focus-within {
+    background: rgba($color-white, 0.15);
+    border-color: rgba($color-white, 0.4) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.glass-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba($color-white, 0.15);
+  border: 1px solid rgba($color-white, 0.3);
+  border-radius: $border-radius-xl;
+  padding: 0 20px;
+  height: $control-height;
+  margin-bottom: 5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    background: rgba($color-white, 0.25);
+    border-color: rgba($color-white, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &.has-error {
+    border-color: $color-error;
+    background: $color-error-bg;
+    animation: shake 0.4s ease-in-out;
+  }
+
+  .input-icon {
+    font-size: 24px;
+    color: $color-text-light;
+    margin-right: 15px;
+    opacity: 0.9;
+  }
+
+  .glass-input {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: $color-text-light;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    text-align: left;
+
+    &::placeholder {
+      color: $color-placeholder;
+    }
+  }
+}
+
+.error-msg {
+  color: $color-error-light;
+  font-size: 13px;
+  padding: 0 10px;
+  margin-bottom: 15px;
+  display: block;
+}

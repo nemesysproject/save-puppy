@@ -1,0 +1,81 @@
+@use 'variables' as *;
+
+/* =================================
+   Glassmorphism Layouts & Cards
+   ================================= */
+
+.glass-page {
+  --background: url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($color-secondary, 0.8) 0%, rgba($color-primary, 0.8) 100%);
+    backdrop-filter: blur(5px);
+  }
+}
+
+.glass-card {
+  background: rgba($color-white, 0.15) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba($color-white, 0.3);
+  border-radius: $border-radius-xxl;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  overflow: visible;
+}
+
+/* Post-Auth Internal Pages Gradient Background */
+.glass-page-gradient {
+  --background: radial-gradient(circle at top right, rgba(255, 107, 107, 0.1) 0%, transparent 60%),
+    radial-gradient(circle at bottom left, rgba(78, 205, 196, 0.1) 0%, transparent 60%),
+    linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+/* Glass Menu */
+.glass-menu {
+  --background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-list {
+  background: transparent;
+
+  ion-item {
+    --background: transparent;
+    --color: #4a4a4a;
+    font-weight: 500;
+    margin: 4px 12px;
+    border-radius: 12px;
+
+    ion-icon {
+      color: $color-status-adoption;
+    }
+
+    &.active-item {
+      --background: rgba($color-status-adoption, 0.15);
+      --color: #d84315;
+      font-weight: 700;
+
+      ion-icon {
+        color: #d84315;
+      }
+    }
+  }
+}
+
+/* Glass Toolbars for internal pages */
+.glass-toolbar {
+  --background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  --border-color: rgba(255, 255, 255, 0.5);
+  --color: #333;
+}

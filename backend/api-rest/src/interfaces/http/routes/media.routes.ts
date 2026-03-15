@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { MediaController } from '@/controllers/media.controller';
-import { upload } from '@/infrastructure/middleware/upload.middleware';
-import { CloudinaryService } from '@/infrastructure/services/cloudinary.service';
+import { Router } from "express";
+import { MediaController } from "@/controllers/media.controller";
+import { upload } from "@/infrastructure/middleware/upload.middleware";
+import { CloudinaryService } from "@/infrastructure/services/cloudinary.service";
 
 const router = Router();
 const cloudinaryService = new CloudinaryService();
@@ -65,7 +65,7 @@ const mediaController = new MediaController(cloudinaryService);
  *             schema:
  *               $ref: '#/components/schemas/Media'
  */
-router.post('/', upload.single('image'), mediaController.create);
+router.post("/", upload.single("image"), mediaController.create);
 
 /**
  * @swagger
@@ -135,7 +135,7 @@ router.post('/', upload.single('image'), mediaController.create);
  *                   items:
  *                     $ref: '#/components/schemas/Media'
  */
-router.post('/search', upload.single('image'), mediaController.searchByImage);
+router.post("/search", upload.single("image"), mediaController.searchByImage);
 
 /**
  * @swagger
@@ -156,7 +156,7 @@ router.post('/search', upload.single('image'), mediaController.searchByImage);
  *       200:
  *         description: Eliminado correctamente
  */
-router.delete('/:id', mediaController.delete);
+router.delete("/:id", mediaController.delete);
 
 /**
  * @swagger
@@ -182,6 +182,6 @@ router.delete('/:id', mediaController.delete);
  *               items:
  *                 $ref: '#/components/schemas/Media'
  */
-router.get('/pet/:petId', mediaController.getByPetId);
+router.get("/pet/:petId", mediaController.getByPetId);
 
 export default router;

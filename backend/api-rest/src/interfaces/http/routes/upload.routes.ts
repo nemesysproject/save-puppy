@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { UploadController } from '@/controllers/upload.controller';
-import { upload } from '@/infrastructure/middleware/upload.middleware';
-import { CloudinaryService } from '@/infrastructure/services/cloudinary.service';
+import { Router } from "express";
+import { UploadController } from "@/controllers/upload.controller";
+import { upload } from "@/infrastructure/middleware/upload.middleware";
+import { CloudinaryService } from "@/infrastructure/services/cloudinary.service";
 
 const router = Router();
 const cloudinaryService = new CloudinaryService();
@@ -49,6 +49,6 @@ const uploadController = new UploadController(cloudinaryService);
  *       500:
  *         description: Error al subir la imagen
  */
-router.post('/', upload.single('image'), uploadController.upload);
+router.post("/", upload.single("image"), uploadController.upload);
 
 export default router;

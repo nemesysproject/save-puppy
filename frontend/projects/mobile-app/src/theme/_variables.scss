@@ -1,0 +1,49 @@
+/* =================================
+   Design Tokens - Single Source of Truth
+   ================================= */
+
+// --- Colors ---
+// Primary Palette
+$color-primary: #ff2d55;
+$color-secondary: #5856d6;
+$color-gradient-start: #667eea;
+$color-gradient-end: #764ba2;
+
+// Status Palette
+$color-status-lost: #ef5350;
+$color-status-found: #66bb6a;
+$color-status-adoption: #2dd36f;
+
+// Feedback Palette
+$color-error: #ff6b6b;
+$color-error-light: #ff9999;
+$color-error-bg: rgba(255, 107, 107, 0.15);
+
+// Neutral Palette
+$color-white: #fff;
+$color-text-light: #fff;
+$color-placeholder: rgba($color-white, 0.7);
+
+// --- Sizing & Radius ---
+$border-radius-base: 14px;
+$border-radius-large: 16px;
+$border-radius-xl: 20px;
+$border-radius-xxl: 30px;
+$control-height: 60px;
+$control-min-height: 56px;
+$login-logo-size: 80px;
+
+// --- Spacing ---
+// Based on an 8px grid system for consistency
+$spacing-unit: 8px;
+$spacing-xs: $spacing-unit * 0.5; // 4px
+$spacing-sm: $spacing-unit;       // 8px
+$spacing-md: $spacing-unit * 2;     // 16px
+$spacing-lg: $spacing-unit * 3;     // 24px
+$spacing-xl: $spacing-unit * 4;     // 32px
+
+// --- Typography ---
+$font-size-sm: 14px;
+
+$font-weight-medium: 500;
+$font-weight-bold: 700;

@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+/* =================================
+   Glassmorphism Buttons
+   ================================= */
+
+/* Base button styles */
+.glass-btn {
+  width: 100%;
+  height: $control-height;
+  border-radius: $border-radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  gap: 12px;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-icon {
+    font-size: 26px;
+  }
+
+  .btn-spinner {
+    color: currentColor;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Primary variant */
+.primary-btn {
+  @extend .glass-btn;
+  background: $color-white;
+  color: $color-primary;
+  box-shadow: 0 10px 25px rgba($color-primary, 0.4);
+  margin-top: 15px;
+}
+
+/* Outline variant */
+.outline-btn {
+  @extend .glass-btn;
+  background: rgba($color-white, 0.15);
+  color: $color-white;
+  border: 1px solid rgba($color-white, 0.4);
+}

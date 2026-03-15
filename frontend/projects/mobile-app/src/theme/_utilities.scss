@@ -1,0 +1,20 @@
+@use 'variables' as *;
+
+/* =================================
+   Utility Classes
+   ================================= */
+
+.status-lost {
+  --ion-color-base: $color-status-lost !important;
+  --ion-color-contrast: $color-white !important;
+}
+
+.status-adoption {
+  --ion-color-base: $color-status-adoption !important;
+  --ion-color-contrast: $color-white !important;
+}
+
+.status-found {
+  --ion-color-base: $color-status-found !important;
+  --ion-color-contrast: $color-white !important;
+}

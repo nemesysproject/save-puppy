@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { AuthController } from '@/controllers/auth.controller';
+import { Router } from "express";
+import { AuthController } from "@/controllers/auth.controller";
 
 const router = Router();
 const authController = new AuthController();
@@ -43,7 +43,7 @@ const authController = new AuthController();
  *       201:
  *         description: Usuario creado exitosamente
  */
-router.post('/register', authController.register);
+router.post("/register", authController.register);
 
 /**
  * @swagger
@@ -69,7 +69,7 @@ router.post('/register', authController.register);
  *       200:
  *         description: Login exitoso, retorna tokens
  */
-router.post('/login', authController.login);
+router.post("/login", authController.login);
 
 /**
  * @swagger
@@ -81,7 +81,7 @@ router.post('/login', authController.login);
  *       200:
  *         description: Autenticado correctamente
  */
-router.post('/google', authController.googleAuth);
+router.post("/google", authController.googleAuth);
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ router.post('/google', authController.googleAuth);
  *       200:
  *         description: Autenticado correctamente
  */
-router.post('/facebook', authController.facebookAuth);
+router.post("/facebook", authController.facebookAuth);
 
 /**
  * @swagger
@@ -128,8 +128,7 @@ router.post('/facebook', authController.facebookAuth);
  *       401:
  *         description: Token inválido o expirado
  */
-router.post('/refresh-token', authController.refreshToken);
-
+router.post("/refresh-token", authController.refreshToken);
 
 /**
  * @swagger
@@ -168,6 +167,6 @@ router.post('/refresh-token', authController.refreshToken);
  *       500:
  *         description: Error del servidor
  */
-router.post('/logout', authController.logout);
+router.post("/logout", authController.logout);
 
 export default router;

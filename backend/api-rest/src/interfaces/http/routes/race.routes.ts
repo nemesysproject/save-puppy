@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { RaceController } from '@/controllers/race.controller';
-import { mediator } from '@/infrastructure/shared/mediator';
+import { Router } from "express";
+import { RaceController } from "@/controllers/race.controller";
+import { mediator } from "@/infrastructure/shared/mediator";
 
 const router = Router();
 const raceController = new RaceController(mediator);
@@ -26,7 +26,7 @@ const raceController = new RaceController(mediator);
  *     security:
  *       - bearerAuth: []
  */
-router.get('/', (req, res) => raceController.getAllRaces(req, res));
+router.get("/", (req, res) => raceController.getAllRaces(req, res));
 
 /**
  * @swagger
@@ -60,7 +60,7 @@ router.get('/', (req, res) => raceController.getAllRaces(req, res));
  *     security:
  *       - bearerAuth: []
  */
-router.post('/', (req, res) => raceController.createRace(req, res));
+router.post("/", (req, res) => raceController.createRace(req, res));
 
 /**
  * @swagger
@@ -85,7 +85,7 @@ router.post('/', (req, res) => raceController.createRace(req, res));
  *     security:
  *       - bearerAuth: []
  */
-router.get('/:id', (req, res) => raceController.getRaceById(req, res));
+router.get("/:id", (req, res) => raceController.getRaceById(req, res));
 
 /**
  * @swagger
@@ -121,7 +121,7 @@ router.get('/:id', (req, res) => raceController.getRaceById(req, res));
  *     security:
  *       - bearerAuth: []
  */
-router.put('/:id', (req, res) => raceController.updateRace(req, res));
+router.put("/:id", (req, res) => raceController.updateRace(req, res));
 
 /**
  * @swagger
@@ -143,7 +143,7 @@ router.put('/:id', (req, res) => raceController.updateRace(req, res));
  *     security:
  *       - bearerAuth: []
  */
-router.delete('/:id', (req, res) => raceController.deleteRace(req, res));
+router.delete("/:id", (req, res) => raceController.deleteRace(req, res));
 
 /**
  * @swagger
@@ -166,6 +166,8 @@ router.delete('/:id', (req, res) => raceController.deleteRace(req, res));
  *     security:
  *       - bearerAuth: []
  */
-router.get('/by-kind/:kindId', (req, res) => raceController.getRacesByKind(req, res));
+router.get("/by-kind/:kindId", (req, res) =>
+	raceController.getRacesByKind(req, res),
+);
 
 export default router;

@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { PetController } from '@/controllers/pet.controller';
+import { Router } from "express";
+import { PetController } from "@/controllers/pet.controller";
 
 const router = Router();
 const petController = new PetController();
@@ -102,9 +102,9 @@ const petController = new PetController();
  *               items:
  *                 $ref: '#/components/schemas/Pet'
  */
-router.get('/search/location', petController.searchByLocation);
+router.get("/search/location", petController.searchByLocation);
 
-router.get('/', petController.getAll);
+router.get("/", petController.getAll);
 
 /**
  * @swagger
@@ -131,7 +131,7 @@ router.get('/', petController.getAll);
  *       404:
  *         description: Mascota no encontrada
  */
-router.get('/:id', petController.getById);
+router.get("/:id", petController.getById);
 
 /**
  * @swagger
@@ -173,7 +173,7 @@ router.get('/:id', petController.getById);
  *             schema:
  *               $ref: '#/components/schemas/Pet'
  */
-router.post('/', petController.create);
+router.post("/", petController.create);
 
 /**
  * @swagger
@@ -219,7 +219,7 @@ router.post('/', petController.create);
  *       404:
  *         description: Mascota no encontrada
  */
-router.put('/:id', petController.update);
+router.put("/:id", petController.update);
 
 /**
  * @swagger
@@ -242,6 +242,6 @@ router.put('/:id', petController.update);
  *       404:
  *         description: Mascota no encontrada
  */
-router.delete('/:id', petController.delete);
+router.delete("/:id", petController.delete);
 
 export default router;

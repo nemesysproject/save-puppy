@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { KindController } from '@/controllers/kind.controller';
+import { Router } from "express";
+import { KindController } from "@/controllers/kind.controller";
 
 const router = Router();
 const kindController = new KindController();
@@ -50,6 +50,6 @@ const kindController = new KindController();
  *     security:
  *       - bearerAuth: []
  */
-router.get('/', kindController.getKinds);
+router.get("/", kindController.getKinds);
 
 export default router;

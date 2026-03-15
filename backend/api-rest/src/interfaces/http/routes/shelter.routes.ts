@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { ShelterController } from '@/controllers/shelter.controller';
+import { Router } from "express";
+import { ShelterController } from "@/controllers/shelter.controller";
 
 const router = Router();
 const shelterController = new ShelterController();
@@ -53,7 +53,7 @@ const shelterController = new ShelterController();
  *               items:
  *                 $ref: '#/components/schemas/Shelter'
  */
-router.get('/', shelterController.getAll);
+router.get("/", shelterController.getAll);
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.get('/', shelterController.getAll);
  *       404:
  *         description: Refugio no encontrado
  */
-router.get('/:id', shelterController.getById);
+router.get("/:id", shelterController.getById);
 
 /**
  * @swagger
@@ -120,7 +120,7 @@ router.get('/:id', shelterController.getById);
  *             schema:
  *               $ref: '#/components/schemas/Shelter'
  */
-router.post('/', shelterController.create);
+router.post("/", shelterController.create);
 
 /**
  * @swagger
@@ -166,7 +166,7 @@ router.post('/', shelterController.create);
  *       404:
  *         description: Refugio no encontrado
  */
-router.put('/:id', shelterController.update);
+router.put("/:id", shelterController.update);
 
 /**
  * @swagger
@@ -189,6 +189,6 @@ router.put('/:id', shelterController.update);
  *       404:
  *         description: Refugio no encontrado
  */
-router.delete('/:id', shelterController.delete);
+router.delete("/:id", shelterController.delete);
 
 export default router;
