@@ -19,7 +19,9 @@
     "build": "prisma generate && tsc && tsc-alias",
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
-    "seed": "prisma db seed"
+    "seed": "prisma db seed",
+    "format": "npx @biomejs/biome format --write .",
+    "lint": "npx @biomejs/biome lint ."
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -32,7 +34,7 @@
     "express": "^4.18.2",
     "firebase-admin": "^13.6.1",
     "http-proxy-middleware": "^3.0.5",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.0.3",
     "multer": "^2.0.2",
     "opossum": "^9.0.0",
@@ -47,7 +49,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^20.10.4",
     "@types/opossum": "^8.1.9",

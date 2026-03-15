@@ -2,6 +2,6 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost/api'
+	production: false,
+	apiUrl: "http://localhost/api",
 };

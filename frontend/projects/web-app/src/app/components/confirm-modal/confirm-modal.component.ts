@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output, signal } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-confirm-modal',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+	selector: "app-confirm-modal",
+	standalone: true,
+	imports: [CommonModule],
+	template: `
     <ng-container *ngIf="isOpen()">
       <div class="modal fade show d-block" tabindex="-1" role="dialog" style="z-index: 1060;">
         <div class="modal-dialog modal-dialog-centered">
@@ -32,53 +32,55 @@ import { CommonModule } from '@angular/common';
       <div class="modal-backdrop fade show" style="z-index: 1050;" (click)="close()"></div>
     </ng-container>
   `,
-  styles: [`
+	styles: [
+		`
     .modal-header.bg-danger { background-color: #dc3545 !important; }
     .modal-header.bg-warning { background-color: #ffc107 !important; }
     .modal-backdrop { z-index: 1040; background-color: rgba(0,0,0,0.5); }
     .modal { z-index: 1050; }
     .modal-content { border-radius: 12px; }
-  `]
+  `,
+	],
 })
 export class ConfirmModalComponent {
-  @Input() title = 'Confirmar Acción';
-  @Input() message = '¿Estás seguro de que deseas realizar esta acción?';
-  @Input() subMessage = '';
-  @Input() confirmText = 'Confirmar';
-  @Input() type: 'danger' | 'warning' | 'primary' = 'danger';
+	@Input() title = "Confirmar Acción";
+	@Input() message = "¿Estás seguro de que deseas realizar esta acción?";
+	@Input() subMessage = "";
+	@Input() confirmText = "Confirmar";
+	@Input() type: "danger" | "warning" | "primary" = "danger";
 
-  @Output() onConfirm = new EventEmitter<void>();
-  @Output() onCancel = new EventEmitter<void>();
+	@Output() onConfirm = new EventEmitter<void>();
+	@Output() onCancel = new EventEmitter<void>();
 
-  isOpen = signal(false);
+	isOpen = signal(false);
 
-  open() {
-    this.isOpen.set(true);
-  }
+	open() {
+		this.isOpen.set(true);
+	}
 
-  close() {
-    this.isOpen.set(false);
-    this.onCancel.emit();
-  }
+	close() {
+		this.isOpen.set(false);
+		this.onCancel.emit();
+	}
 
-  confirm() {
-    this.isOpen.set(false);
-    this.onConfirm.emit();
-  }
+	confirm() {
+		this.isOpen.set(false);
+		this.onConfirm.emit();
+	}
 
-  headerClass() {
-    return {
-      'bg-danger': this.type === 'danger',
-      'bg-warning': this.type === 'warning',
-      'bg-primary': this.type === 'primary'
-    };
-  }
+	headerClass() {
+		return {
+			"bg-danger": this.type === "danger",
+			"bg-warning": this.type === "warning",
+			"bg-primary": this.type === "primary",
+		};
+	}
 
-  confirmBtnClass() {
-    return {
-      'btn-danger': this.type === 'danger',
-      'btn-warning': this.type === 'warning',
-      'btn-primary': this.type === 'primary'
-    };
-  }
+	confirmBtnClass() {
+		return {
+			"btn-danger": this.type === "danger",
+			"btn-warning": this.type === "warning",
+			"btn-primary": this.type === "primary",
+		};
+	}
 }

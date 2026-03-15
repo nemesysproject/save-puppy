@@ -3,52 +3,52 @@
  */
 
 export interface User {
-  id: string;
-  email: string;
-  role: string;
-  provider: string;
-  providerId?: string;
+	id: string;
+	email: string;
+	role: string;
+	provider: string;
+	providerId?: string;
 }
 
 export interface LoginRequest {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
 }
 
 export interface LoginResponse {
-  token: string;
-  user?: User;
+	token: string;
+	user?: User;
 }
 
 export interface RegisterRequest {
-  email: string;
-  password: string;
-  confirmPassword?: string;
+	email: string;
+	password: string;
+	confirmPassword?: string;
 }
 
 export interface RegisterResponse {
-  message: string;
-  user?: User;
+	message: string;
+	user?: User;
 }
 
 export interface RefreshTokenRequest {
-  token: string;
+	token: string;
 }
 
 export interface RefreshTokenResponse {
-  token: string;
+	token: string;
 }
 
 export interface LogoutRequest {
-  token?: string;
+	token?: string;
 }
 
 export interface LogoutResponse {
-  message: string;
+	message: string;
 }
 
 export interface AuthResponse {
-  message: string;
-  accessToken: string;
-  user?: User;
+	message: string;
+	accessToken: string;
+	user?: User;
 }
