@@ -99,20 +99,17 @@ export class CreatePetComponent implements OnInit {
 	}
 
 	async loadLookups() {
-		console.log("Loading lookups from:", (this.lookupService as any).baseUrl);
 		this.lookupService.getKinds().subscribe({
 			next: (kinds) => {
-				console.log("Kinds loaded:", kinds);
 				this.kinds.set(kinds);
 			},
-			error: (err) => console.error("Failed to load kinds", err),
+			error: (err) => {},
 		});
 		this.lookupService.getGenders().subscribe({
 			next: (genders) => {
-				console.log("Genders loaded:", genders);
 				this.genders.set(genders);
 			},
-			error: (err) => console.error("Failed to load genders", err),
+			error: (err) => {},
 		});
 	}
 
@@ -124,7 +121,6 @@ export class CreatePetComponent implements OnInit {
 	}
 
 	async captureMedia() {
-		console.log("Requesting camera photo...");
 		try {
 			const image = await Camera.getPhoto({
 				quality: 90,

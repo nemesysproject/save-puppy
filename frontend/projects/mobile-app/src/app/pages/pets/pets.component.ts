@@ -131,15 +131,12 @@ export class PetsComponent implements OnInit {
 
 		this.http.get<PetWithMedia[]>(url).subscribe({
 			next: (pets) => {
-				console.log("pets", pets);
 				this.isLoading.set(false);
 				this.pets.set(pets);
 				this.applyFilters();
 			},
 			error: (error) => {
-				console.error("error", error);
 				this.isLoading.set(false);
-				console.log("isLoading", this.isLoading());
 			},
 		});
 	}

@@ -63,7 +63,6 @@ export class LoginComponent {
 	showPassword = signal(false);
 
 	constructor() {
-		console.log("LoginComponent constructor");
 		addIcons({
 			eye,
 			eyeOff,
