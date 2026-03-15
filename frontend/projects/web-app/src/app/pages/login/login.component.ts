@@ -64,8 +64,6 @@ export class LoginComponent {
 			password: this.loginForm.get("password")?.value,
 		};
 
-		console.log("Login request:", loginRequest);
-		console.log("API URL:", environment.apiUrl);
 
 		// Call backend API using centralized service
 		this.authService.login(loginRequest).subscribe({

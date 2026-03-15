@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
+import helmet from "helmet";
 import http from "http";
+import { globalRateLimiter } from "./infrastructure/middleware/rate-limit.middleware";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import swaggerUi from "swagger-ui-express";
 import {
@@ -134,7 +136,8 @@ import uploadRoutes from "./interfaces/http/routes/upload.routes";
 dotenv.config();
 
 const app = express();
-
+app.use(helmet()); // Seguridad de cabeceras
+app.use(globalRateLimiter); // Límite de peticiones global
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;

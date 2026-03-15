@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { AuthController } from "@/controllers/auth.controller";
+import { authRateLimiter } from "@/infrastructure/middleware/rate-limit.middleware";
 
 const router = Router();
 const authController = new AuthController();
@@ -43,7 +44,7 @@ const authController = new AuthController();
  *       201:
  *         description: Usuario creado exitosamente
  */
-router.post("/register", authController.register);
+router.post("/register", authRateLimiter, authController.register);
 
 /**
  * @swagger
@@ -69,7 +70,7 @@ router.post("/register", authController.register);
  *       200:
  *         description: Login exitoso, retorna tokens
  */
-router.post("/login", authController.login);
+router.post("/login", authRateLimiter, authController.login);
 
 /**
  * @swagger
