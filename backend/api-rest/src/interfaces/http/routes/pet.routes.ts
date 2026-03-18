@@ -102,7 +102,7 @@ const petController = new PetController();
  *               items:
  *                 $ref: '#/components/schemas/Pet'
  */
-router.get("/search/location", petController.searchByLocation);
+router.get("/search", petController.searchByLocation);
 
 router.get("/", petController.getAll);
 

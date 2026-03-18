@@ -8,8 +8,10 @@ export class CreatePetCommand {
 		public readonly status: string,
 		public readonly kindId: string,
 		public readonly genderId: string,
+		public readonly raceId?: string | null,
 		public readonly shelterId?: string | null,
-		public readonly ownerEmail?: string,
+		public readonly ownerEmail?: string | null,
+		public readonly ownerId?: string | null,
 	) {}
 }
 
@@ -32,6 +34,8 @@ export class CreatePetHandler implements IHandler<CreatePetCommand, PetEntity> {
 			command.genderId,
 			command.shelterId,
 			command.ownerEmail,
+			command.ownerId,
+			command.raceId,
 		);
 		const createdPet = await this.petRepository.create(pet);
 

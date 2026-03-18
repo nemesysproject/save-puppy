@@ -190,7 +190,8 @@ export class CreatePetComponent implements OnInit {
 				status: this.petForm.status,
 				kindId: this.petForm.kindId,
 				genderId: this.petForm.genderId,
-				// ownerEmail will be handled by backend from JWT usually, or we can inject AuthService
+				raceId: this.petForm.raceId || undefined,
+				ownerEmail: this.petForm.ownerEmail || null,
 			})
 			.subscribe({
 				next: (res) => {

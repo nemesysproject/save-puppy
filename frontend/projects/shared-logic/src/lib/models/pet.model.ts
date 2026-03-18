@@ -15,7 +15,8 @@ export interface Pet {
 	genderId: string;
 	gender?: Gender;
 	shelterId?: string;
-	ownerEmail?: string;
+	ownerEmail?: string | null;
+	ownerId?: string | null;
 	createdAt?: Date;
 	updatedAt?: Date;
 }
@@ -25,8 +26,10 @@ export interface CreatePetRequest {
 	status: string;
 	kindId: string;
 	genderId: string;
+	raceId?: string | null;
 	shelterId?: string;
-	ownerEmail?: string;
+	ownerEmail?: string | null;
+	ownerId?: string | null;
 }
 
 export interface UpdatePetRequest {
@@ -34,8 +37,10 @@ export interface UpdatePetRequest {
 	status?: string;
 	kindId?: string;
 	genderId?: string;
+	raceId?: string | null;
 	shelterId?: string;
-	ownerEmail?: string;
+	ownerEmail?: string | null;
+	ownerId?: string | null;
 }
 
 export interface CreatePetResponse {

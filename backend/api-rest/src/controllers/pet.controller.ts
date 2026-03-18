@@ -10,15 +10,17 @@ import { mediator } from "@/infrastructure/shared/mediator";
 export class PetController {
 	async create(req: Request, res: Response) {
 		try {
-			const { name, status, kindId, genderId, shelterId, ownerEmail } =
+			const { name, status, kindId, genderId, shelterId, ownerEmail, ownerId, raceId } =
 				req.body;
 			const command = new CreatePetCommand(
 				name,
 				status,
 				kindId,
 				genderId,
+				raceId,
 				shelterId,
 				ownerEmail,
+				ownerId,
 			);
 			const result = await mediator.send("CreatePetCommand", command);
 			res.status(201).json(result);
@@ -30,7 +32,7 @@ export class PetController {
 	async update(req: Request, res: Response) {
 		try {
 			const { id } = req.params;
-			const { name, status, kindId, genderId, shelterId, ownerEmail } =
+			const { name, status, kindId, genderId, shelterId, ownerEmail, ownerId, raceId } =
 				req.body;
 			const command = new UpdatePetCommand(
 				id,
@@ -38,8 +40,10 @@ export class PetController {
 				status,
 				kindId,
 				genderId,
+				raceId,
 				shelterId,
 				ownerEmail,
+				ownerId,
 			);
 			const result = await mediator.send("UpdatePetCommand", command);
 			res.json(result);

@@ -21,7 +21,7 @@ export class LookupService {
 	}
 
 	getRaces(kindId: string): Observable<Race[]> {
-		return this.http.get<Race[]>(`${this.baseUrl}/races/kind/${kindId}`);
+		return this.http.get<Race[]>(`${this.baseUrl}/races/by-kind/${kindId}`);
 	}
 
 	getShelters(): Observable<Shelter[]> {

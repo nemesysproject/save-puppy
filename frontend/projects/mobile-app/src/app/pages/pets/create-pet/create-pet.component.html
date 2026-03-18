@@ -112,8 +112,9 @@
                 </div>
 
                 <footer class="form-actions">
-                    <button class="btn-submit" (click)="savePet()" [disabled]="isSaving() || mediaItems().length === 0">
-                        <ion-spinner *ngIf="isSaving()" name="dots"></ion-spinner>
+                    <!-- <button class="btn-submit" (click)="savePet()" [disabled]="isSaving() || mediaItems().length === 0"> -->
+                    <button class="btn-submit" (click)="savePet()" [disabled]="isSaving()">
+                        <ion-spinner *ngIf=" isSaving()" name="dots"></ion-spinner>
                         <span *ngIf="!isSaving()">Publicar</span>
                     </button>
                     <button class="btn-cancel" (click)="cancel()">Cancelar</button>

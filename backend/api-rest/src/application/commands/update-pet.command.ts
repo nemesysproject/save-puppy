@@ -9,8 +9,10 @@ export class UpdatePetCommand {
 		public readonly status?: string,
 		public readonly kindId?: string,
 		public readonly genderId?: string,
+		public readonly raceId?: string | null,
 		public readonly shelterId?: string | null,
-		public readonly ownerEmail?: string,
+		public readonly ownerEmail?: string | null,
+		public readonly ownerId?: string | null,
 	) {}
 }
 
@@ -27,6 +29,10 @@ export class UpdatePetHandler implements IHandler<UpdatePetCommand, PetEntity> {
 			petToUpdate.shelterId = command.shelterId;
 		if (command.ownerEmail !== undefined)
 			petToUpdate.ownerEmail = command.ownerEmail;
+		if (command.ownerId !== undefined)
+			petToUpdate.ownerId = command.ownerId;
+		if (command.raceId !== undefined)
+			petToUpdate.raceId = command.raceId;
 
 		return await this.petRepository.update(command.id, petToUpdate);
 	}

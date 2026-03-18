@@ -34,8 +34,10 @@ export class PrismaPetRepository implements IPetRepository {
 				status: pet.status,
 				kindId: pet.kindId,
 				genderId: pet.genderId,
+				raceId: pet.raceId,
 				shelterId: pet.shelterId,
-				ownerEmail: pet.ownerEmail || "",
+				ownerEmail: pet.ownerEmail,
+				ownerId: pet.ownerId,
 			},
 		});
 		return new PetEntity(
@@ -46,6 +48,8 @@ export class PrismaPetRepository implements IPetRepository {
 			created.genderId,
 			created.shelterId,
 			created.ownerEmail,
+			created.ownerId,
+			created.raceId,
 		);
 	}
 
@@ -62,6 +66,8 @@ export class PrismaPetRepository implements IPetRepository {
 			updated.genderId,
 			updated.shelterId,
 			updated.ownerEmail,
+			updated.ownerId,
+			updated.raceId,
 		);
 	}
 
@@ -80,6 +86,8 @@ export class PrismaPetRepository implements IPetRepository {
 			found.genderId,
 			found.shelterId,
 			found.ownerEmail,
+			found.ownerId,
+			found.raceId,
 		);
 	}
 
@@ -95,6 +103,8 @@ export class PrismaPetRepository implements IPetRepository {
 					p.genderId,
 					p.shelterId,
 					p.ownerEmail,
+					p.ownerId,
+					p.raceId,
 				),
 		);
 	}
@@ -172,9 +182,11 @@ export class PrismaPetRepository implements IPetRepository {
 						genderId: pet.genderId,
 						shelterId: pet.shelterId,
 						ownerEmail: pet.ownerEmail,
+						ownerId: pet.ownerId,
 						createdAt: pet.createdAt,
 						kind: pet.kind,
 						gender: pet.gender,
+						raceId: pet.raceId,
 						race: pet.race,
 						media:
 							mediaWithDistance.length > 0
@@ -201,6 +213,7 @@ export class PrismaPetRepository implements IPetRepository {
 						kind: pet.kind,
 						gender: pet.gender,
 						race: pet.race,
+						raceId: pet.raceId,
 						media: mediaWithDistance.map((m) => ({
 							url: m.url,
 							latitude: m.latitude,

@@ -31,7 +31,7 @@ model Pet {
   id          String   @id @default(uuid())
   name        String
   status      String   // LOST, ADOPTION, FOUND
-  ownerEmail  String
+  ownerEmail  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -46,6 +46,10 @@ model Pet {
 
   shelterId   String?
   shelter     Shelter? @relation(fields: [shelterId], references: [id])
+
+  ownerId     String?
+  owner       Owner?   @relation("PetOwner", fields: [ownerId], references: [id])
+
   media       Media[]
   adoptions   Adoption[]
 }
@@ -107,6 +111,7 @@ model Owner {
   userId      String?  @unique
   user        User?    @relation(fields: [userId], references: [id])
 
+  pets        Pet[]    @relation("PetOwner")
   adoptions   Adoption[]
 }
 

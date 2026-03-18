@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Pet" ADD COLUMN     "ownerId" TEXT,
+ALTER COLUMN "ownerEmail" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "Pet" ADD CONSTRAINT "Pet_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "Owner"("id") ON DELETE SET NULL ON UPDATE CASCADE;

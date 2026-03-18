@@ -37,24 +37,11 @@ import {
 	addOutline,
 } from "ionicons/icons";
 import { HttpClient } from "@angular/common/http";
-import { API_BASE_URL } from "shared-logic";
+import { API_BASE_URL, PetService, Pet } from "shared-logic";
 import { Router } from "@angular/router";
 
-interface PetWithMedia {
-	id: string;
-	name: string;
-	status: string;
-	kindId: string;
-	genderId: string;
-	shelterId: string | null;
-	ownerEmail: string | null;
-	createdAt: Date;
-	kind?: { name: string };
-	gender?: { name: string };
-	race?: { name: string } | null;
-	media?: { url: string; latitude: number | null; longitude: number | null }[];
-	distance?: number;
-}
+// interface PetWithMedia handled by the shared Pet model now
+type PetWithMedia = Pet & { distance?: number };
 
 type DistanceOption = 1 | 5 | 10;
 
@@ -84,6 +71,7 @@ type DistanceOption = 1 | 5 | 10;
 })
 export class PetsComponent implements OnInit {
 	private http = inject(HttpClient);
+	private petService = inject(PetService);
 	private baseUrl = inject(API_BASE_URL);
 	private router = inject(Router);
 
@@ -127,12 +115,18 @@ export class PetsComponent implements OnInit {
 	loadPets(): void {
 		this.isLoading.set(true);
 
-		const url = `${this.baseUrl}/pets/search?lat=${this.userLat}&lon=${this.userLon}&radius=${this.distance()}&status=LOST,ADOPTION&withImages=${this.includeImages()}`;
+		const params = {
+			lat: this.userLat,
+			lon: this.userLon,
+			radius: this.distance(),
+			status: "LOST,ADOPTION",
+			withImages: this.includeImages(),
+		};
 
-		this.http.get<PetWithMedia[]>(url).subscribe({
+		this.petService.searchPets(params).subscribe({
 			next: (pets) => {
 				this.isLoading.set(false);
-				this.pets.set(pets);
+				this.pets.set(pets as PetWithMedia[]);
 				this.applyFilters();
 			},
 			error: (error) => {

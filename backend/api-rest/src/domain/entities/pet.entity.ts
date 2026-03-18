@@ -7,6 +7,8 @@ export class PetEntity {
 		public kindId: string,
 		public genderId: string,
 		public shelterId?: string | null,
-		public ownerEmail?: string,
+		public ownerEmail?: string | null,
+		public ownerId?: string | null,
+		public raceId?: string | null,
 	) {}
 }
