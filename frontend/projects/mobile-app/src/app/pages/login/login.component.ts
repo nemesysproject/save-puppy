@@ -3,6 +3,7 @@ import {
 	inject,
 	signal,
 	CUSTOM_ELEMENTS_SCHEMA,
+	OnInit,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
@@ -32,6 +33,7 @@ import {
 } from "ionicons/icons";
 import { addIcons } from "ionicons";
 import { environment } from "../../../environments/environment";
+import { NativeBiometric } from "@capgo/capacitor-native-biometric";
 
 @Component({
 	selector: "app-login",
@@ -50,7 +52,7 @@ import { environment } from "../../../environments/environment";
 	templateUrl: "./login.component.html",
 	styleUrl: "./login.component.scss",
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 	private fb = inject(FormBuilder);
 	private router = inject(Router);
 	private authService = inject(AuthService);
@@ -61,6 +63,8 @@ export class LoginComponent {
 	isLoading = signal(false);
 	errorMessage = signal<string | null>(null);
 	showPassword = signal(false);
+	isBiometricModalOpen = signal(false);
+	canUseBiometrics = signal(false);
 
 	constructor() {
 		addIcons({
@@ -78,6 +82,22 @@ export class LoginComponent {
 		});
 	}
 
+	async ngOnInit() {
+		await this.checkBiometricCredentials();
+	}
+
+	async checkBiometricCredentials() {
+		try {
+			const result = await NativeBiometric.isCredentialsSaved({
+				server: environment.apiUrl,
+			});
+			this.canUseBiometrics.set(result.isSaved);
+		} catch (error) {
+			console.error("Error checking biometric credentials:", error);
+			this.canUseBiometrics.set(false);
+		}
+	}
+
 	get email() {
 		return this.loginForm.get("email");
 	}
@@ -91,33 +111,46 @@ export class LoginComponent {
 	}
 
 	async loginWithBiometrics() {
-		const alert = await this.alertCtrl.create({
-			header: "Autenticación Biométrica",
-			message: "Usa Face ID o Huella Digital para iniciar sesión rápidamente.",
-			buttons: [
-				{
-					text: "Cancelar",
-					role: "cancel",
-				},
-				{
-					text: "Autenticar",
-					handler: () => {
-						this.isLoading.set(true);
-						setTimeout(() => {
-							this.isLoading.set(false);
-							this.authService.setToken("mock-biometric-token", {
-								id: "biometric-mock",
-								email: "bio@savepuppy.com",
-								role: "USER",
-								provider: "BIOMETRICS",
-							});
-							this.router.navigate(["/dashboard"]);
-						}, 1000);
-					},
-				},
-			],
-		});
-		await alert.present();
+		try {
+			// Check if biometrics are available
+			const available = await NativeBiometric.isAvailable();
+			if (!available.isAvailable) {
+				return;
+			}
+
+			// Show custom modal
+			this.isBiometricModalOpen.set(true);
+
+			// Perform biometric verification
+			await NativeBiometric.verifyIdentity({
+				reason: "Inicia sesión en Save Puppy",
+				title: "Autenticación",
+				subtitle: "Usa tu huella o Face ID",
+				description: "Coloca tu huella en el sensor para continuar",
+			});
+
+			// If verifyIdentity doesn't throw, it's successful
+			// Retrieve credentials
+			const credentials = await NativeBiometric.getCredentials({
+				server: environment.apiUrl,
+			});
+
+			this.isBiometricModalOpen.set(false);
+
+			if (credentials && credentials.username && credentials.password) {
+				this.performLogin({
+					email: credentials.username,
+					password: credentials.password,
+				});
+			}
+		} catch (error: any) {
+			this.isBiometricModalOpen.set(false);
+			console.error("Biometric error:", error);
+		}
+	}
+
+	cancelBiometrics() {
+		this.isBiometricModalOpen.set(false);
 	}
 
 	onSubmit(): void {
@@ -128,20 +161,34 @@ export class LoginComponent {
 			return;
 		}
 
-		this.isLoading.set(true);
-		this.errorMessage.set(null);
-
 		const loginRequest: LoginRequest = {
 			email: this.loginForm.get("email")?.value,
 			password: this.loginForm.get("password")?.value,
 		};
 
+		this.performLogin(loginRequest, true); // True to save credentials on success
+	}
+
+	private performLogin(loginRequest: LoginRequest, saveOnSuccess = false): void {
+		this.isLoading.set(true);
+		this.errorMessage.set(null);
+
 		// Call backend API
 		this.http
 			.post<any>(`${environment.apiUrl}/auth/login`, loginRequest)
 			.subscribe({
-				next: (response) => {
+				next: async (response) => {
 					if (response.token) {
+						if (saveOnSuccess) {
+							// Save credentials for future biometric login
+							await NativeBiometric.setCredentials({
+								username: loginRequest.email,
+								password: loginRequest.password,
+								server: environment.apiUrl,
+							}).catch((err) =>
+								console.error("Error saving credentials:", err),
+							);
+						}
 						this.authService.setToken(response.token, response.user);
 						this.router.navigate(["/dashboard"]);
 					}
@@ -149,7 +196,9 @@ export class LoginComponent {
 				error: (error) => {
 					this.isLoading.set(false);
 					this.errorMessage.set(
-						error.message.includes("401") || error.message, //'Error al iniciar sesión. Intenta de nuevo.'
+						error.message.includes("401")
+							? "Credenciales inválidas"
+							: error.message || "Error al iniciar sesión",
 					);
 				},
 				complete: () => {

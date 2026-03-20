@@ -51,7 +51,7 @@
         <div class="divider">o continúa con</div>
 
         <!-- Biometric Button -->
-        <button type="button" class="glass-btn outline-btn" (click)="loginWithBiometrics()" [disabled]="isLoading()">
+        <button *ngIf="canUseBiometrics()" type="button" class="glass-btn outline-btn" (click)="loginWithBiometrics()" [disabled]="isLoading()">
           <ion-icon name="finger-print-outline" class="btn-icon"></ion-icon>
           <span>Usar biometría</span>
         </button>
@@ -67,5 +67,21 @@
         </div>
       </ion-card-content>
     </ion-card>
+  </div>
+
+  <!-- Biometric capture modal overlay -->
+  <div class="biometric-modal-overlay" [class.visible]="isBiometricModalOpen()">
+    <div class="biometric-modal-content">
+      <div class="biometric-icon-container">
+        <div class="pulse-ring"></div>
+        <ion-icon name="finger-print-outline" class="biometric-main-icon"></ion-icon>
+      </div>
+      <h2 class="biometric-status-text">Capturando huella...</h2>
+      <p class="biometric-sub-text">Por favor, coloca tu dedo en el sensor biométrico para continuar.</p>
+      
+      <button type="button" class="cancel-btn" (click)="cancelBiometrics()">
+        Cancelar
+      </button>
+    </div>
   </div>
 </ion-content>
