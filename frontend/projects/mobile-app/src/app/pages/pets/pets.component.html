@@ -1,111 +1,124 @@
-﻿<ion-header>
+<ion-header class="ion-no-border">
     <ion-toolbar class="glass-toolbar">
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/dashboard"></ion-back-button>
+            <ion-back-button defaultHref="/dashboard" color="dark"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Explorar Peludos</ion-title>
+        <ion-buttons slot="end">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Mascotas</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar class="glass-toolbar">
+        <ion-searchbar 
+            placeholder="Buscar por nombre, raza..." 
+            class="pets-search"
+            (ionInput)="onSearch($event)"
+            [debounce]="300">
+        </ion-searchbar>
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="glass-page-gradient pets-page">
+<ion-content [fullscreen]="true" class="glass-page-gradient">
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-        <ion-refresher-content pullingIcon="refresh-outline"></ion-refresher-content>
+        <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
     <div class="pets-container">
-        <!-- Search -->
-        <ion-searchbar placeholder="Buscar mascota..." [debounce]="300" (ionInput)="onSearch($event)"
-            class="pets-search"></ion-searchbar>
-
-        <!-- Filter Chips -->
-        <div class="filter-chips">
+        <!-- Filtros de Estado -->
+        <div class="filter-chips" *ngIf="pets().length > 0">
             <ion-chip [class.active]="activeFilter() === 'ALL'" (click)="setFilter('ALL')">
+                <ion-icon name="paw-outline"></ion-icon>
                 <ion-label>Todos</ion-label>
             </ion-chip>
-            <ion-chip [class.active]="activeFilter() === 'LOST'" (click)="setFilter('LOST')" class="chip-lost">
+            <ion-chip class="chip-lost" [class.active]="activeFilter() === 'LOST'" (click)="setFilter('LOST')">
                 <ion-icon name="alert-circle-outline"></ion-icon>
                 <ion-label>Perdidos</ion-label>
             </ion-chip>
-            <ion-chip [class.active]="activeFilter() === 'ADOPTION'" (click)="setFilter('ADOPTION')"
-                class="chip-adoption">
+            <ion-chip class="chip-adoption" [class.active]="activeFilter() === 'ADOPTION'" (click)="setFilter('ADOPTION')">
                 <ion-icon name="heart-outline"></ion-icon>
                 <ion-label>Adopción</ion-label>
             </ion-chip>
-            <ion-chip [class.active]="activeFilter() === 'FOUND'" (click)="setFilter('FOUND')" class="chip-found">
-                <ion-icon name="search-outline"></ion-icon>
-                <ion-label>Encontrados</ion-label>
-            </ion-chip>
         </div>
 
-        <!-- Loading -->
-        @if (isLoading()) {
+        <!-- Lista de Mascotas -->
+        <div *ngIf="!isLoading(); else loadingTpl">
+            <div *ngIf="filteredPets().length > 0; else emptyTpl">
+                <ion-card class="glass-card pet-card" *ngFor="let pet of filteredPets(); let i = index">
+                    <div class="pet-item-layout">
+                        <!-- Panel Izquierdo: Imagen -->
+                        <div class="left-panel">
+                            <ion-thumbnail class="custom-thumbnail">
+                                <img [src]="pet.media?.[0]?.url || 'assets/placeholders/pet-placeholder.png'" [alt]="pet.name" />
+                            </ion-thumbnail>
+                        </div>
+                        
+                        <!-- Panel Derecho: Características y Acciones -->
+                        <div class="right-panel">
+                            <div class="info-section">
+                                <div style="display: flex; flex-direction: column; gap: 2px;">
+                                    <ion-card-title>{{ pet.name }}</ion-card-title>
+                                    <ion-card-subtitle>{{ pet.race?.name || 'Raza desconocida' }}</ion-card-subtitle>
+                                </div>
+                                
+                                <div class="pet-details">
+                                    <span class="pet-detail">
+                                        <ion-icon name="location-outline"></ion-icon>
+                                        {{ formatDistance(pet.distance) || 'Cerca de ti' }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="action-section">
+                                <ion-badge [class]="'status-' + (pet.status?.toLowerCase() || 'lost')">
+                                    {{ getStatusLabel(pet.status) }}
+                                </ion-badge>
+                                
+                                <div class="button-group">
+                                    <ion-button class="glass-icon-btn" fill="clear" (click)="editPet(pet)">
+                                        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+                                    </ion-button>
+                                    <ion-button class="glass-icon-btn" fill="clear" (click)="deletePet(pet, i)">
+                                        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                                    </ion-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-card>
+            </div>
+        </div>
+
+        <!-- Infinite Scroll -->
+        <ion-infinite-scroll (ionInfinite)="loadMore($event)" [disabled]="!hasMore()">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más amigos...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+
+    <!-- Templates -->
+    <ng-template #loadingTpl>
         <div class="loading-container">
             <div class="pulse-loader">
                 <span></span><span></span><span></span>
             </div>
-            <p>Buscando mascotas...</p>
+            <p>Buscando huellas cercanas...</p>
         </div>
-        }
+    </ng-template>
 
-        <!-- Pet List -->
-        @if (!isLoading()) {
-        @if (filteredPets().length === 0) {
+    <ng-template #emptyTpl>
         <div class="empty-state">
-            <ion-icon name="paw-outline"></ion-icon>
-            <h3>Sin resultados</h3>
-            <p>No se encontraron mascotas con los filtros aplicados</p>
+            <ion-icon name="search-outline"></ion-icon>
+            <h3>No se encontraron mascotas</h3>
+            <p>Prueba con otros filtros o expande tu radio de búsqueda.</p>
         </div>
-        }
+    </ng-template>
 
-        @for (pet of filteredPets(); track pet.id) {
-        <ion-card class="glass-card pet-card">
-            <ion-card-header>
-                <div class="pet-header">
-                    <div class="pet-title-section">
-                        <ion-card-title>{{ pet.name }}</ion-card-title>
-                        <ion-card-subtitle>
-                            @if (pet.kind) {
-                            {{ pet.kind.name }}
-                            }
-                            @if (pet.race) {
-                            · {{ pet.race.name }}
-                            }
-                        </ion-card-subtitle>
-                    </div>
-                    <ion-badge [color]="getStatusColor(pet.status)">
-                        {{ getStatusLabel(pet.status) }}
-                    </ion-badge>
-                </div>
-            </ion-card-header>
-            <ion-card-content>
-                <div class="pet-details">
-                    @if (pet.gender) {
-                    <span class="pet-detail">
-                        <ion-icon [name]="pet.gender.name === 'Macho' ? 'male-outline' : 'female-outline'"></ion-icon>
-                        {{ pet.gender.name }}
-                    </span>
-                    }
-                    @if (pet.ownerEmail) {
-                    <span class="pet-detail">📧 {{ pet.ownerEmail }}</span>
-                    }
-                </div>
-            </ion-card-content>
-        </ion-card>
-        }
-        }
-    </div>
-
-    <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button (click)="goToCreatePet()" class="extended-fab">
-            <ion-icon name="add-outline"></ion-icon>
-            <ion-label>Registrar mascota</ion-label>
-        </ion-fab-button>
-    </ion-fab> -->
-
-    <ion-fab>
-        <ion-fab-button (click)="goToCreatePet()">
+    <!-- Botón Flotante -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="goToCreatePet()" style="--background: rgba(255, 255, 255, 0.15); --border-width: 1px; --border-style: solid; --border-color: rgba(255, 255, 255, 0.4); --color: #fff; --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+
 </ion-content>

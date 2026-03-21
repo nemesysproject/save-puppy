@@ -22,6 +22,18 @@ import {
 	IonFab,
 	IonFabButton,
 	IonBackButton,
+	IonCard,
+	IonCardHeader,
+	IonCardTitle,
+	IonCardSubtitle,
+	IonCardContent,
+	IonList,
+	IonItem,
+	IonThumbnail,
+	IonSearchbar,
+	IonChip,
+	IonInfiniteScroll,
+	IonInfiniteScrollContent,
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { add } from "ionicons/icons";
@@ -35,6 +47,8 @@ import {
 	imageOutline,
 	closeOutline,
 	addOutline,
+	createOutline,
+	trashOutline,
 } from "ionicons/icons";
 import { HttpClient } from "@angular/common/http";
 import { API_BASE_URL, PetService, Pet } from "shared-logic";
@@ -64,6 +78,18 @@ type DistanceOption = 1 | 5 | 10;
 		IonFab,
 		IonFabButton,
 		IonBackButton,
+		IonCard,
+		IonCardHeader,
+		IonCardTitle,
+		IonCardSubtitle,
+		IonCardContent,
+		IonList,
+		IonItem,
+		IonThumbnail,
+		IonSearchbar,
+		IonChip,
+		IonInfiniteScroll,
+		IonInfiniteScrollContent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	templateUrl: "./pets.component.html",
@@ -81,6 +107,8 @@ export class PetsComponent implements OnInit {
 	distance = signal<DistanceOption>(5);
 	showOptionsModal = signal(false);
 	includeImages = signal(true);
+	hasMore = signal(true);
+
 
 	activeFilter = signal<string>("ALL");
 	searchQuery = signal<string>("");
@@ -101,6 +129,8 @@ export class PetsComponent implements OnInit {
 			imageOutline,
 			closeOutline,
 			addOutline,
+			createOutline,
+			trashOutline,
 		});
 	}
 
@@ -112,27 +142,47 @@ export class PetsComponent implements OnInit {
 		this.loadPets();
 	}
 
-	loadPets(): void {
-		this.isLoading.set(true);
+	loadPets(event?: any): void {
+		if (!event) {
+			this.isLoading.set(true);
+		}
 
-		const params = {
+		console.log("Loading pets", {
 			lat: this.userLat,
 			lon: this.userLon,
 			radius: this.distance(),
-			status: "LOST,ADOPTION",
-			withImages: this.includeImages(),
-		};
-
-		this.petService.searchPets(params).subscribe({
-			next: (pets) => {
-				this.isLoading.set(false);
-				this.pets.set(pets as PetWithMedia[]);
-				this.applyFilters();
-			},
-			error: (error) => {
-				this.isLoading.set(false);
-			},
 		});
+
+		// Use the PetService to fetch real data
+		this.petService
+			.searchPets({
+				lat: this.userLat,
+				lon: this.userLon,
+				radius: this.distance(),
+			})
+			.subscribe({
+				next: (pets: any[]) => {
+					if (!event) {
+						this.isLoading.set(false);
+					}
+					// The user requested to limit the response to 3 pets
+					const limitedPets = pets.slice(0, 3);
+					this.pets.set(limitedPets);
+					this.applyFilters();
+					if (event) {
+						event.target.complete();
+					}
+				},
+				error: (err) => {
+					console.error("Error loading pets", err);
+					if (!event) {
+						this.isLoading.set(false);
+					}
+					if (event) {
+						event.target.complete();
+					}
+				},
+			});
 	}
 
 	loadMore(event: any): void {
@@ -160,7 +210,10 @@ export class PetsComponent implements OnInit {
 			this.filteredPets.set([...this.filteredPets(), ...next]);
 		}
 
+		this.hasMore.set(next.length === 10);
+
 		setTimeout(() => event.target.complete(), 500);
+
 	}
 
 	setFilter(filter: string): void {
@@ -193,6 +246,7 @@ export class PetsComponent implements OnInit {
 		}
 
 		this.filteredPets.set(result.slice(0, 10));
+		this.hasMore.set(result.length > 10);
 	}
 
 	setDistance(dist: DistanceOption): void {
@@ -235,7 +289,23 @@ export class PetsComponent implements OnInit {
 	}
 
 	handleRefresh(event: any): void {
-		this.loadPets();
-		setTimeout(() => event.target.complete(), 1000);
+		this.loadPets(event);
+	}
+
+	editPet(pet: PetWithMedia): void {
+		this.router.navigate(["/pets/edit", pet.id]);
+	}
+
+	deletePet(pet: PetWithMedia, index: number): void {
+		if (confirm(`¿Estás seguro de eliminar a ${pet.name}?`)) {
+			this.petService.deletePet(pet.id).subscribe({
+				next: () => {
+					const updatedPets = this.pets().filter((p) => p.id !== pet.id);
+					this.pets.set(updatedPets);
+					this.applyFilters();
+				},
+				error: (err) => console.error("Error deleting pet", err),
+			});
+		}
 	}
 }

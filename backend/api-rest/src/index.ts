@@ -131,7 +131,6 @@ import mediaRoutes from "./interfaces/http/routes/media.routes";
 import petRoutes from "./interfaces/http/routes/pet.routes";
 import raceRoutes from "./interfaces/http/routes/race.routes";
 import shelterRoutes from "./interfaces/http/routes/shelter.routes";
-import uploadRoutes from "./interfaces/http/routes/upload.routes";
 
 dotenv.config();
 
@@ -264,7 +263,6 @@ app.use("/api/races", authMiddleware.authenticate, raceRoutes);
 app.use("/api/shelters", authMiddleware.authenticate, shelterRoutes);
 app.use("/api/pets", authMiddleware.authenticate, petRoutes);
 app.use("/api/recognition", authMiddleware.authenticate, recognitionProxy);
-app.use("/api/upload", authMiddleware.authenticate, uploadRoutes);
 app.use("/api/media", authMiddleware.authenticate, mediaRoutes);
 app.use("/api/dashboard", authMiddleware.authenticate, dashboardRoutes);
 

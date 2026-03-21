@@ -1,6 +1,9 @@
 {
 	"name": "puppy-clients",
 	"version": "0.0.0",
+	"overrides": {
+		"undici": "^7.24.5"
+	},
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
@@ -34,7 +37,7 @@
 		"@capacitor-community/sqlite": "^8.0.1",
 		"@capacitor/android": "^8.1.0",
 		"@capacitor/camera": "^8.0.2",
-		"@capacitor/cli": "^2.5.0",
+		"@capacitor/cli": "^8.2.0",
 		"@capacitor/core": "^8.1.0",
 		"@capacitor/geolocation": "^8.1.0",
 		"@capacitor/network": "^8.0.1",
@@ -51,8 +54,8 @@
 		"tslib": "^2.3.0"
 	},
 	"devDependencies": {
-		"@angular/build": "21.2.2",
-		"@angular/cli": "21.2.2",
+		"@angular/build": "^21.2.3",
+		"@angular/cli": "21.2.3",
 		"@angular/compiler-cli": "21.2.4",
 		"@biomejs/biome": "2.4.7",
 		"@ionic/angular-toolkit": "^12.3.0",

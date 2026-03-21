@@ -35,12 +35,20 @@ const mediaController = new MediaController(cloudinaryService);
 
 /**
  * @swagger
- * /api/media:
+ * /api/media/{petId}:
  *   post:
  *     summary: Subir foto para una mascota
  *     tags: [Media]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: petId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID de la mascota asociada
  *     requestBody:
  *       required: true
  *       content:
@@ -49,14 +57,16 @@ const mediaController = new MediaController(cloudinaryService);
  *             type: object
  *             required:
  *               - image
- *               - petId
  *             properties:
  *               image:
  *                 type: string
  *                 format: binary
- *               petId:
- *                 type: string
- *                 format: uuid
+ *               latitude:
+ *                 type: number
+ *               longitude:
+ *                 type: number
+ *               precisionMeters:
+ *                 type: integer
  *     responses:
  *       201:
  *         description: Foto subida exitosamente
@@ -65,7 +75,7 @@ const mediaController = new MediaController(cloudinaryService);
  *             schema:
  *               $ref: '#/components/schemas/Media'
  */
-router.post("/", upload.single("image"), mediaController.create);
+router.post("/:petId", upload.single("image"), mediaController.create);
 
 /**
  * @swagger

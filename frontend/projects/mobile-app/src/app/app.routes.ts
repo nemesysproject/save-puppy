@@ -36,6 +36,14 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 	},
 	{
+		path: "pets/edit/:id",
+		loadComponent: () =>
+			import("./pages/pets/edit-pet/edit-pet.component").then(
+				(m) => m.EditPetComponent,
+			),
+		canActivate: [AuthGuard],
+	},
+	{
 		path: "pets",
 		loadComponent: () =>
 			import("./pages/pets/pets.component").then((m) => m.PetsComponent),

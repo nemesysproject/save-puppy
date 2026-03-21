@@ -18,18 +18,30 @@ export class MediaController {
 					.json({ error: "No se ha proporcionado ninguna imagen" });
 			}
 
-			const { petId } = req.body;
+			const { petId } = req.params;
 			if (!petId) {
-				return res.status(400).json({ error: "petId es requerido" });
+				return res.status(400).json({ error: "petId es requerido en la URL" });
+			}
+
+			// Validar cantidad máxima de fotos permitidas (10)
+			const existingMediaQuery = new GetMediaByPetQuery(petId);
+			const existingMedia = (await mediator.send(
+				"GetMediaByPetQuery",
+				existingMediaQuery,
+			)) as any[];
+
+			if (existingMedia.length >= 10) {
+				return res.status(400).json({
+					error: "Límite máximo de 10 archivos multimedia por mascota alcanzado",
+				});
 			}
 
 			// 1. Subir imagen a Cloudinary
-			// Ahora uploadImage retorna { url, publicId }
 			const { url, publicId } = await this.cloudinaryService.uploadImage(
 				req.file.buffer,
 			);
 
-			// 2. Persistir metadatos en BD usando CQRS
+			// 2. Calcular Geohash basado en las coordenadas pasadas si existen
 			const lat =
 				req.body.latitude !== undefined ? parseFloat(req.body.latitude) : null;
 			const lon =
@@ -47,12 +59,13 @@ export class MediaController {
 				geohash = computeGeohash(lat, lon, precision);
 			}
 
+			// 3. Emitir comando a base de datos
 			const command = new CreateMediaCommand(
 				url,
 				publicId,
 				"CLOUDINARY", // provider
 				"IMAGE", // type
-				lat ?? 0, // latitude (if missing, stored as 0)
+				lat ?? 0, // latitude
 				lon ?? 0, // longitude
 				geohash,
 				petId,
@@ -65,6 +78,7 @@ export class MediaController {
 			res.status(500).json({ error: "Error interno al procesar media" });
 		}
 	};
+
 
 	delete = async (req: Request, res: Response) => {
 		try {

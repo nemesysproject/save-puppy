@@ -148,6 +148,8 @@ export class PrismaPetRepository implements IPetRepository {
 			orderBy: { createdAt: "desc" },
 		});
 
+		console.log("Candidates", candidates);
+
 		const results: PetWithMedia[] = candidates
 			.map((pet) => {
 				const mediaWithDistance: {
@@ -191,10 +193,10 @@ export class PrismaPetRepository implements IPetRepository {
 						media:
 							mediaWithDistance.length > 0
 								? mediaWithDistance.map((m) => ({
-										url: m.url,
-										latitude: m.latitude,
-										longitude: m.longitude,
-									}))
+									url: m.url,
+									latitude: m.latitude,
+									longitude: m.longitude,
+								}))
 								: [],
 						distance: minDistance === Infinity ? null : minDistance,
 					};
@@ -231,6 +233,8 @@ export class PrismaPetRepository implements IPetRepository {
 					(withImages === false || (p.media && p.media.length > 0)),
 			) as any;
 
+		console.log("Results", results);
+
 		return results.sort((a, b) => (a.distance || 0) - (b.distance || 0));
 	}
 
@@ -246,9 +250,9 @@ export class PrismaPetRepository implements IPetRepository {
 		const a =
 			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
 			Math.cos((lat1 * Math.PI) / 180) *
-				Math.cos((lat2 * Math.PI) / 180) *
-				Math.sin(dLon / 2) *
-				Math.sin(dLon / 2);
+			Math.cos((lat2 * Math.PI) / 180) *
+			Math.sin(dLon / 2) *
+			Math.sin(dLon / 2);
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return R * c;
 	}

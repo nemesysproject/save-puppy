@@ -22,8 +22,12 @@ export class PetController {
 				ownerEmail,
 				ownerId,
 			);
-			const result = await mediator.send("CreatePetCommand", command);
-			res.status(201).json(result);
+			const result: any = await mediator.send("CreatePetCommand", command);
+			res.status(201).json({
+				id: result.id,
+				message: "Mascota registrada exitosamente",
+				pet: result,
+			});
 		} catch (error: any) {
 			res.status(400).json({ error: error.message });
 		}
@@ -45,8 +49,11 @@ export class PetController {
 				ownerEmail,
 				ownerId,
 			);
-			const result = await mediator.send("UpdatePetCommand", command);
-			res.json(result);
+			const result: any = await mediator.send("UpdatePetCommand", command);
+			res.json({
+				message: "Mascota actualizada exitosamente",
+				pet: result,
+			});
 		} catch (error: any) {
 			res.status(400).json({ error: error.message });
 		}

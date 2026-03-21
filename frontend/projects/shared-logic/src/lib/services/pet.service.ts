@@ -45,4 +45,14 @@ export class PetService {
 	deletePet(id: string): Observable<DeletePetResponse> {
 		return this.http.delete<DeletePetResponse>(`${this.apiUrl}/${id}`);
 	}
+
+	uploadMedia(petId: string, file: Blob, latitude?: number, longitude?: number): Observable<any> {
+		const formData = new FormData();
+		formData.append("image", file);
+		
+		if (latitude !== undefined) formData.append("latitude", latitude.toString());
+		if (longitude !== undefined) formData.append("longitude", longitude.toString());
+		
+		return this.http.post<any>(`${this.baseUrl}/media/${petId}`, formData);
+	}
 }

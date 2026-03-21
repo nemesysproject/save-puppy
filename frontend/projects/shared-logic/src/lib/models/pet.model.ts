@@ -1,4 +1,5 @@
 import { Kind, Gender, Race } from "./common.model";
+import { Media } from "./media.model";
 
 /**
  * Pet Models
@@ -19,6 +20,7 @@ export interface Pet {
 	ownerId?: string | null;
 	createdAt?: Date;
 	updatedAt?: Date;
+	media?: Media[];
 }
 
 export interface CreatePetRequest {
