@@ -129,6 +129,8 @@ export class PrismaPetRepository implements IPetRepository {
 			where.status = { in: ["LOST", "ADOPTION"] };
 		}
 
+		console.log("where", where);
+
 		const candidates = await prisma.pet.findMany({
 			where,
 			include: {

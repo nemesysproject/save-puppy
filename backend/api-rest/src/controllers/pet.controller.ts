@@ -98,18 +98,20 @@ export class PetController {
 
 	async searchByLocation(req: Request, res: Response) {
 		try {
+
 			const { kindId, lat, lon, radius, raceId, status, withImages } =
-				req.query;
+				req.body;
 			const query = new SearchPetsByLocationQuery(
-				parseFloat(lat as string),
-				parseFloat(lon as string),
-				parseFloat(radius as string),
-				kindId as string | undefined,
-				raceId as string | undefined,
-				status as string | undefined,
-				withImages === "false" ? false : true,
+				typeof lat === 'string' ? parseFloat(lat) : lat,
+				typeof lon === 'string' ? parseFloat(lon) : lon,
+				typeof radius === 'string' ? parseFloat(radius) : radius,
+				kindId,
+				raceId,
+				status,
+				withImages === false ? false : true,
 			);
 			const result = await mediator.send("SearchPetsByLocationQuery", query);
+
 			res.json(result);
 		} catch (error: any) {
 			res.status(400).json({ error: error.message });

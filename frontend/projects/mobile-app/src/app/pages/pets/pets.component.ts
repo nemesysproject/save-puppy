@@ -162,6 +162,7 @@ export class PetsComponent implements OnInit {
 			})
 			.subscribe({
 				next: (pets: any[]) => {
+					console.log("Pets loaded", pets);
 					if (!event) {
 						this.isLoading.set(false);
 					}

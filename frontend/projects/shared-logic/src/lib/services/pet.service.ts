@@ -23,8 +23,8 @@ export class PetService {
 		return this.http.get<Pet[]>(this.apiUrl);
 	}
 
-	searchPets(params: any): Observable<Pet[]> {
-		return this.http.get<Pet[]>(`${this.apiUrl}/search`, { params });
+	searchPets(data: any): Observable<Pet[]> {
+		return this.http.post<Pet[]>(`${this.apiUrl}/search`, data);
 	}
 
 	getPetById(id: string): Observable<Pet> {
