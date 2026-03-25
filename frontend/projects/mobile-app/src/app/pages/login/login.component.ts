@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
 	async checkBiometricCredentials() {
 		try {
 			const result = await NativeBiometric.isCredentialsSaved({
-				server: environment.apiUrl,
+				server: "save-puppy",
 			});
 			this.canUseBiometrics.set(result.isSaved);
 		} catch (error) {
@@ -132,7 +132,7 @@ export class LoginComponent implements OnInit {
 			// If verifyIdentity doesn't throw, it's successful
 			// Retrieve credentials
 			const credentials = await NativeBiometric.getCredentials({
-				server: environment.apiUrl,
+				server: "save-puppy",
 			});
 
 			this.isBiometricModalOpen.set(false);
@@ -184,7 +184,7 @@ export class LoginComponent implements OnInit {
 							await NativeBiometric.setCredentials({
 								username: loginRequest.email,
 								password: loginRequest.password,
-								server: environment.apiUrl,
+								server: "save-puppy",
 							}).catch((err) =>
 								console.error("Error saving credentials:", err),
 							);

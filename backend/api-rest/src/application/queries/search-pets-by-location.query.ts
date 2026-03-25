@@ -10,7 +10,7 @@ export class SearchPetsByLocationQuery {
 		public readonly raceId?: string,
 		public readonly status?: string,
 		public readonly withImages?: boolean,
-	) {}
+	) { }
 }
 
 export interface PetWithMedia {
@@ -30,11 +30,11 @@ export interface PetWithMedia {
 }
 
 export class SearchPetsByLocationHandler
-	implements IHandler<SearchPetsByLocationQuery, PetWithMedia[]>
-{
-	constructor(private petRepository: IPetRepository) {}
+	implements IHandler<SearchPetsByLocationQuery, PetWithMedia[]> {
+	constructor(private petRepository: IPetRepository) { }
 
 	async handle(query: SearchPetsByLocationQuery): Promise<PetWithMedia[]> {
+
 		return await this.petRepository.findByLocation(
 			query.latitude,
 			query.longitude,

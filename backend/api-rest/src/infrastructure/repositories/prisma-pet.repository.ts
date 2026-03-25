@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PetEntity } from "@/domain/entities/pet.entity";
 import type { IPetRepository } from "@/domain/repositories/pet.repository";
+import { computeGeohash } from "@/infrastructure/services/geohash.service";
 
 interface PetMedia {
 	url: string;
@@ -118,7 +119,19 @@ export class PrismaPetRepository implements IPetRepository {
 		status?: string,
 		withImages?: boolean,
 	): Promise<any[]> {
-		const where: any = {};
+		const radiusInMeters = radius * 1000;
+		console.log(`[findByLocation] Lat: ${lat}, Lon: ${lon}, Radius: ${radius}km`);
+		const prefix = computeGeohash(lat, lon, radiusInMeters);
+
+		console.log(`[findByLocation] Prefix: ${prefix}, Radius: ${radius}km`);
+
+		const where: any = {
+			media: {
+				some: {
+					geohash: { startsWith: prefix }
+				}
+			}
+		};
 
 		if (kindId) where.kindId = kindId;
 		if (raceId) where.raceId = raceId;
@@ -129,7 +142,7 @@ export class PrismaPetRepository implements IPetRepository {
 			where.status = { in: ["LOST", "ADOPTION"] };
 		}
 
-		console.log("where", where);
+		console.log(`[findByLocation] Prefix: ${prefix}, Radius: ${radius}km`);
 
 		const candidates = await prisma.pet.findMany({
 			where,
@@ -138,19 +151,21 @@ export class PrismaPetRepository implements IPetRepository {
 				gender: true,
 				race: true,
 				media: {
+					where: {
+						geohash: { startsWith: prefix }
+					},
 					select: {
 						id: true,
 						url: true,
 						latitude: true,
 						longitude: true,
+						geohash: true
 					},
 					orderBy: { createdAt: "asc" },
 				},
 			},
 			orderBy: { createdAt: "desc" },
 		});
-
-		console.log("Candidates", candidates);
 
 		const results: PetWithMedia[] = candidates
 			.map((pet) => {
@@ -164,65 +179,46 @@ export class PrismaPetRepository implements IPetRepository {
 
 				pet.media.forEach((m) => {
 					if (m.latitude !== null && m.longitude !== null) {
-						const dist = this.calculateDistance(
-							lat,
-							lon,
-							m.latitude,
-							m.longitude,
-						);
+						const dist = this.calculateDistance(lat, lon, m.latitude, m.longitude);
 						if (dist <= radius) {
-							mediaWithDistance.push({ ...m, distance: dist });
+							mediaWithDistance.push({ url: m.url, latitude: m.latitude, longitude: m.longitude, distance: dist });
 							if (dist < minDistance) minDistance = dist;
 						}
+					} else if (m.geohash && m.geohash.startsWith(prefix)) {
+						// Fallback: Si no hay lat/lon pero sabemos que el geohash coindice
+						mediaWithDistance.push({ url: m.url, latitude: lat, longitude: lon, distance: radius });
+						if (radius < minDistance) minDistance = radius;
 					}
 				});
 
+				const basePet = {
+					id: pet.id,
+					name: pet.name,
+					status: pet.status,
+					kindId: pet.kindId,
+					genderId: pet.genderId,
+					shelterId: pet.shelterId,
+					ownerEmail: pet.ownerEmail,
+					ownerId: pet.ownerId,
+					createdAt: pet.createdAt,
+					kind: pet.kind,
+					gender: pet.gender,
+					raceId: pet.raceId,
+					race: pet.race,
+				};
+
 				if (withImages === false) {
 					return {
-						id: pet.id,
-						name: pet.name,
-						status: pet.status,
-						kindId: pet.kindId,
-						genderId: pet.genderId,
-						shelterId: pet.shelterId,
-						ownerEmail: pet.ownerEmail,
-						ownerId: pet.ownerId,
-						createdAt: pet.createdAt,
-						kind: pet.kind,
-						gender: pet.gender,
-						raceId: pet.raceId,
-						race: pet.race,
-						media:
-							mediaWithDistance.length > 0
-								? mediaWithDistance.map((m) => ({
-									url: m.url,
-									latitude: m.latitude,
-									longitude: m.longitude,
-								}))
-								: [],
+						...basePet,
+						media: mediaWithDistance.map((m) => ({ url: m.url, latitude: m.latitude, longitude: m.longitude })),
 						distance: minDistance === Infinity ? null : minDistance,
 					};
 				}
 
 				if (mediaWithDistance.length > 0) {
 					return {
-						id: pet.id,
-						name: pet.name,
-						status: pet.status,
-						kindId: pet.kindId,
-						genderId: pet.genderId,
-						shelterId: pet.shelterId,
-						ownerEmail: pet.ownerEmail,
-						createdAt: pet.createdAt,
-						kind: pet.kind,
-						gender: pet.gender,
-						race: pet.race,
-						raceId: pet.raceId,
-						media: mediaWithDistance.map((m) => ({
-							url: m.url,
-							latitude: m.latitude,
-							longitude: m.longitude,
-						})),
+						...basePet,
+						media: mediaWithDistance.map((m) => ({ url: m.url, latitude: m.latitude, longitude: m.longitude })),
 						distance: minDistance,
 					};
 				}
@@ -230,12 +226,8 @@ export class PrismaPetRepository implements IPetRepository {
 				return null;
 			})
 			.filter(
-				(p: any) =>
-					p !== null &&
-					(withImages === false || (p.media && p.media.length > 0)),
+				(p: any) => p !== null && (withImages === false || (p.media && p.media.length > 0)),
 			) as any;
-
-		console.log("Results", results);
 
 		return results.sort((a, b) => (a.distance || 0) - (b.distance || 0));
 	}

@@ -1,0 +1,50 @@
+﻿backend-1  | > save-puppy@1.0.0 start
+backend-1  | > prisma migrate deploy && prisma db seed && node dist/index.js
+backend-1  | 
+backend-1  | Prisma schema loaded from prisma/schema.prisma
+backend-1  | Datasource "db": PostgreSQL database "save_puppy_db", schema "public" at "postgres:5432"
+backend-1  | 
+backend-1  | 4 migrations found in prisma/migrations
+backend-1  | 
+backend-1  | 
+backend-1  | No pending migrations to apply.
+backend-1  | Running seed command `node -r ts-node/register prisma/seed.ts` ...
+backend-1  | ≡ƒî▒ Iniciando sembrado de cat├ílogos...
+backend-1  | Sembrando Kinds...
+backend-1  |   = Ya existe Kind: Perro
+backend-1  |   = Ya existe Kind: Gato
+backend-1  |   = Ya existe Kind: Otro
+backend-1  | Sembrando Genders...
+backend-1  |   = Ya existe Gender: Macho
+backend-1  |   = Ya existe Gender: Hembra
+backend-1  | Sembrando Races...
+backend-1  |   = Ya existe Raza: Labrador
+backend-1  |   = Ya existe Raza: Pastor Alem├ín
+backend-1  |   = Ya existe Raza: Chihuahua
+backend-1  |   = Ya existe Raza: Persa
+backend-1  |   = Ya existe Raza: Siam├⌐s
+backend-1  |   = Ya existe Raza: Maine Coon
+backend-1  | Sembrando Usuario de prueba (Mobile App)...
+backend-1  |   = Ya existe Usuario: test@mobile.app
+backend-1  | Γ£à Sembrado finalizado.
+backend-1  | 
+backend-1  | ≡ƒî▒  The seed command has been executed.
+backend-1  | ***** RabbitMQService initialized with URL: amqp://admin:*****@rabbitmq:5672
+backend-1  | ***** Connecting to url at amqp://admin:QazWsx%4012@rabbitmq:5672
+backend-1  | ***** Connecting to RabbitMQ at amqp://admin:*****@rabbitmq:5672
+backend-1  | GetKindsHandler initialized with KindRepository
+backend-1  | GetGendersHandler initialized with GenderRepository
+backend-1  | ≡ƒôä Documentaci├│n disponible en http://localhost:3000/api-docs
+backend-1  | Socket.io server initialized with Authentication
+backend-1  | ≡ƒÜÇ Server running on port 3000
+backend-1  | Γ¥î RabbitMQ Connection Failed. Retries left: 4 Error: connect ECONNREFUSED 172.18.0.5:5672
+backend-1  |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+backend-1  |   errno: -111,
+backend-1  |   code: 'ECONNREFUSED',
+backend-1  |   syscall: 'connect',
+backend-1  |   address: '172.18.0.5',
+backend-1  |   port: 5672
+backend-1  | }
+backend-1  | ***** Connecting to url at amqp://admin:QazWsx%4012@rabbitmq:5672
+backend-1  | ***** Connecting to RabbitMQ at amqp://admin:*****@rabbitmq:5672
+backend-1  | Γ£à RabbitMQ Connected
