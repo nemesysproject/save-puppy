@@ -53,6 +53,7 @@ import {
 import { HttpClient } from "@angular/common/http";
 import { API_BASE_URL, PetService, Pet } from "shared-logic";
 import { Router } from "@angular/router";
+import { Geolocation } from "@capacitor/geolocation";
 
 // interface PetWithMedia handled by the shared Pet model now
 type PetWithMedia = Pet & { distance?: number };
@@ -113,9 +114,10 @@ export class PetsComponent implements OnInit {
 	activeFilter = signal<string>("ALL");
 	searchQuery = signal<string>("");
 
-	// Demo location (should be replaced with real geolocation)
-	userLat = 19.4326;
-	userLon = -99.1332;
+	// Ubicación real del usuario (se obtiene al iniciar)
+	userLat = 0;
+	userLon = 0;
+	locationReady = signal(false);
 
 	constructor() {
 		addIcons({
@@ -138,7 +140,20 @@ export class PetsComponent implements OnInit {
 		this.router.navigate(["/pets/create"]);
 	}
 
-	ngOnInit(): void {
+	async ngOnInit(): Promise<void> {
+		try {
+			const position = await Geolocation.getCurrentPosition();
+			this.userLat = position.coords.latitude;
+			this.userLon = position.coords.longitude;
+			this.locationReady.set(true);
+			console.log(`[Pets] User location: ${this.userLat}, ${this.userLon}`);
+		} catch (e) {
+			console.warn("[Pets] Could not get location, using defaults", e);
+			// Fallback a una ubicación por defecto si no se puede obtener
+			this.userLat = 19.4326;
+			this.userLon = -99.1332;
+			this.locationReady.set(true);
+		}
 		this.loadPets();
 	}
 
@@ -251,6 +266,7 @@ export class PetsComponent implements OnInit {
 	}
 
 	setDistance(dist: DistanceOption): void {
+		console.log("Setting distance filter to", dist);
 		this.distance.set(dist);
 		this.showOptionsModal.set(false);
 		this.loadPets();

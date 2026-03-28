@@ -9,7 +9,7 @@ export interface IPetRepository {
 	findByLocation(
 		lat: number,
 		lon: number,
-		radius: number,
+		radiusKm: number,
 		kindId?: string,
 		raceId?: string,
 		status?: string,

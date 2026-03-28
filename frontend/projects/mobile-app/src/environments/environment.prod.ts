@@ -1,4 +1,4 @@
 export const environment = {
 	production: true,
-	apiUrl: "http://192.168.1.25/api", // Reemplazar con tu URL de producción real
+	apiUrl: "http://192.168.1.31/api", // Reemplazar con tu URL de producción real
 };

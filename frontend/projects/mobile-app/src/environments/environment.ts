@@ -1,6 +1,8 @@
 export const environment = {
 	production: false,
-	// Usamos 10.0.2.2 para que el emulador de Android pueda acceder al localhost del host
-	// Nginx está en el puerto 80, por lo que no es necesario especificarlo.
-	apiUrl: "http://192.168.1.25/api",
+	// Para dispositivos Android físicos usamos la IP de la red local.
+	// mDNS (hostname.local) no es soportado de forma confiable en Android.
+	// Si la IP de la PC cambia, actualizar aquí.
+	// Para emulador Android: usar 10.0.2.2
+	apiUrl: "http://192.168.1.31/api",
 };

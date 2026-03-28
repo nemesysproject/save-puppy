@@ -57,6 +57,9 @@ export class MediaController {
 			if (lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon)) {
 				const precision = Math.max(10, Math.min(100, precisionRequested));
 				geohash = computeGeohash(lat, lon, precision);
+				console.log(`[Media CREATE] lat=${lat}, lon=${lon}, precision=${precision}m, geohash=${geohash}`);
+			} else {
+				console.log(`[Media CREATE] No coordinates provided. lat=${lat}, lon=${lon}`);
 			}
 
 			// 3. Emitir comando a base de datos

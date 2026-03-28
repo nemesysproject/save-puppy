@@ -10,7 +10,12 @@ export const initSocketServer = (server: http.Server): SocketServer => {
 	if (!io) {
 		io = new SocketServer(server, {
 			cors: {
-				origin: ["http://localhost:8080", "http://localhost:4200"],
+				origin: [
+					"http://localhost:8080",
+					"http://localhost:4200",
+					"http://mzuniga.local",
+					"http://mzuniga.local:8080",
+				],
 				methods: ["GET", "POST"],
 			},
 			path: "/socket.io",

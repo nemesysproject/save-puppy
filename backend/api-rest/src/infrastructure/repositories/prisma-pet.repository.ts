@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PetEntity } from "@/domain/entities/pet.entity";
 import type { IPetRepository } from "@/domain/repositories/pet.repository";
-import { computeGeohash } from "@/infrastructure/services/geohash.service";
+import { computeGeohash, geohashNeighbors } from "@/infrastructure/services/geohash.service";
 
 interface PetMedia {
 	url: string;
@@ -113,24 +113,29 @@ export class PrismaPetRepository implements IPetRepository {
 	async findByLocation(
 		lat: number,
 		lon: number,
-		radius: number,
+		radiusKm: number,
 		kindId?: string,
 		raceId?: string,
 		status?: string,
 		withImages?: boolean,
 	): Promise<any[]> {
-		const radiusInMeters = radius * 1000;
-		console.log(`[findByLocation] Lat: ${lat}, Lon: ${lon}, Radius: ${radius}km`);
-		const prefix = computeGeohash(lat, lon, radiusInMeters);
+		const radiusInMeters = radiusKm * 1000;
 
-		console.log(`[findByLocation] Prefix: ${prefix}, Radius: ${radius}km`);
+		const centerHash = computeGeohash(lat, lon, radiusInMeters);
+		const prefixes = geohashNeighbors(centerHash);
+
+		console.log(`[findByLocation] Lat: ${lat}, Lon: ${lon}, Radius: ${radiusKm}km (${radiusInMeters}m)`);
+		console.log(`[findByLocation] Geohash Precision: length=${centerHash.length}, center=${centerHash}, neighbors=${prefixes.length}`);
+
+		// Filtro OR para las 9 celdas o vecinos que cubren el radio
+		const geohashFilter = {
+			OR: prefixes.map((p) => ({ geohash: { startsWith: p } })),
+		};
 
 		const where: any = {
 			media: {
-				some: {
-					geohash: { startsWith: prefix }
-				}
-			}
+				some: geohashFilter,
+			},
 		};
 
 		if (kindId) where.kindId = kindId;
@@ -142,8 +147,6 @@ export class PrismaPetRepository implements IPetRepository {
 			where.status = { in: ["LOST", "ADOPTION"] };
 		}
 
-		console.log(`[findByLocation] Prefix: ${prefix}, Radius: ${radius}km`);
-
 		const candidates = await prisma.pet.findMany({
 			where,
 			include: {
@@ -151,21 +154,21 @@ export class PrismaPetRepository implements IPetRepository {
 				gender: true,
 				race: true,
 				media: {
-					where: {
-						geohash: { startsWith: prefix }
-					},
+					where: geohashFilter,
 					select: {
 						id: true,
 						url: true,
 						latitude: true,
 						longitude: true,
-						geohash: true
+						geohash: true,
 					},
 					orderBy: { createdAt: "asc" },
 				},
 			},
 			orderBy: { createdAt: "desc" },
 		});
+
+		console.log(`[findByLocation] Found ${candidates.length} candidates`);
 
 		const results: PetWithMedia[] = candidates
 			.map((pet) => {
@@ -178,16 +181,17 @@ export class PrismaPetRepository implements IPetRepository {
 				let minDistance = Infinity;
 
 				pet.media.forEach((m) => {
+					console.log(`[findByLocation] Pet ${pet.id} has media ${m.latitude}, ${m.longitude}`);
 					if (m.latitude !== null && m.longitude !== null) {
 						const dist = this.calculateDistance(lat, lon, m.latitude, m.longitude);
-						if (dist <= radius) {
+						if (dist <= radiusKm) {
 							mediaWithDistance.push({ url: m.url, latitude: m.latitude, longitude: m.longitude, distance: dist });
 							if (dist < minDistance) minDistance = dist;
 						}
-					} else if (m.geohash && m.geohash.startsWith(prefix)) {
+					} else if (m.geohash && prefixes.some((p) => m.geohash!.startsWith(p))) {
 						// Fallback: Si no hay lat/lon pero sabemos que el geohash coindice
-						mediaWithDistance.push({ url: m.url, latitude: lat, longitude: lon, distance: radius });
-						if (radius < minDistance) minDistance = radius;
+						mediaWithDistance.push({ url: m.url, latitude: lat, longitude: lon, distance: radiusKm });
+						if (radiusKm < minDistance) minDistance = radiusKm;
 					}
 				});
 
@@ -228,6 +232,8 @@ export class PrismaPetRepository implements IPetRepository {
 			.filter(
 				(p: any) => p !== null && (withImages === false || (p.media && p.media.length > 0)),
 			) as any;
+
+		console.log(`[findByLocation] Found ${results.length} results`);
 
 		return results.sort((a, b) => (a.distance || 0) - (b.distance || 0));
 	}
