@@ -140,21 +140,29 @@ export class PetsComponent implements OnInit {
 		this.router.navigate(["/pets/create"]);
 	}
 
-	async ngOnInit(): Promise<void> {
-		try {
-			const position = await Geolocation.getCurrentPosition();
-			this.userLat = position.coords.latitude;
-			this.userLon = position.coords.longitude;
-			this.locationReady.set(true);
-			console.log(`[Pets] User location: ${this.userLat}, ${this.userLon}`);
-		} catch (e) {
-			console.warn("[Pets] Could not get location, using defaults", e);
-			// Fallback a una ubicación por defecto si no se puede obtener
-			this.userLat = 19.4326;
-			this.userLon = -99.1332;
-			this.locationReady.set(true);
+	/**
+	 * ionViewWillEnter se ejecuta cada vez que la página entra en foco.
+	 * Esto asegura que si regresamos de crear una mascota, la lista se refresque.
+	 */
+	async ionViewWillEnter(): Promise<void> {
+		if (!this.locationReady()) {
+			try {
+				const position = await Geolocation.getCurrentPosition();
+				this.userLat = position.coords.latitude;
+				this.userLon = position.coords.longitude;
+				this.locationReady.set(true);
+			} catch (e) {
+				console.warn("[Pets] Error al obtener ubicación, usando valores por defecto", e);
+				this.userLat = 19.4326;
+				this.userLon = -99.1332;
+				this.locationReady.set(true);
+			}
 		}
 		this.loadPets();
+	}
+
+	ngOnInit(): void {
+		// La lógica de inicialización repetitiva se movió a ionViewWillEnter
 	}
 
 	loadPets(event?: any): void {
