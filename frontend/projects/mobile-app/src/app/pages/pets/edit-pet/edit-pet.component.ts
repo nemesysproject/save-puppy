@@ -23,6 +23,7 @@ import {
 	refreshOutline,
 	closeOutline,
 	pawOutline,
+	trashOutline
 } from "ionicons/icons";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { Geolocation } from "@capacitor/geolocation";
@@ -97,12 +98,13 @@ export class EditPetComponent implements OnInit {
 			refreshOutline,
 			closeOutline,
 			pawOutline,
+			trashOutline
 		});
 	}
 
 	ngOnInit(): void {
 		this.loadLookups();
-		
+
 		const id = this.route.snapshot.paramMap.get('id');
 		if (id) {
 			this.petId.set(id);
@@ -264,7 +266,7 @@ export class EditPetComponent implements OnInit {
 							console.error("Error uploading media", mediaError);
 						}
 					}
-					
+
 					this.isSaving.set(false);
 					this.router.navigate(["/pets"]);
 				},

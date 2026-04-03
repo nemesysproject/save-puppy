@@ -1,4 +1,11 @@
 /* Global styles - Save Puppy */
+@use 'theme/variables' as *;
+@use 'theme/base';
+@use 'theme/layout';
+@use 'theme/forms';
+@use 'theme/glass-forms';
+@use 'theme/buttons';
+@use 'theme/animations';
 
 * {
     box-sizing: border-box;

@@ -30,6 +30,7 @@ import {
 	arrowBackOutline,
 	logoGoogle,
 	logoFacebook,
+	trashOutline
 } from "ionicons/icons";
 import { addIcons } from "ionicons";
 import { environment } from "../../../environments/environment";
@@ -66,7 +67,7 @@ export class RegisterComponent {
 	showConfirmPassword = signal(false);
 
 	constructor() {
-		addIcons({ eye, eyeOff, arrowBackOutline, logoGoogle, logoFacebook });
+		addIcons({ eye, eyeOff, arrowBackOutline, logoGoogle, logoFacebook, trashOutline });
 
 		this.registerForm = this.fb.group(
 			{
@@ -153,7 +154,7 @@ export class RegisterComponent {
 				this.isLoading.set(false);
 				this.errorMessage.set(
 					error.error?.message ||
-						"Error al conectar con Google. Intenta de nuevo.",
+					"Error al conectar con Google. Intenta de nuevo.",
 				);
 			},
 		});
@@ -173,7 +174,7 @@ export class RegisterComponent {
 				this.isLoading.set(false);
 				this.errorMessage.set(
 					error.error?.message ||
-						"Error al conectar con Facebook. Intenta de nuevo.",
+					"Error al conectar con Facebook. Intenta de nuevo.",
 				);
 			},
 		});

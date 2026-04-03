@@ -32,6 +32,7 @@ import {
 	mailOutline,
 	peopleOutline,
 	refreshOutline,
+	trashOutline
 } from "ionicons/icons";
 
 @Component({
@@ -72,6 +73,7 @@ export class SheltersComponent implements OnInit {
 			mailOutline,
 			peopleOutline,
 			refreshOutline,
+			trashOutline
 		});
 	}
 

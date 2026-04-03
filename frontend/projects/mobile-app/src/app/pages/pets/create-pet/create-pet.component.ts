@@ -23,6 +23,7 @@ import {
 	refreshOutline,
 	closeOutline,
 	pawOutline,
+	trashOutline
 } from "ionicons/icons";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { Geolocation } from "@capacitor/geolocation";
@@ -93,6 +94,7 @@ export class CreatePetComponent implements OnInit {
 			refreshOutline,
 			closeOutline,
 			pawOutline,
+			trashOutline
 		});
 	}
 
@@ -105,13 +107,13 @@ export class CreatePetComponent implements OnInit {
 			next: (kinds) => {
 				this.kinds.set(kinds);
 			},
-			error: (err) => {},
+			error: (err) => { },
 		});
 		this.lookupService.getGenders().subscribe({
 			next: (genders) => {
 				this.genders.set(genders);
 			},
-			error: (err) => {},
+			error: (err) => { },
 		});
 	}
 
@@ -219,7 +221,7 @@ export class CreatePetComponent implements OnInit {
 							// Still redirecting since pet exists, but might show partial error.
 						}
 					}
-					
+
 					this.isSaving.set(false);
 					this.router.navigate(["/pets"]);
 				},

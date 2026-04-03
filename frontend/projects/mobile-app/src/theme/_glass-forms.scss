@@ -1,0 +1,259 @@
+@use 'variables' as *;
+
+/* =================================
+   Premium Glassmorphism Forms
+   ================================= */
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.field-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    
+    label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: $color-primary;
+        padding-left: 4px;
+    }
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    .field-box { flex: 1; }
+}
+
+/* Custom Controls with Glass Effect */
+.custom-input-group, 
+.custom-select-group {
+    background: rgba($color-white, 0.08);
+    border: 1px solid rgba($color-white, 0.2);
+    border-radius: $border-radius-large;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    transition: 0.3s;
+
+    &:focus-within { 
+        border-color: $color-primary; 
+        background: rgba($color-white, 0.12); 
+    }
+
+    ion-icon { 
+        font-size: 20px; 
+        color: $color-white; 
+        opacity: 0.8; 
+        margin-right: 12px; 
+    }
+
+    input, select {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: $color-white;
+        font-size: 0.95rem;
+        font-weight: 500;
+        outline: none;
+        &::placeholder { color: rgba($color-white, 0.4); }
+    }
+
+    select {
+        appearance: none;
+        cursor: pointer;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ff2d55'%3E%3Cpath d='M8 11l-5-5h10l-5 5z'/%3E%3C/svg%3E") no-repeat right center;
+        padding-right: 24px;
+        option { background: #222; color: white; }
+    }
+}
+
+.status-selector {
+    display: flex;
+    background: rgba($color-white, 0.05);
+    border-radius: 14px;
+    padding: 2px;
+    border: 1px solid rgba($color-white, 0.2);
+
+    button {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: rgba($color-white, 0.5);
+        font-weight: 700;
+        font-size: 0.8rem;
+        height: 38px;
+        border-radius: 12px;
+        transition: 0.3s;
+
+        &.active {
+            background: $color-primary;
+            color: $color-white;
+            box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+        }
+    }
+}
+
+/* Media/Capture Zones */
+.capture-zone {
+    height: 80px;
+    background: rgba($color-white, 0.05);
+    border: 2px dashed rgba($color-white, 0.2);
+    border-radius: $border-radius-large;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+
+    ion-icon { font-size: 24px; color: $color-primary; }
+    span { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-top: 4px; color: $color-white; }
+
+    &:active { transform: scale(0.96); background: rgba($color-white, 0.1); }
+}
+
+.mini-gallery {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+}
+
+.thumb {
+    position: relative;
+    min-width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    img { width: 100%; height: 100%; object-fit: cover; }
+    .close-thumb {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: rgba(0,0,0,0.5);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        ion-icon { font-size: 14px; }
+    }
+}
+
+/* Actions */
+.form-actions {
+    margin-top: $spacing-xl;
+    display: flex;
+    gap: 12px;
+
+    button {
+        flex: 1;
+        height: 56px;
+        border-radius: 18px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: 0.2s;
+        border: none;
+    }
+
+    .btn-cancel { 
+        background: rgba($color-white, 0.1); 
+        color: $color-white; 
+        border: 1px solid rgba($color-white, 0.2); 
+    }
+    
+    .btn-submit { 
+        background: $color-white; 
+        color: $color-primary; 
+        box-shadow: 0 8px 20px rgba($color-primary, 0.4);
+        &:disabled { opacity: 0.6; cursor: not-allowed; }
+    }
+
+    button:active:not(:disabled) { transform: scale(0.97); }
+}
+
+.card-header {
+    margin-bottom: 24px;
+    h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+    p {
+        margin: 4px 0 0;
+        font-size: 0.9rem;
+        opacity: 0.7;
+    }
+}
+
+/* Carousel / Media Scroller */
+.media-scroller {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+}
+
+.add-media-box {
+    min-width: 64px;
+    height: 64px;
+    background: rgba($color-white, 0.05);
+    border: 2px dashed rgba($color-white, 0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    ion-icon { font-size: 30px; color: $color-primary; }
+
+    &:active { transform: scale(0.95); background: rgba($color-white, 0.1); }
+}
+
+.media-item {
+    position: relative;
+    min-width: 120px;
+    height: 160px;
+    border-radius: 20px;
+    overflow: hidden;
+    img, video { width: 100%; height: 100%; object-fit: cover; }
+    .remove-btn { 
+        position: absolute; 
+        top: 4px; 
+        right: 4px; 
+        margin: 0; 
+        --padding-start: 0; 
+        --padding-end: 0; 
+    }
+}
+
+.location-chip-wrapper {
+    margin-top: 16px;
+}
+
+.glass-chip {
+    --background: rgba($color-primary, 0.15);
+    --color: #{$color-white};
+    font-weight: 700;
+    font-size: 0.8rem;
+    border: 1px solid rgba($color-primary, 0.3);
+    ion-icon { color: $color-primary; }
+}
