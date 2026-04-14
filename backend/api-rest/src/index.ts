@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import http from "http";
+import cors from "cors";
 import { globalRateLimiter } from "./infrastructure/middleware/rate-limit.middleware";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import swaggerUi from "swagger-ui-express";
@@ -136,6 +137,7 @@ dotenv.config();
 
 const app = express();
 app.use(helmet()); // Seguridad de cabeceras
+app.use(cors()); // Permitir peticiones de otros orígenes (CORS)
 app.use(globalRateLimiter); // Límite de peticiones global
 app.use(express.json());
 
