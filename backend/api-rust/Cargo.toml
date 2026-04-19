@@ -1,0 +1,64 @@
+[package]
+name = "save-puppy-unified"
+version = "0.1.0"
+edition = "2021"
+authors = ["Antigravity <ai@save-puppy.com>"]
+description = "Monolito de alto rendimiento para rescate animal y reconocimiento de mascotas"
+
+[dependencies]
+# --- CORE & ASYNC RUNTIME ---
+tokio = { version = "1.36", features = ["full", "test-util"] }
+axum = { version = "0.7", features = ["macros", "multipart"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tower-http = { version = "0.5", features = ["cors", "trace", "limit"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# --- BASES DE DATOS (WRITE SIDE - POSTGRES) ---
+sqlx = { version = "0.7", features = [
+    "runtime-tokio-native-tls", 
+    "postgres", 
+    "uuid", 
+    "chrono", 
+    "macros"
+] }
+
+# --- BASES DE DATOS (READ SIDE - MONGODB) ---
+mongodb = { version = "2.8", features = ["tokio-runtime", "bson-chrono-0_4"] }
+
+# --- MENSAJERÍA (EVENT BUS - RABBITMQ) ---
+lapin = "2.3" # Driver oficial de RabbitMQ/AMQP
+deadpool-lapin = "0.12" # Pool de conexiones para RabbitMQ
+
+# --- VISIÓN ARTIFICIAL & RECONOCIMIENTO ---
+#opencv = "0.92" 
+image = "0.24"       # Carga y manipulación de píxeles
+imageproc = "0.23"   # Algoritmos de procesamiento (bordes, dibujo, etc)
+rustface = "0.1"     # Detección de rostros básica (si la necesitas)
+rayon = "1.10"
+
+# --- UTILIDADES ---
+uuid = { version = "1.7", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+validator = { version = "0.16", features = ["derive"] }
+bcrypt = "0.15"
+reqwest = { version = "0.11", features = ["json"] }
+futures = "0.3"
+async-trait = "0.1"
+
+# --- DOCUMENTACIÓN API ---
+utoipa = { version = "4.2", features = ["axum_extras", "uuid", "chrono"] }
+utoipa-swagger-ui = { version = "6.0", features = ["axum"] }
+
+[dev-dependencies]
+mockall = "0.12"
+axum-test = "16.0"
+tower = { version = "0.4", features = ["util"] }
+http = "1.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+panic = "abort"

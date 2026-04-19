@@ -2,3 +2,10 @@ node_modules
 dist
 .env
 /.vs
+# Binarios y artefactos de compilación de Rust
+target/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
